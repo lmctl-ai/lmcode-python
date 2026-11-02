@@ -1,0 +1,6 @@
+trace
+hex 6100ff
+bool true
+hex 6100ff0a62
+bool false
+bool false

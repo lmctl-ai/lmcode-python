@@ -1,0 +1,1 @@
+let m=int_map().set("a",1).set("b",2).set("c",3); let keys=m.keys(); let values=m.values(); m.set("a",9); m.remove("b"); m.set("b",9); t.hex(m.keys().join(",")); t.int(values.at(0)); t.int(values.at(1)); keys.set(0,"changed"); values.set(0,2); keys.add("extra"); values.add(1); t.hex(m.keys().join(",")); t.int(m.get("a")); m.clear(); t.int(keys.len()); t.int(values.len());

@@ -1,0 +1,5960 @@
+{
+  "format": "dsl-conformance/2",
+  "bytecode_version": 6,
+  "generated_by": "lmscript (one wrapper line preceding NAME.dsl)",
+  "schema": "schema.json",
+  "host": {
+    "description": "Register the string, math, collections, testing, and file catalog functions. Context t is Trace: int records int N, float records float %.15g, bool records bool true|false, hex records hex SPACE followed by lowercase hexadecimal bytes (two digits per byte, no decoding). bytes(string) decodes an even-length ASCII hexadecimal fixture literal to raw bytes, without recording a trace. test_temp_dir() returns a fresh per-vector directory for file cases. Strings, offsets and lengths are bytes. runtime_error_file requires RUN_HOST, the function/path prefix, and a nonempty OS reason while allowing localized diagnostics. runtime_error_exact requires RUN_HOST and equality of the complete message after removing only the SDK source-location prefix. test_long_path() creates nested directories under the per-vector temporary directory, returning an ordinary absolute UTF-8 path longer than 260 characters ending in r\u00e9sum\u00e9-\u6587\u4ef6-\ud83d\ude00.bin; the runner uses native extended-length paths for Windows fixture setup and cleanup, but does not return the extended prefix. File error reasons must contain at least one non-whitespace character."
+  },
+  "vectors": [
+    {
+      "name": "collections-arena-limit",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "collections-arena-limit.dsl",
+      "bytecode": "collections-arena-limit.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 65537"
+        ]
+      }
+    },
+    {
+      "name": "collections-empty-foreach",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-empty-foreach.dsl",
+      "bytecode": "collections-empty-foreach.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 0",
+          "int 0",
+          "hex "
+        ]
+      }
+    },
+    {
+      "name": "collections-float-list",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-float-list.dsl",
+      "bytecode": "collections-float-list.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 3",
+          "float 1.5",
+          "bool false",
+          "int -1",
+          "bool true",
+          "int 2",
+          "float -0",
+          "float 2.5",
+          "bool false",
+          "int 1",
+          "float 3.5"
+        ]
+      }
+    },
+    {
+      "name": "collections-floatlist-at-end",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-floatlist-at-end.dsl",
+      "bytecode": "collections-floatlist-at-end.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: 0"
+        }
+      }
+    },
+    {
+      "name": "collections-floatlist-at-negative",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-floatlist-at-negative.dsl",
+      "bytecode": "collections-floatlist-at-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "collections-floatlist-set-end",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-floatlist-set-end.dsl",
+      "bytecode": "collections-floatlist-set-end.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.set: index out of range: 0"
+        }
+      }
+    },
+    {
+      "name": "collections-floatlist-set-negative",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-floatlist-set-negative.dsl",
+      "bytecode": "collections-floatlist-set-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.set: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "collections-int-list",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-int-list.dsl",
+      "bytecode": "collections-int-list.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 3",
+          "int -2",
+          "bool true",
+          "int 0",
+          "bool false",
+          "int -1",
+          "int 11",
+          "int -2",
+          "int 7",
+          "int 0",
+          "int 1",
+          "int 42"
+        ]
+      }
+    },
+    {
+      "name": "collections-intlist-at-end",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-intlist-at-end.dsl",
+      "bytecode": "collections-intlist-at-end.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: 0"
+        }
+      }
+    },
+    {
+      "name": "collections-intlist-at-negative",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-intlist-at-negative.dsl",
+      "bytecode": "collections-intlist-at-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "collections-intlist-set-end",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-intlist-set-end.dsl",
+      "bytecode": "collections-intlist-set-end.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.set: index out of range: 0"
+        }
+      }
+    },
+    {
+      "name": "collections-intlist-set-negative",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-intlist-set-negative.dsl",
+      "bytecode": "collections-intlist-set-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.set: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "collections-map",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-map.dsl",
+      "bytecode": "collections-map.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 3",
+          "bool true",
+          "bool false",
+          "hex 00ff",
+          "hex fe00",
+          "hex 6f6e65",
+          "hex 61",
+          "hex 75706461746564",
+          "int 3",
+          "bool false",
+          "bool true",
+          "hex ff00",
+          "hex 63",
+          "hex 61",
+          "int 1",
+          "hex 7a"
+        ]
+      }
+    },
+    {
+      "name": "collections-map-index-end",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-map-index-end.dsl",
+      "bytecode": "collections-map-index-end.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrMap.key_at: index out of range: 0"
+        }
+      }
+    },
+    {
+      "name": "collections-map-index-negative",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-map-index-negative.dsl",
+      "bytecode": "collections-map-index-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrMap.key_at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "collections-map-missing",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-map-missing.dsl",
+      "bytecode": "collections-map-missing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrMap.get: missing key"
+        }
+      }
+    },
+    {
+      "name": "collections-map-removed",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-map-removed.dsl",
+      "bytecode": "collections-map-removed.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrMap.get: missing key"
+        }
+      }
+    },
+    {
+      "name": "collections-split",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-split.dsl",
+      "bytecode": "collections-split.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 4",
+          "hex 61",
+          "hex ",
+          "hex 62",
+          "hex ",
+          "int 1",
+          "hex ",
+          "int 3",
+          "hex ",
+          "hex ",
+          "hex 61",
+          "int 3",
+          "hex ",
+          "hex 61",
+          "hex ",
+          "hex 21a9",
+          "hex 616263"
+        ]
+      }
+    },
+    {
+      "name": "collections-split-empty",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-split-empty.dsl",
+      "bytecode": "collections-split-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "str_split: separator must not be empty"
+        }
+      }
+    },
+    {
+      "name": "collections-str-list",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-str-list.dsl",
+      "bytecode": "collections-str-list.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 3",
+          "bool true",
+          "int 0",
+          "bool false",
+          "int -1",
+          "hex c3a9",
+          "hex ff0000c3a900ff00",
+          "hex 78",
+          "int 4",
+          "int 1",
+          "hex 616761696e"
+        ]
+      }
+    },
+    {
+      "name": "collections-strlist-at-end",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-strlist-at-end.dsl",
+      "bytecode": "collections-strlist-at-end.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: 0"
+        }
+      }
+    },
+    {
+      "name": "collections-strlist-at-negative",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-strlist-at-negative.dsl",
+      "bytecode": "collections-strlist-at-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "collections-strlist-set-end",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-strlist-set-end.dsl",
+      "bytecode": "collections-strlist-set-end.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.set: index out of range: 0"
+        }
+      }
+    },
+    {
+      "name": "collections-strlist-set-negative",
+      "covers": "collection byte semantics and methods",
+      "schema": "collections.schema.json",
+      "source": "collections-strlist-set-negative.dsl",
+      "bytecode": "collections-strlist-set-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.set: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "contains",
+      "covers": "str_contains byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "contains.dsl",
+      "bytecode": "contains.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool true",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "data-float-map",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-map.dsl",
+      "bytecode": "data-float-map.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool true",
+          "float 1.5",
+          "float 1.5",
+          "hex 6100ff",
+          "bool true",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "data-float-map-bounds",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-map-bounds.dsl",
+      "bytecode": "data-float-map-bounds.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatMap.key_at: index out of range: 9"
+        ]
+      }
+    },
+    {
+      "name": "data-float-map-missing",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-map-missing.dsl",
+      "bytecode": "data-float-map-missing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatMap.get: missing key"
+        ]
+      }
+    },
+    {
+      "name": "data-float-map-negative-key-at",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-map-negative-key-at.dsl",
+      "bytecode": "data-float-map-negative-key-at.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatMap.key_at: index out of range: -1"
+        ]
+      }
+    },
+    {
+      "name": "data-float-map-order",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-map-order.dsl",
+      "bytecode": "data-float-map-order.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 6100ff",
+          "hex 62",
+          "float 3.5",
+          "float 2.5",
+          "float 1.5",
+          "bool false",
+          "bool true",
+          "bool false",
+          "hex 62",
+          "hex 6100ff",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "data-float-pq",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-pq.dsl",
+      "bytecode": "data-float-pq.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool false",
+          "float 1.5",
+          "float 1.5",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-float-pq-infinite",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-pq-infinite.dsl",
+      "bytecode": "data-float-pq-infinite.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatPQ.push: priority must be finite"
+        ]
+      }
+    },
+    {
+      "name": "data-float-pq-nan",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-pq-nan.dsl",
+      "bytecode": "data-float-pq-nan.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatPQ.push: priority must be finite"
+        ]
+      }
+    },
+    {
+      "name": "data-float-pq-payloads",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-pq-payloads.dsl",
+      "bytecode": "data-float-pq-payloads.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "float -0"
+        ]
+      }
+    },
+    {
+      "name": "data-float-pq-peek-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-pq-peek-empty.dsl",
+      "bytecode": "data-float-pq-peek-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatPQ.peek: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-float-pq-pop-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-pq-pop-empty.dsl",
+      "bytecode": "data-float-pq-pop-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatPQ.pop: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-float-pq-priorities",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-pq-priorities.dsl",
+      "bytecode": "data-float-pq-priorities.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "float 2.5",
+          "int 3",
+          "float 2.5",
+          "float 3.5",
+          "float 1.5",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-float-queue",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-queue.dsl",
+      "bytecode": "data-float-queue.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool false",
+          "float 1.5",
+          "float 1.5",
+          "float 1.5",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-float-queue-at-bounds",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-queue-at-bounds.dsl",
+      "bytecode": "data-float-queue-at-bounds.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatQueue.at: index out of range: 9"
+        ]
+      }
+    },
+    {
+      "name": "data-float-queue-negative-index",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-queue-negative-index.dsl",
+      "bytecode": "data-float-queue-negative-index.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatQueue.at: index out of range: -1"
+        ]
+      }
+    },
+    {
+      "name": "data-float-queue-peek-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-queue-peek-empty.dsl",
+      "bytecode": "data-float-queue-peek-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatQueue.peek: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-float-queue-pop-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-queue-pop-empty.dsl",
+      "bytecode": "data-float-queue-pop-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatQueue.pop: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-float-queue-pop-order",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-queue-pop-order.dsl",
+      "bytecode": "data-float-queue-pop-order.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "float 1.5",
+          "float 2.5",
+          "float 3.5",
+          "int 3",
+          "float 2.5",
+          "float 1.5",
+          "float 2.5",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "data-float-stack",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-stack.dsl",
+      "bytecode": "data-float-stack.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool false",
+          "float 1.5",
+          "float 1.5",
+          "float 1.5",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-float-stack-at-bounds",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-stack-at-bounds.dsl",
+      "bytecode": "data-float-stack-at-bounds.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatStack.at: index out of range: 9"
+        ]
+      }
+    },
+    {
+      "name": "data-float-stack-negative-index",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-stack-negative-index.dsl",
+      "bytecode": "data-float-stack-negative-index.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatStack.at: index out of range: -1"
+        ]
+      }
+    },
+    {
+      "name": "data-float-stack-peek-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-stack-peek-empty.dsl",
+      "bytecode": "data-float-stack-peek-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatStack.peek: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-float-stack-pop-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-stack-pop-empty.dsl",
+      "bytecode": "data-float-stack-pop-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "FloatStack.pop: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-float-stack-pop-order",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-float-stack-pop-order.dsl",
+      "bytecode": "data-float-stack-pop-order.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "float 3.5",
+          "float 2.5",
+          "float 1.5",
+          "int 3",
+          "float 2.5",
+          "float 3.5",
+          "float 2.5",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "data-int-map",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-map.dsl",
+      "bytecode": "data-int-map.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool true",
+          "int 1",
+          "int 1",
+          "hex 6100ff",
+          "bool true",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "data-int-map-bounds",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-map-bounds.dsl",
+      "bytecode": "data-int-map-bounds.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntMap.key_at: index out of range: 9"
+        ]
+      }
+    },
+    {
+      "name": "data-int-map-missing",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-map-missing.dsl",
+      "bytecode": "data-int-map-missing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntMap.get: missing key"
+        ]
+      }
+    },
+    {
+      "name": "data-int-map-negative-key-at",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-map-negative-key-at.dsl",
+      "bytecode": "data-int-map-negative-key-at.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntMap.key_at: index out of range: -1"
+        ]
+      }
+    },
+    {
+      "name": "data-int-map-order",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-map-order.dsl",
+      "bytecode": "data-int-map-order.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 6100ff",
+          "hex 62",
+          "int 9",
+          "int 8",
+          "int 7",
+          "bool false",
+          "bool true",
+          "bool false",
+          "hex 62",
+          "hex 6100ff",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "data-int-pq",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-pq.dsl",
+      "bytecode": "data-int-pq.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool false",
+          "int 1",
+          "int 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-int-pq-infinite",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-pq-infinite.dsl",
+      "bytecode": "data-int-pq-infinite.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntPQ.push: priority must be finite"
+        ]
+      }
+    },
+    {
+      "name": "data-int-pq-nan",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-pq-nan.dsl",
+      "bytecode": "data-int-pq-nan.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntPQ.push: priority must be finite"
+        ]
+      }
+    },
+    {
+      "name": "data-int-pq-peek-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-pq-peek-empty.dsl",
+      "bytecode": "data-int-pq-peek-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntPQ.peek: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-int-pq-pop-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-pq-pop-empty.dsl",
+      "bytecode": "data-int-pq-pop-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntPQ.pop: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-int-pq-priorities",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-pq-priorities.dsl",
+      "bytecode": "data-int-pq-priorities.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "int 3",
+          "int 2",
+          "int 3",
+          "int 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-int-queue",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-queue.dsl",
+      "bytecode": "data-int-queue.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool false",
+          "int 1",
+          "int 1",
+          "int 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-int-queue-at-bounds",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-queue-at-bounds.dsl",
+      "bytecode": "data-int-queue-at-bounds.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntQueue.at: index out of range: 9"
+        ]
+      }
+    },
+    {
+      "name": "data-int-queue-negative-index",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-queue-negative-index.dsl",
+      "bytecode": "data-int-queue-negative-index.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntQueue.at: index out of range: -1"
+        ]
+      }
+    },
+    {
+      "name": "data-int-queue-peek-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-queue-peek-empty.dsl",
+      "bytecode": "data-int-queue-peek-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntQueue.peek: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-int-queue-pop-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-queue-pop-empty.dsl",
+      "bytecode": "data-int-queue-pop-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntQueue.pop: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-int-queue-pop-order",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-queue-pop-order.dsl",
+      "bytecode": "data-int-queue-pop-order.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 1",
+          "int 2",
+          "int 3",
+          "int 3",
+          "int 2",
+          "int 1",
+          "int 2",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "data-int-stack",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-stack.dsl",
+      "bytecode": "data-int-stack.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool false",
+          "int 1",
+          "int 1",
+          "int 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-int-stack-at-bounds",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-stack-at-bounds.dsl",
+      "bytecode": "data-int-stack-at-bounds.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntStack.at: index out of range: 9"
+        ]
+      }
+    },
+    {
+      "name": "data-int-stack-negative-index",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-stack-negative-index.dsl",
+      "bytecode": "data-int-stack-negative-index.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntStack.at: index out of range: -1"
+        ]
+      }
+    },
+    {
+      "name": "data-int-stack-peek-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-stack-peek-empty.dsl",
+      "bytecode": "data-int-stack-peek-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntStack.peek: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-int-stack-pop-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-stack-pop-empty.dsl",
+      "bytecode": "data-int-stack-pop-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "IntStack.pop: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-int-stack-pop-order",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-int-stack-pop-order.dsl",
+      "bytecode": "data-int-stack-pop-order.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 3",
+          "int 2",
+          "int 1",
+          "int 3",
+          "int 2",
+          "int 3",
+          "int 2",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "data-json",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json.dsl",
+      "bytecode": "data-json.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 6f626a656374",
+          "int 2",
+          "int 123",
+          "bool true",
+          "hex 7b226e223a3132332c2261223a5b747275652c6e756c6c5d7d"
+        ]
+      }
+    },
+    {
+      "name": "data-json-as-bool-kind",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-as-bool-kind.dsl",
+      "bytecode": "data-json-as-bool-kind.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.as_bool: expected bool"
+        ]
+      }
+    },
+    {
+      "name": "data-json-as-float-kind",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-as-float-kind.dsl",
+      "bytecode": "data-json-as-float-kind.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.as_float: expected number"
+        ]
+      }
+    },
+    {
+      "name": "data-json-as-int-kind",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-as-int-kind.dsl",
+      "bytecode": "data-json-as-int-kind.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.as_int: expected int"
+        ]
+      }
+    },
+    {
+      "name": "data-json-as-string-kind",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-as-string-kind.dsl",
+      "bytecode": "data-json-as-string-kind.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.as_string: expected string"
+        ]
+      }
+    },
+    {
+      "name": "data-json-astral",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-astral.dsl",
+      "bytecode": "data-json-astral.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex f09d849e",
+          "hex 225c75443833345c754444314522"
+        ]
+      }
+    },
+    {
+      "name": "data-json-at-kind",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-at-kind.dsl",
+      "bytecode": "data-json-at-kind.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.at: expected array"
+        ]
+      }
+    },
+    {
+      "name": "data-json-bad-escape",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-bad-escape.dsl",
+      "bytecode": "data-json-bad-escape.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: invalid escape at byte 2"
+        ]
+      }
+    },
+    {
+      "name": "data-json-bad-literal",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-bad-literal.dsl",
+      "bytecode": "data-json-bad-literal.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: invalid literal at byte 0"
+        ]
+      }
+    },
+    {
+      "name": "data-json-bad-unicode-escape",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-bad-unicode-escape.dsl",
+      "bytecode": "data-json-bad-unicode-escape.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: invalid Unicode escape at byte 5"
+        ]
+      }
+    },
+    {
+      "name": "data-json-bad-value",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-bad-value.dsl",
+      "bytecode": "data-json-bad-value.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: unexpected value at byte 5"
+        ]
+      }
+    },
+    {
+      "name": "data-json-bom",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-bom.dsl",
+      "bytecode": "data-json-bom.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: BOM is not allowed at byte 0"
+        ]
+      }
+    },
+    {
+      "name": "data-json-bounds",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-bounds.dsl",
+      "bytecode": "data-json-bounds.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.at: index out of range: 0"
+        ]
+      }
+    },
+    {
+      "name": "data-json-complete",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-complete.dsl",
+      "bytecode": "data-json-complete.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool false",
+          "int 3",
+          "hex 61",
+          "hex 6e",
+          "hex 74",
+          "hex 6172726179",
+          "int 5",
+          "hex 7800",
+          "bool true",
+          "hex 6e756c6c",
+          "float 1.25",
+          "float -0",
+          "int 9223372036854775807",
+          "bool false",
+          "hex 7b225c7530303631223a5b22785c7530303030222c747275652c6e756c6c2c312e32352c2d302e305d2c226e223a393232333337323033363835343737353830372c2274223a66616c73657d",
+          "float 12"
+        ]
+      }
+    },
+    {
+      "name": "data-json-depth-256",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-depth-256.dsl",
+      "bytecode": "data-json-depth-256.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 516",
+          "hex 6e756c6c"
+        ]
+      }
+    },
+    {
+      "name": "data-json-depth-257",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-depth-257.dsl",
+      "bytecode": "data-json-depth-257.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: maximum depth exceeded at byte 256"
+        ]
+      }
+    },
+    {
+      "name": "data-json-duplicate-escaped-key",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-duplicate-escaped-key.dsl",
+      "bytecode": "data-json-duplicate-escaped-key.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: duplicate object key at byte 7"
+        ]
+      }
+    },
+    {
+      "name": "data-json-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-empty.dsl",
+      "bytecode": "data-json-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: expected value at byte 0"
+        ]
+      }
+    },
+    {
+      "name": "data-json-escaped-high",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-escaped-high.dsl",
+      "bytecode": "data-json-escaped-high.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: unpaired high surrogate at byte 7"
+        ]
+      }
+    },
+    {
+      "name": "data-json-escaped-low",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-escaped-low.dsl",
+      "bytecode": "data-json-escaped-low.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: unpaired low surrogate at byte 3"
+        ]
+      }
+    },
+    {
+      "name": "data-json-float-boundaries",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-float-boundaries.dsl",
+      "bytecode": "data-json-float-boundaries.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "float -0",
+          "float 0",
+          "float 0"
+        ]
+      }
+    },
+    {
+      "name": "data-json-float-overflow",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-float-overflow.dsl",
+      "bytecode": "data-json-float-overflow.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: nonfinite number at byte 0"
+        ]
+      }
+    },
+    {
+      "name": "data-json-get-kind",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-get-kind.dsl",
+      "bytecode": "data-json-get-kind.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.get: expected object"
+        ]
+      }
+    },
+    {
+      "name": "data-json-has-kind",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-has-kind.dsl",
+      "bytecode": "data-json-has-kind.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.has: expected object"
+        ]
+      }
+    },
+    {
+      "name": "data-json-int-boundaries",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-int-boundaries.dsl",
+      "bytecode": "data-json-int-boundaries.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 9223372036854775807",
+          "int -9223372036854775808"
+        ]
+      }
+    },
+    {
+      "name": "data-json-int-overflow",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-int-overflow.dsl",
+      "bytecode": "data-json-int-overflow.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: integer out of range at byte 0"
+        ]
+      }
+    },
+    {
+      "name": "data-json-invalid-continuation",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-invalid-continuation.dsl",
+      "bytecode": "data-json-invalid-continuation.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: invalid UTF-8 at byte 1"
+        ]
+      }
+    },
+    {
+      "name": "data-json-invalid-utf8-unvisited-key",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-invalid-utf8-unvisited-key.dsl",
+      "bytecode": "data-json-invalid-utf8-unvisited-key.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: invalid UTF-8 at byte 2"
+        ]
+      }
+    },
+    {
+      "name": "data-json-invalid-utf8-unvisited-value",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-invalid-utf8-unvisited-value.dsl",
+      "bytecode": "data-json-invalid-utf8-unvisited-value.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: invalid UTF-8 at byte 5"
+        ]
+      }
+    },
+    {
+      "name": "data-json-jsonc-comment",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-jsonc-comment.dsl",
+      "bytecode": "data-json-jsonc-comment.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: object key must be a string at byte 1"
+        ]
+      }
+    },
+    {
+      "name": "data-json-jsonc-trailing",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-jsonc-trailing.dsl",
+      "bytecode": "data-json-jsonc-trailing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: unexpected value at byte 3"
+        ]
+      }
+    },
+    {
+      "name": "data-json-key-required",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-key-required.dsl",
+      "bytecode": "data-json-key-required.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: object key must be a string at byte 8"
+        ]
+      }
+    },
+    {
+      "name": "data-json-keys-kind",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-keys-kind.dsl",
+      "bytecode": "data-json-keys-kind.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.keys: expected object"
+        ]
+      }
+    },
+    {
+      "name": "data-json-len",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-len.dsl",
+      "bytecode": "data-json-len.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.len: expected array or object"
+        ]
+      }
+    },
+    {
+      "name": "data-json-missing",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-missing.dsl",
+      "bytecode": "data-json-missing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.get: missing key"
+        ]
+      }
+    },
+    {
+      "name": "data-json-missing-colon",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-missing-colon.dsl",
+      "bytecode": "data-json-missing-colon.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: expected colon at byte 4"
+        ]
+      }
+    },
+    {
+      "name": "data-json-missing-comma",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-missing-comma.dsl",
+      "bytecode": "data-json-missing-comma.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: expected comma at byte 5"
+        ]
+      }
+    },
+    {
+      "name": "data-json-negative-int-overflow",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-negative-int-overflow.dsl",
+      "bytecode": "data-json-negative-int-overflow.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: integer out of range at byte 0"
+        ]
+      }
+    },
+    {
+      "name": "data-json-raw-control",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-raw-control.dsl",
+      "bytecode": "data-json-raw-control.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: control byte in string at byte 1"
+        ]
+      }
+    },
+    {
+      "name": "data-json-space",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-space.dsl",
+      "bytecode": "data-json-space.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: expected value at byte 1"
+        ]
+      }
+    },
+    {
+      "name": "data-json-token-spelling",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-token-spelling.dsl",
+      "bytecode": "data-json-token-spelling.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 7b225c7530303631223a312e32333030652b30322c2273223a225c7530303431222c227a223a2d307d",
+          "hex 312e32333030652b3032",
+          "hex 41"
+        ]
+      }
+    },
+    {
+      "name": "data-json-trailing-input",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-trailing-input.dsl",
+      "bytecode": "data-json-trailing-input.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: trailing input at byte 4"
+        ]
+      }
+    },
+    {
+      "name": "data-json-unfinished-escape",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-unfinished-escape.dsl",
+      "bytecode": "data-json-unfinished-escape.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: unterminated escape at byte 2"
+        ]
+      }
+    },
+    {
+      "name": "data-json-unfinished-string",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-unfinished-string.dsl",
+      "bytecode": "data-json-unfinished-string.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: unterminated string at byte 4"
+        ]
+      }
+    },
+    {
+      "name": "data-json-utf8-before-bom",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-utf8-before-bom.dsl",
+      "bytecode": "data-json-utf8-before-bom.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "json_parse: invalid UTF-8 at byte 3"
+        ]
+      }
+    },
+    {
+      "name": "data-json-wrong-kind",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-json-wrong-kind.dsl",
+      "bytecode": "data-json-wrong-kind.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "Json.get: expected object"
+        ]
+      }
+    },
+    {
+      "name": "data-str-pq",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-pq.dsl",
+      "bytecode": "data-str-pq.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool false",
+          "hex 6100ff",
+          "hex 6100ff",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-str-pq-infinite",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-pq-infinite.dsl",
+      "bytecode": "data-str-pq-infinite.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrPQ.push: priority must be finite"
+        ]
+      }
+    },
+    {
+      "name": "data-str-pq-nan",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-pq-nan.dsl",
+      "bytecode": "data-str-pq-nan.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrPQ.push: priority must be finite"
+        ]
+      }
+    },
+    {
+      "name": "data-str-pq-peek-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-pq-peek-empty.dsl",
+      "bytecode": "data-str-pq-peek-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrPQ.peek: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-str-pq-pop-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-pq-pop-empty.dsl",
+      "bytecode": "data-str-pq-pop-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrPQ.pop: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-str-pq-priorities",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-pq-priorities.dsl",
+      "bytecode": "data-str-pq-priorities.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 6200fe",
+          "int 3",
+          "hex 6200fe",
+          "hex 6300fd",
+          "hex 6100ff",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-str-queue",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-queue.dsl",
+      "bytecode": "data-str-queue.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool false",
+          "hex 6100ff",
+          "hex 6100ff",
+          "hex 6100ff",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-str-queue-at-bounds",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-queue-at-bounds.dsl",
+      "bytecode": "data-str-queue-at-bounds.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrQueue.at: index out of range: 9"
+        ]
+      }
+    },
+    {
+      "name": "data-str-queue-negative-index",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-queue-negative-index.dsl",
+      "bytecode": "data-str-queue-negative-index.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrQueue.at: index out of range: -1"
+        ]
+      }
+    },
+    {
+      "name": "data-str-queue-peek-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-queue-peek-empty.dsl",
+      "bytecode": "data-str-queue-peek-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrQueue.peek: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-str-queue-pop-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-queue-pop-empty.dsl",
+      "bytecode": "data-str-queue-pop-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrQueue.pop: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-str-queue-pop-order",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-queue-pop-order.dsl",
+      "bytecode": "data-str-queue-pop-order.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 6100ff",
+          "hex 6200fe",
+          "hex 6300fd",
+          "int 3",
+          "hex 6200fe",
+          "hex 6100ff",
+          "hex 6200fe",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "data-str-stack",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-stack.dsl",
+      "bytecode": "data-str-stack.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "bool false",
+          "hex 6100ff",
+          "hex 6100ff",
+          "hex 6100ff",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "data-str-stack-at-bounds",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-stack-at-bounds.dsl",
+      "bytecode": "data-str-stack-at-bounds.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrStack.at: index out of range: 9"
+        ]
+      }
+    },
+    {
+      "name": "data-str-stack-negative-index",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-stack-negative-index.dsl",
+      "bytecode": "data-str-stack-negative-index.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrStack.at: index out of range: -1"
+        ]
+      }
+    },
+    {
+      "name": "data-str-stack-peek-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-stack-peek-empty.dsl",
+      "bytecode": "data-str-stack-peek-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrStack.peek: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-str-stack-pop-empty",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-stack-pop-empty.dsl",
+      "bytecode": "data-str-stack-pop-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "StrStack.pop: empty"
+        ]
+      }
+    },
+    {
+      "name": "data-str-stack-pop-order",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-str-stack-pop-order.dsl",
+      "bytecode": "data-str-stack-pop-order.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 6300fd",
+          "hex 6200fe",
+          "hex 6100ff",
+          "int 3",
+          "hex 6200fe",
+          "hex 6300fd",
+          "hex 6200fe",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "data-text-template",
+      "covers": "v2 data catalog positive/negative contract",
+      "schema": "data.schema.json",
+      "source": "data-text-template.dsl",
+      "bytecode": "data-text-template.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 53616d3a303d312c313d32"
+        ]
+      }
+    },
+    {
+      "name": "ends-with",
+      "covers": "str_ends_with byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "ends-with.dsl",
+      "bytecode": "ends-with.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool true",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "file-append-directory",
+      "covers": "raw file bytes, portable native paths and failure contracts",
+      "schema": "file.schema.json",
+      "source": "file-append-directory.dsl",
+      "bytecode": "file-append-directory.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_file": {
+          "code": "RUN_HOST",
+          "function": "file_append",
+          "relative_path": "."
+        }
+      }
+    },
+    {
+      "name": "file-append-unwritable",
+      "covers": "raw file bytes, portable native paths and failure contracts",
+      "schema": "file.schema.json",
+      "source": "file-append-unwritable.dsl",
+      "bytecode": "file-append-unwritable.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_file": {
+          "code": "RUN_HOST",
+          "function": "file_append",
+          "relative_path": "blocker/child"
+        }
+      }
+    },
+    {
+      "name": "file-basic",
+      "covers": "raw byte write, read, append, and regular-file existence",
+      "schema": "file.schema.json",
+      "source": "file-basic.dsl",
+      "bytecode": "file-basic.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 6100ff",
+          "bool true",
+          "hex 6100ff0a62",
+          "bool false",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "file-directory",
+      "covers": "directory is not a regular file",
+      "schema": "file.schema.json",
+      "source": "file-directory.dsl",
+      "bytecode": "file-directory.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_file": [
+          "RUN_HOST",
+          "file_read",
+          "."
+        ]
+      }
+    },
+    {
+      "name": "file-empty-append",
+      "covers": "raw file bytes, portable native paths and failure contracts",
+      "schema": "file.schema.json",
+      "source": "file-empty-append.dsl",
+      "bytecode": "file-empty-append.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false",
+          "bool true",
+          "int 0",
+          "hex 00ff",
+          "int 0",
+          "hex 61"
+        ]
+      }
+    },
+    {
+      "name": "file-large",
+      "covers": "binary content above one MiB and append",
+      "schema": "file.schema.json",
+      "source": "file-large.dsl",
+      "bytecode": "file-large.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 1200000",
+          "bool true",
+          "int 1200001"
+        ]
+      }
+    },
+    {
+      "name": "file-lines",
+      "covers": "LF splitting, CR preservation, final empty fields, and empty files",
+      "schema": "file.schema.json",
+      "source": "file-lines.dsl",
+      "bytecode": "file-lines.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 3",
+          "int 2",
+          "hex 610d00",
+          "int 0",
+          "hex 00",
+          "int 0",
+          "hex 00",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "file-lines-boundaries",
+      "covers": "raw file bytes, portable native paths and failure contracts",
+      "schema": "file.schema.json",
+      "source": "file-lines-boundaries.dsl",
+      "bytecode": "file-lines-boundaries.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "hex 00",
+          "hex 00",
+          "int 2",
+          "hex ff0000",
+          "hex 610d6200"
+        ]
+      }
+    },
+    {
+      "name": "file-lines-directory",
+      "covers": "raw file bytes, portable native paths and failure contracts",
+      "schema": "file.schema.json",
+      "source": "file-lines-directory.dsl",
+      "bytecode": "file-lines-directory.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_file": {
+          "code": "RUN_HOST",
+          "function": "file_lines",
+          "relative_path": "."
+        }
+      }
+    },
+    {
+      "name": "file-lines-missing",
+      "covers": "raw file bytes, portable native paths and failure contracts",
+      "schema": "file.schema.json",
+      "source": "file-lines-missing.dsl",
+      "bytecode": "file-lines-missing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_file": {
+          "code": "RUN_HOST",
+          "function": "file_lines",
+          "relative_path": "missing-lines.bin"
+        }
+      }
+    },
+    {
+      "name": "file-long-path",
+      "covers": "raw file bytes, portable native paths and failure contracts",
+      "schema": "file.schema.json",
+      "source": "file-long-path.dsl",
+      "bytecode": "file-long-path.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool true",
+          "hex ff0061"
+        ]
+      }
+    },
+    {
+      "name": "file-missing",
+      "covers": "missing-file OS error",
+      "schema": "file.schema.json",
+      "source": "file-missing.dsl",
+      "bytecode": "file-missing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_file": [
+          "RUN_HOST",
+          "file_read",
+          "missing.bin"
+        ]
+      }
+    },
+    {
+      "name": "file-truncate",
+      "covers": "write truncates an existing regular file",
+      "schema": "file.schema.json",
+      "source": "file-truncate.dsl",
+      "bytecode": "file-truncate.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex ff00"
+        ]
+      }
+    },
+    {
+      "name": "file-unicode-path",
+      "covers": "raw file bytes, portable native paths and failure contracts",
+      "schema": "file.schema.json",
+      "source": "file-unicode-path.dsl",
+      "bytecode": "file-unicode-path.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "hex 00ff0d0a"
+        ]
+      }
+    },
+    {
+      "name": "file-unwritable",
+      "covers": "regular intermediate path component failure",
+      "schema": "file.schema.json",
+      "source": "file-unwritable.dsl",
+      "bytecode": "file-unwritable.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_file": [
+          "RUN_HOST",
+          "file_write",
+          "blocker/child"
+        ]
+      }
+    },
+    {
+      "name": "file-write-directory",
+      "covers": "raw file bytes, portable native paths and failure contracts",
+      "schema": "file.schema.json",
+      "source": "file-write-directory.dsl",
+      "bytecode": "file-write-directory.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_file": {
+          "code": "RUN_HOST",
+          "function": "file_write",
+          "relative_path": "."
+        }
+      }
+    },
+    {
+      "name": "find",
+      "covers": "str_find byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "find.dsl",
+      "bytecode": "find.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "int 0",
+          "int -1",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "fuzz-0000000007",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007.dsl",
+      "bytecode": "fuzz-0000000007.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 10",
+          "hex 0dc3ff805c0a7aff5b2000",
+          "hex 0dc3ff805c0a5aff5b2000",
+          "hex c3ff805c0a5aff5b00",
+          "bool true",
+          "bool true",
+          "bool true",
+          "int 0",
+          "hex 0d00",
+          "hex a98061805ca9ff0a61ffc3ff6100",
+          "hex 0dc3ff805c0a5aff5b200dc3ff805c0a5aff5b200dc3ff805c0a5aff5b2000",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 2",
+          "hex a98061805ca9ff0a61ffc3ff6100",
+          "bool true",
+          "int 1",
+          "hex a98061805ca9ff0a61ffc3ff6100ff0dc3ff805c0a5aff5b2000",
+          "int 49661",
+          "float 24830.5",
+          "int 0",
+          "bool true",
+          "bool true",
+          "hex 0dc3ff805c0a5aff5b2000",
+          "int 1",
+          "hex ff00",
+          "hex 0dc3ff805c0a5aff5b2000",
+          "int 2",
+          "hex 0dc3ff805c0a5aff5b2000",
+          "hex 0dc3ff805c0a5aff5b200dc3ff805c0a5aff5b2000",
+          "bool true",
+          "int 3",
+          "hex 0dc3ff805c0a5aff5b200dc3ff805c0a5aff5b2000",
+          "int 3",
+          "hex 207a0a00",
+          "hex 205a0a00",
+          "hex 5a00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 205a0a00",
+          "hex 205a0a205a0a00",
+          "bool true",
+          "bool true",
+          "int 0",
+          "bool true",
+          "float -0",
+          "int 4",
+          "hex 412a63800a5ba909410d3fa9ff805c00",
+          "bool false",
+          "int -1",
+          "hex a98061805ca9ff0a61ffc3ff6100ff0dc3ff805c0a5aff5b2000ff205a0a00ff412a63800a5ba909410d3fa9ff805c00",
+          "int 52016",
+          "float 26008",
+          "int 1",
+          "bool true",
+          "bool false",
+          "bool false",
+          "hex 412a63800a5ba909410d3fa9ff805c00",
+          "int 1",
+          "hex ff00",
+          "hex 0dc3ff805c0a5aff5b2000",
+          "int 1",
+          "hex 205a0a00",
+          "hex 205a0a80ff203f5ca9412a2a5a6361096180635b00",
+          "bool true",
+          "int 2",
+          "hex 205a0a80ff203f5ca9412a2a5a6361096180635b00",
+          "int 8",
+          "hex 3f80ff632a63c37a00",
+          "hex 3f80ff432a43c35a00",
+          "hex 3f80ff632a63c35a00",
+          "bool true",
+          "bool true",
+          "bool true",
+          "int 0",
+          "hex 3f80ff632a63c35a00",
+          "hex 3f80ff632a63c35a00",
+          "hex 3f80ff632a63c35a3f80ff632a63c35a00",
+          "bool false",
+          "bool true",
+          "int 0",
+          "bool true",
+          "float 0",
+          "int 6",
+          "hex 5a090a3fff20630d61c3c33f800900",
+          "bool true",
+          "int 5",
+          "hex a98061805ca9ff0a61ffc3ff6100ff0dc3ff805c0a5aff5b2000ff205a0a00ff5a090a3fff20630d61c3c33f800900ff3f80ff632a63c35a00ff00",
+          "int 44236",
+          "float 22118",
+          "int 2",
+          "bool true",
+          "bool true",
+          "hex 3f80ff632a63c35a00",
+          "int 1",
+          "hex ff00",
+          "hex 3f80ff632a63c35a00",
+          "int 2",
+          "hex 3f80ff632a63c35a00",
+          "hex 3f80ff632a63c35a00",
+          "bool true",
+          "int 1",
+          "hex 3f80ff632a63c35a00",
+          "int 11",
+          "hex c3610d80090d6161003f0900",
+          "hex c3410d80090d4141003f0900",
+          "hex c3610d80090d6161003f00",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 9",
+          "hex c3610d80090d6161003f0900",
+          "hex c3610d80090d6161005bff2a5cc3c3c3c30a3fc3ff2080202a090a41ff0a0000",
+          "hex 00",
+          "bool false",
+          "bool true",
+          "int 9223372036854775807",
+          "bool true",
+          "float 9.22337203685478e+18",
+          "int 8",
+          "hex 5bff2a5cc3c3c3c30a3fc3ff2080202a090a41ff0a0000",
+          "bool true",
+          "int 7",
+          "hex 5bff2a5cc3c3c3c30a3fc3ff2080202a090a41ff0a0000ff0dc3ff805c0a5aff5b2000ff205a0a00ff5a090a3fff20630d61c3c33f800900ff3f80ff632a63c35a00ff00ffc3610d80090d6161003f0900ff3f0900",
+          "int -81568",
+          "float -40784",
+          "int 3",
+          "bool true",
+          "bool true",
+          "hex c3610d80090d6161003f0900",
+          "int 2",
+          "hex ff00",
+          "hex 3f80ff632a63c35a00",
+          "hex 0000",
+          "hex c3610d80090d6161003f0900",
+          "int 1",
+          "hex c3610d80090d6161003f0900",
+          "hex c3610d80090d6161003f093f0900",
+          "bool true",
+          "int 1",
+          "hex c3610d80090d6161003f093f0900",
+          "int 4",
+          "hex 627a7a3f00",
+          "hex 425a5a3f00",
+          "hex 625a5a3f00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 625a5a3f00",
+          "hex 625a5a3f00",
+          "hex 625a5a3f625a5a3f00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 9.22337203685478e+18",
+          "int 10",
+          "hex 3f63800d0a41623f095b00205b5a0d00",
+          "bool true",
+          "int 9",
+          "hex 5bff2a5cc3c3c3c30a3fc3ff2080202a090a41ff0a0000ff0dc3ff805c0a5aff5b2000ff205a0a00ff5a090a3fff20630d61c3c33f800900ff3f63800d0a41623f095b00205b5a0d00ff00ffc3610d80090d6161003f0900ff3f0900ff625a5a3f00ff0a3f2a00",
+          "int 35894",
+          "float 17947",
+          "int 4",
+          "bool true",
+          "bool true",
+          "bool false",
+          "hex 3f63800d0a41623f095b00205b5a0d00",
+          "int 1",
+          "hex 0000",
+          "hex c3610d80090d6161003f0900",
+          "int 1",
+          "hex 625a5a3f00",
+          "hex 625a5a3f0a3f2a00",
+          "bool true",
+          "int 2",
+          "hex 625a5a3f0a3f2a00",
+          "int 24",
+          "hex 615c5c5b61612061c361205b3f7a0000623f62207a2a7a7a00",
+          "hex 415c5c5b41412041c341205b3f5a0000423f42205a2a5a5a00",
+          "hex 615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a00",
+          "hex 00",
+          "bool false",
+          "bool true",
+          "int -9223372036854775808",
+          "bool true",
+          "float -9.22337203685478e+18",
+          "int 12",
+          "hex 3f2041203f003f00",
+          "bool false",
+          "int -1",
+          "hex 5bff2a5cc3c3c3c30a3fc3ff2080202a090a41ff0a0000ff0dc3ff805c0a5aff5b2000ff205a0a00ff5a090a3fff20630d61c3c33f800900ff3f63800d0a41623f095b00205b5a0d00ff00ffc3610d80090d6161003f0900ff3f0900ff625a5a3f00ff0a3f2a00ff615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a00ff3f2041203f003f00",
+          "int 96644",
+          "float 48322",
+          "int 5",
+          "bool true",
+          "bool true",
+          "hex 615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a00",
+          "int 1",
+          "hex 0000",
+          "hex 615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a00",
+          "int 1",
+          "hex 615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a00",
+          "hex 615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a610a00",
+          "bool true",
+          "int 2",
+          "hex 615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a610a00",
+          "int 13",
+          "hex 6180c32ac38009090d000d2a0d00",
+          "hex 4180c32ac38009090d000d2a0d00",
+          "hex 4180c32ac38009090d000d2a00",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 7",
+          "hex 00",
+          "hex 4180c32ac3800941625ca90dff5a00",
+          "hex 4180c32ac38009090d000d2a0d00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 14",
+          "hex 41625ca90dff5a00",
+          "bool true",
+          "int 13",
+          "hex 5bff2a5cc3c3c3c30a3fc3ff2080202a090a41ff0a0000ff0dc3ff805c0a5aff5b2000ff41625ca90dff5a00ff5a090a3fff20630d61c3c33f800900ff3f63800d0a41623f095b00205b5a0d00ff00ffc3610d80090d6161003f0900ff3f0900ff625a5a3f00ff0a3f2a00ff615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a00ff3f2041203f003f00ff4180c32ac38009090d000d2a0d00ff090d000d2a0d00",
+          "int 37234",
+          "float 18617",
+          "int 6",
+          "bool true",
+          "bool false",
+          "bool false",
+          "hex 41625ca90dff5a00",
+          "int 1",
+          "hex 0000",
+          "hex 615c5c5b41612061c361205b3f5a0000623f62205a2a5a5a00",
+          "int 1",
+          "hex 4180c32ac38009090d000d2a0d00",
+          "hex 4180c32ac38009090d000d2a0d090d000d2a0d00",
+          "bool true",
+          "int 1",
+          "hex 4180c32ac38009090d000d2a0d090d000d2a0d00",
+          "int 24",
+          "hex 09000d090d3f0a5cff615b5b5c3f0a5cff612062ff0a5b2a00",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff412042ff0a5b2a00",
+          "hex 000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 2",
+          "hex 2a0da90ac32a00",
+          "bool true",
+          "int 1",
+          "hex 2a0da90ac32a00ff00802a415b5b20622a5b5c3f5b615b625c00",
+          "int -44245",
+          "float -22122.5",
+          "int 0",
+          "bool true",
+          "bool true",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "int 1",
+          "hex c3a900",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "int 2",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00802a415b5b20622a5b5c3f5b615b625c00",
+          "bool true",
+          "int 4",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00802a415b5b20622a5b5c3f5b615b625c00",
+          "int 24",
+          "hex 0d7a0d620d2a610ac33f096109a95bc361a9207a61807a0000",
+          "hex 0d5a0d420d2a410ac33f094109a95bc341a9205a41805a0000",
+          "hex 5a0d620d2a610ac33f096109a95bc341a9205a41805a0000",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 0d5a0d620d2a610ac33f096109a95bc341a9205a41805a0000",
+          "hex 00",
+          "bool true",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 4.94065645841247e-324",
+          "int 4",
+          "hex 610a8000",
+          "bool true",
+          "int 3",
+          "hex 2a0da90ac32a00ff00802a415b5b20622a5b5c3f5b615b625c00ff610a8000ff5c2a2a00c3415b635b8000",
+          "int 98122",
+          "float 49061",
+          "int 1",
+          "bool true",
+          "bool true",
+          "hex 0d5a0d620d2a610ac33f096109a95bc341a9205a41805a0000",
+          "int 2",
+          "hex c3a900",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "hex 0000",
+          "hex 0d5a0d620d2a610ac33f096109a95bc341a9205a41805a0000",
+          "int 1",
+          "hex 0d5a0d620d2a610ac33f096109a95bc341a9205a41805a0000",
+          "hex 0d5a0d620d2a610ac33f096109a95bc341a9205a41805a005c2a2a00c3415b635b8000",
+          "bool true",
+          "int 2",
+          "hex 0d5a0d620d2a610ac33f096109a95bc341a9205a41805a005c2a2a00c3415b635b8000",
+          "int 12",
+          "hex 0d5c5b3f618062ff09a9806200",
+          "hex 0d5c5b3f418042ff09a9804200",
+          "hex 5c5b3f418062ff09a9806200",
+          "bool true",
+          "bool true",
+          "bool true",
+          "int 0",
+          "hex 00",
+          "hex 8062806180620a2a00415ca9620dff5b610a096200",
+          "hex 0d5c5b3f418062ff09a980620d5c5b3f418062ff09a9806200",
+          "bool true",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 0.5",
+          "int 6",
+          "hex 8062806180620a2a00415ca9620dff5b610a096200",
+          "bool true",
+          "int 5",
+          "hex 2a0da90ac32a00ff00802a415b5b20622a5b5c3f5b615b625c00ff610a8000ff5c2a2a00c3415b635b8000ff8062806180620a2a00415ca9620dff5b610a096200ff0d5c5b3f418062ff09a9806200",
+          "int 99097",
+          "float 49548.5",
+          "int 2",
+          "bool true",
+          "bool true",
+          "hex 0d5c5b3f418062ff09a9806200",
+          "int 2",
+          "hex c3a900",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "hex 0000",
+          "hex 0d5c5b3f418062ff09a9806200",
+          "int 2",
+          "hex 0d5c5b3f418062ff09a9806200",
+          "hex 0d5c5b3f418062ff09a980620d5c5b3f418062ff09a9806200",
+          "bool true",
+          "int 1",
+          "hex 0d5c5b3f418062ff09a980620d5c5b3f418062ff09a9806200",
+          "int 16",
+          "hex 09627a0062ff00005b5c205b3f612a0a00",
+          "hex 09425a0042ff00005b5c205b3f412a0a00",
+          "hex 625a0062ff00005b5c205b3f612a00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 09625a0062ff00005b5c205b3f612a0a00",
+          "hex 09625a0062ff00005b5c205b3f612a0a00",
+          "bool true",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 1",
+          "int 8",
+          "hex c35b00",
+          "bool true",
+          "int 7",
+          "hex c35b00ff00802a415b5b20622a5b5c3f5b615b625c00ff610a8000ff5c2a2a00c3415b635b8000ff8062806180620a2a00415ca9620dff5b610a096200ff0d5c5b3f418062ff09a9806200ff09625a0062ff00005b5c205b3f612a0a00ffa93f5cc35b63206141200dc35aff0d008062a909ff00",
+          "int 20442",
+          "float 10221",
+          "int 3",
+          "bool true",
+          "bool true",
+          "bool false",
+          "hex c35b00",
+          "int 1",
+          "hex c3a900",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "int 1",
+          "hex 09625a0062ff00005b5c205b3f612a0a00",
+          "hex 09625a0062ff00005b5c205b3f612a0aa93f5cc35b63206141200dc35aff0d008062a909ff00",
+          "bool true",
+          "int 2",
+          "hex 09625a0062ff00005b5c205b3f612a0aa93f5cc35b63206141200dc35aff0d008062a909ff00",
+          "int 14",
+          "hex 00627a615c6161ff63207a09006100",
+          "hex 00425a415c4141ff43205a09004100",
+          "hex 00625a415c4161ff63205a09004100",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 0000",
+          "hex 00625a415c4161ff63205a09004100",
+          "hex 00625a415c4161ff63205a09004100",
+          "bool true",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 10",
+          "hex ffc300636361805b0dc3413f00",
+          "bool true",
+          "int 9",
+          "hex c35b00ff00802a415b5b20622a5b5c3f5b615b625c00ff610a8000ff5c2a2a00c3415b635b8000ff8062806180620a2a00415ca9620dff5b610a096200ff0d5c5b3f418062ff09a9806200ff09625a0062ff00005b5c205b3f612a0a00ffa93f5cc35b63206141200dc35aff0d008062a909ff00ffffc300636361805b0dc3413f00ff803f625b20615b008062800d00",
+          "int 64451",
+          "float 32225.5",
+          "int 4",
+          "bool true",
+          "bool true",
+          "hex 00625a415c4161ff63205a09004100",
+          "int 2",
+          "hex c3a900",
+          "hex 09000d090d3f0a5cff415b5b5c3f0a5cff612062ff0a5b2a00",
+          "hex 6100",
+          "hex 00625a415c4161ff63205a09004100",
+          "int 1",
+          "hex 00625a415c4161ff63205a09004100",
+          "hex 00625a415c4161ff63205a090041803f625b20615b008062800d00",
+          "bool true",
+          "int 1",
+          "hex 00625a415c4161ff63205a090041803f625b20615b008062800d00",
+          "int 16",
+          "hex 5b00618000ff0d7a0ac32a5cff005c6100",
+          "hex 5b00418000ff0d5a0ac32a5cff005c4100",
+          "hex 5b00618000ff0d5a0ac32a5cff005c6100",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 6",
+          "hex 5b00618000ff0d5a0ac32a5cff005c6100",
+          "hex 5b00618000ff2a3fc3803f63ff00",
+          "hex 5b00618000ff0d5a0ac32a5cff005c6100",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 12",
+          "hex 2a3fc3803f63ff00",
+          "bool true",
+          "int 11",
+          "hex c35b00ff00802a415b5b20622a5b5c3f5b615b625c00ff610a8000ff5c2a2a00c3415b635b8000ff2a3fc3803f63ff00ff0d5c5b3f418062ff09a9806200ff09625a0062ff00005b5c205b3f612a0a00ffa93f5cc35b63206141200dc35aff0d008062a909ff00ffffc300636361805b0dc3413f00ff803f625b20615b008062800d00ff5b00618000ff0d5a0ac32a5cff005c6100ff0d5a0ac32a5cff005c6100",
+          "int 70795",
+          "float 35397.5",
+          "int 5",
+          "bool true",
+          "bool true",
+          "hex 5b00618000ff0d5a0ac32a5cff005c6100",
+          "int 2",
+          "hex c3a900",
+          "hex 5b00618000ff0d5a0ac32a5cff005c6100",
+          "hex 6100",
+          "hex 00625a415c4161ff63205a09004100",
+          "int 1",
+          "hex 5b00618000ff0d5a0ac32a5cff005c6100",
+          "hex 5b00618000ff0d5a0ac32a5cff005c610d5a0ac32a5cff005c6100",
+          "bool true",
+          "int 3",
+          "hex 5b00618000ff0d5a0ac32a5cff005c610d5a0ac32a5cff005c6100",
+          "int 19",
+          "hex 0d003fff3f620a203f635b632a2a2a0a5c206300",
+          "hex 0d003fff3f420a203f435b432a2a2a0a5c204300",
+          "hex 003fff3f620a203f635b632a2a2a0a5c206300",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 0d003fff3f620a203f635b632a2a2a0a5c206300",
+          "hex 0d003fff3f620a203f635b632a2a2a0a5c20630d003fff3f620a203f635b632a2a2a0a5c206300",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 14",
+          "hex 2a805b2a62c320208000",
+          "bool true",
+          "int 13",
+          "hex c35b00ff00802a415b5b20622a5b5c3f5b615b625c00ff2a805b2a62c320208000ff5c2a2a00c3415b635b8000ff2a3fc3803f63ff00ff0d5c5b3f418062ff09a9806200ff09625a0062ff00005b5c205b3f612a0a00ffa93f5cc35b63206141200dc35aff0d008062a909ff00ffffc300636361805b0dc3413f00ff803f625b20615b008062800d00ff5b00618000ff0d5a0ac32a5cff005c6100ff0d5a0ac32a5cff005c6100ff0d003fff3f620a203f635b632a2a2a0a5c206300ff3f0000",
+          "int 58168",
+          "float 29084",
+          "int 6",
+          "bool true",
+          "bool true",
+          "hex 0d003fff3f620a203f635b632a2a2a0a5c206300",
+          "int 2",
+          "hex c3a900",
+          "hex 0d003fff3f620a203f635b632a2a2a0a5c206300",
+          "hex 6100",
+          "hex 00625a415c4161ff63205a09004100",
+          "int 1",
+          "hex 0d003fff3f620a203f635b632a2a2a0a5c206300",
+          "hex 0d003fff3f620a203f635b632a2a2a0a5c20633f0000",
+          "bool true",
+          "int 3",
+          "hex 0d003fff3f620a203f635b632a2a2a0a5c20633f0000",
+          "int 3",
+          "hex 7a613f00",
+          "hex 5a413f00",
+          "hex 5a613f00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 5a613f00",
+          "hex 5a613f5a613f5a613f00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 2",
+          "hex 00",
+          "bool true",
+          "int 1",
+          "hex 00ffc30009003f2ac3630da95ac3410a4100",
+          "int 86914",
+          "float 43457",
+          "int 0",
+          "bool true",
+          "bool true",
+          "hex 5a613f00",
+          "int 1",
+          "hex 00",
+          "hex 5a613f00",
+          "int 1",
+          "hex 5a613f00",
+          "hex 5a613fc30009003f2ac3630da95ac3410a4100",
+          "bool true",
+          "int 2",
+          "hex 5a613fc30009003f2ac3630da95ac3410a4100",
+          "int 8",
+          "hex 7a80c3c3807aa96200",
+          "hex 5a80c3c3805aa94200",
+          "hex 5a80c3c3805aa96200",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 3",
+          "hex 00",
+          "hex 5a80c3ff630d00",
+          "hex 5a80c3c3805aa9625a80c3c3805aa96200",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 0",
+          "int 4",
+          "hex ff630d00",
+          "bool true",
+          "int 3",
+          "hex 00ffc30009003f2ac3630da95ac3410a4100ffff630d00ffc3805aa96200",
+          "int 12131",
+          "float 6065.5",
+          "int 1",
+          "bool true",
+          "bool true",
+          "hex 5a80c3c3805aa96200",
+          "int 1",
+          "hex 00",
+          "hex 5a80c3c3805aa96200",
+          "int 1",
+          "hex 5a80c3c3805aa96200",
+          "hex 5a80c3c3805aa962c3805aa96200",
+          "bool true",
+          "int 1",
+          "hex 5a80c3c3805aa962c3805aa96200"
+        ]
+      }
+    },
+    {
+      "name": "fuzz-0000000007-floatlist-1",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-floatlist-1.dsl",
+      "bytecode": "fuzz-0000000007-floatlist-1.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-floatlist-9223372036854775808",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-floatlist-9223372036854775808.dsl",
+      "bytecode": "fuzz-0000000007-floatlist-9223372036854775808.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: -9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-floatlist9223372036854775807",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-floatlist9223372036854775807.dsl",
+      "bytecode": "fuzz-0000000007-floatlist9223372036854775807.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: 9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-intlist-1",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-intlist-1.dsl",
+      "bytecode": "fuzz-0000000007-intlist-1.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-intlist-9223372036854775808",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-intlist-9223372036854775808.dsl",
+      "bytecode": "fuzz-0000000007-intlist-9223372036854775808.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: -9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-intlist9223372036854775807",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-intlist9223372036854775807.dsl",
+      "bytecode": "fuzz-0000000007-intlist9223372036854775807.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: 9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-map-missing",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-map-missing.dsl",
+      "bytecode": "fuzz-0000000007-map-missing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrMap.get: missing key"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-repeat-negative",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-repeat-negative.dsl",
+      "bytecode": "fuzz-0000000007-repeat-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "str_repeat: count must be nonnegative"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-split-empty",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-split-empty.dsl",
+      "bytecode": "fuzz-0000000007-split-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "str_split: separator must not be empty"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-strlist-1",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-strlist-1.dsl",
+      "bytecode": "fuzz-0000000007-strlist-1.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-strlist-9223372036854775808",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-strlist-9223372036854775808.dsl",
+      "bytecode": "fuzz-0000000007-strlist-9223372036854775808.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: -9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000007-strlist9223372036854775807",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000007-strlist9223372036854775807.dsl",
+      "bytecode": "fuzz-0000000007-strlist9223372036854775807.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: 9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042.dsl",
+      "bytecode": "fuzz-0000000042.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 20",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "hex 0a004241410d0a5c80a9ff008020415b005c205c00",
+          "hex 006261610d0a5c80a9ff008020615b005c205c00",
+          "bool true",
+          "bool true",
+          "bool true",
+          "int 0",
+          "hex 00",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 2",
+          "hex 0a5a5a62ff2a5c0ac3805c6300",
+          "bool true",
+          "int 1",
+          "hex 0a5a5a62ff2a5c0ac3805c6300ff00",
+          "int 73346",
+          "float 36673",
+          "int 0",
+          "bool true",
+          "bool true",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "int 1",
+          "hex 0000",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "int 4",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "bool true",
+          "int 3",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "int 7",
+          "hex 0ac3622a7a097a00",
+          "hex 0ac3422a5a095a00",
+          "hex c3622a5a095a00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 0ac3622a5a095a00",
+          "hex 0ac3622a5a095a0ac3622a5a095a00",
+          "bool false",
+          "bool true",
+          "int 0",
+          "bool true",
+          "float -0",
+          "int 4",
+          "hex 41ff61ff41c36200",
+          "bool false",
+          "int -1",
+          "hex 0a5a5a62ff2a5c0ac3805c6300ff00ff0ac3622a5a095a00ff41ff61ff41c36200",
+          "int 3712",
+          "float 1856",
+          "int 1",
+          "bool true",
+          "bool true",
+          "hex 0ac3622a5a095a00",
+          "int 2",
+          "hex 0000",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "hex c3a900",
+          "hex 0ac3622a5a095a00",
+          "int 2",
+          "hex 0ac3622a5a095a00",
+          "hex 0ac3622a5a095a206280095c61092ac3625c00",
+          "bool true",
+          "int 2",
+          "hex 0ac3622a5a095a206280095c61092ac3625c00",
+          "int 8",
+          "hex 0d615c5c62a9c37a00",
+          "hex 0d415c5c42a9c35a00",
+          "hex 615c5c62a9c35a00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 0d615c5c62a9c35a00",
+          "hex 0d615c5c62a9c35a00",
+          "bool false",
+          "bool true",
+          "int 0",
+          "bool true",
+          "float 0",
+          "int 6",
+          "hex 09a980c3c32a5b625c000a5c62410a63a9092a0000",
+          "bool true",
+          "int 5",
+          "hex 09a980c3c32a5b625c000a5c62410a63a9092a0000ff00ff0ac3622a5a095a00ff41ff61ff41c36200ff0d615c5c62a9c35a00ff0d5b3f80ff0a0d00",
+          "int 63918",
+          "float 31959",
+          "int 2",
+          "bool true",
+          "bool true",
+          "hex 0d615c5c62a9c35a00",
+          "int 3",
+          "hex 0000",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "hex c3a900",
+          "hex 0ac3622a5a095a00",
+          "hex ff00",
+          "hex 0d615c5c62a9c35a00",
+          "int 1",
+          "hex 0d615c5c62a9c35a00",
+          "hex 0d615c5c62a9c35a0d5b3f80ff0a0d00",
+          "bool true",
+          "int 2",
+          "hex 0d615c5c62a9c35a0d5b3f80ff0a0d00",
+          "int 4",
+          "hex 7a095c5b00",
+          "hex 5a095c5b00",
+          "hex 5a095c5b00",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 2",
+          "hex 00",
+          "hex 5a09413f000a5a6361ff6180803f805c0d0d3f5c0900",
+          "hex 5a095c5b00",
+          "bool true",
+          "bool true",
+          "int 9223372036854775807",
+          "bool true",
+          "float 9.22337203685478e+18",
+          "int 8",
+          "hex 413f000a5a6361ff6180803f805c0d0d3f5c0900",
+          "bool true",
+          "int 7",
+          "hex 09a980c3c32a5b625c000a5c62410a63a9092a0000ff00ff0ac3622a5a095a00ff41ff61ff41c36200ff0d615c5c62a9c35a00ff0d5b3f80ff0a0d00ff413f000a5a6361ff6180803f805c0d0d3f5c0900ff5c5b00",
+          "int 76078",
+          "float 38039",
+          "int 3",
+          "bool true",
+          "bool true",
+          "hex 5a095c5b00",
+          "int 3",
+          "hex 0000",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "hex c3a900",
+          "hex 5a095c5b00",
+          "hex ff00",
+          "hex 0d615c5c62a9c35a00",
+          "int 1",
+          "hex 5a095c5b00",
+          "hex 5a095c5b5c5b00",
+          "bool true",
+          "int 1",
+          "hex 5a095c5b5c5b00",
+          "int 16",
+          "hex 2a0a61618061005c61610080ff6180ff00",
+          "hex 2a0a41418041005c41410080ff4180ff00",
+          "hex 2a0a61618041005c61610080ff6180ff00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 2a0a61618041005c61610080ff6180ff00",
+          "hex 2a0a61618041005c61610080ff6180ff00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 9.22337203685478e+18",
+          "int 10",
+          "hex a9200a0aa95aa9a92aff0affc3410a00",
+          "bool true",
+          "int 9",
+          "hex 09a980c3c32a5b625c000a5c62410a63a9092a0000ff00ff0ac3622a5a095a00ff41ff61ff41c36200ff0d615c5c62a9c35a00ff0d5b3f80ff0a0d00ff413f000a5a6361ff6180803f805c0d0d3f5c0900ffa9200a0aa95aa9a92aff0affc3410a00ff2a0a61618041005c61610080ff6180ff00ff805b61623f205c0d3f6100",
+          "int -63253",
+          "float -31626.5",
+          "int 4",
+          "bool true",
+          "bool false",
+          "bool false",
+          "hex a9200a0aa95aa9a92aff0affc3410a00",
+          "int 3",
+          "hex 0000",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "hex c3a900",
+          "hex 5a095c5b00",
+          "hex ff00",
+          "hex 0d615c5c62a9c35a00",
+          "int 3",
+          "hex 2a0a61618041005c61610080ff6180ff00",
+          "hex 2a0a61618041005c61610080ff6180ff805b61623f205c0d3f6100",
+          "bool true",
+          "int 2",
+          "hex 2a0a61618041005c61610080ff6180ff805b61623f205c0d3f6100",
+          "int 14",
+          "hex 61802a5c0aff5c00806109a93f3f00",
+          "hex 41802a5c0aff5c00804109a93f3f00",
+          "hex 61802a5c0aff5c00806109a93f3f00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 61802a5c0aff5c00806109a93f3f00",
+          "hex 00",
+          "bool false",
+          "bool true",
+          "int -9223372036854775808",
+          "bool true",
+          "float -9.22337203685478e+18",
+          "int 12",
+          "hex 2a63a95c3f0d206300",
+          "bool true",
+          "int 11",
+          "hex 2a63a95c3f0d206300ff00ff0ac3622a5a095a00ff41ff61ff41c36200ff0d615c5c62a9c35a00ff0d5b3f80ff0a0d00ff413f000a5a6361ff6180803f805c0d0d3f5c0900ffa9200a0aa95aa9a92aff0affc3410a00ff2a0a61618041005c61610080ff6180ff00ff805b61623f205c0d3f6100ff61802a5c0aff5c00806109a93f3f00ffc3ff09c300c300",
+          "int -86856",
+          "float -43428",
+          "int 5",
+          "bool true",
+          "bool true",
+          "hex 61802a5c0aff5c00806109a93f3f00",
+          "int 4",
+          "hex 0000",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "hex c3a900",
+          "hex 5a095c5b00",
+          "hex ff00",
+          "hex 0d615c5c62a9c35a00",
+          "hex 6200",
+          "hex 61802a5c0aff5c00806109a93f3f00",
+          "int 2",
+          "hex 61802a5c0aff5c00806109a93f3f00",
+          "hex 61802a5c0aff5c00806109a93f3fc3ff09c300c300",
+          "bool true",
+          "int 2",
+          "hex 61802a5c0aff5c00806109a93f3fc3ff09c300c300",
+          "int 1",
+          "hex 5b00",
+          "hex 5b00",
+          "hex 5b00",
+          "bool true",
+          "bool true",
+          "bool true",
+          "int 0",
+          "hex 00",
+          "hex 5b00",
+          "hex 5b5b5b00",
+          "bool true",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 14",
+          "hex 8061c30a61ff80a95b416220416162c30d632a00",
+          "bool true",
+          "int 1",
+          "hex 2a63a95c3f0d206300ff00ff0ac3622a5a095a00ff41ff61ff41c36200ff0d615c5c62a9c35a00ff0d5b3f80ff0a0d00ff413f000a5a6361ff6180803f805c0d0d3f5c0900ffa9200a0aa95aa9a92aff0affc3410a00ff2a0a61618041005c61610080ff6180ff00ff8061c30a61ff80a95b416220416162c30d632a00ff61802a5c0aff5c00806109a93f3f00ffc3ff09c300c300ff5b00ff00",
+          "int -73791",
+          "float -36895.5",
+          "int 6",
+          "bool true",
+          "bool true",
+          "hex 5b00",
+          "int 5",
+          "hex 0000",
+          "hex 0a006261610d0a5c80a9ff008020615b005c205c00",
+          "hex c3a900",
+          "hex 5a095c5b00",
+          "hex ff00",
+          "hex 0d615c5c62a9c35a00",
+          "hex 6200",
+          "hex 61802a5c0aff5c00806109a93f3f00",
+          "hex 00",
+          "hex 5b00",
+          "int 1",
+          "hex 5b00",
+          "hex 5b00",
+          "bool true",
+          "int 1",
+          "hex 5b00",
+          "int 16",
+          "hex 620d7a80617a63092a5c635b005c630a00",
+          "hex 420d5a80415a43092a5c435b005c430a00",
+          "hex 620d5a80615a63092a5c635b005c6300",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 620d5a80615a63092a5c635b005c630a00",
+          "hex 620d5a80615a63092a5c635b005c630a620d5a80615a63092a5c635b005c630a620d5a80615a63092a5c635b005c630a00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 2",
+          "hex 6263204100",
+          "bool true",
+          "int 1",
+          "hex 6263204100ff620a0a5c00",
+          "int -75805",
+          "float -37902.5",
+          "int 0",
+          "bool true",
+          "bool true",
+          "hex 620d5a80615a63092a5c635b005c630a00",
+          "int 1",
+          "hex c3a900",
+          "hex 620d5a80615a63092a5c635b005c630a00",
+          "int 1",
+          "hex 620d5a80615a63092a5c635b005c630a00",
+          "hex 620d5a80615a63092a5c635b005c630a620a0a5c00",
+          "bool true",
+          "int 4",
+          "hex 620d5a80615a63092a5c635b005c630a620a0a5c00",
+          "int 1",
+          "hex 0000",
+          "hex 0000",
+          "hex 0000",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 0000",
+          "hex 0000",
+          "hex 00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 4.94065645841247e-324",
+          "int 4",
+          "hex 0d5cff5a5c0da90dff635aff5a20610a5a5ca90d610900",
+          "bool true",
+          "int 3",
+          "hex 6263204100ff620a0a5c00ff0d5cff5a5c0da90dff635aff5a20610a5a5ca90d610900ff0d62092a5ca95c000a8000",
+          "int 7928",
+          "float 3964",
+          "int 1",
+          "bool true",
+          "bool true",
+          "hex 0000",
+          "int 1",
+          "hex c3a900",
+          "hex 0000",
+          "int 1",
+          "hex 0000",
+          "hex 000d62092a5ca95c000a8000",
+          "bool true",
+          "int 2",
+          "hex 000d62092a5ca95c000a8000",
+          "int 8",
+          "hex 090ac3ff3f61202a00",
+          "hex 090ac3ff3f41202a00",
+          "hex c3ff3f61202a00",
+          "bool true",
+          "bool true",
+          "bool true",
+          "int 0",
+          "hex 00",
+          "hex 5bc35c41000a620962ff0aa95a41a95b0ac3206200",
+          "hex 090ac3ff3f61202a00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 0.5",
+          "int 6",
+          "hex 5bc35c41000a620962ff0aa95a41a95b0ac3206200",
+          "bool true",
+          "int 4",
+          "hex 6263204100ff620a0a5c00ff0d5cff5a5c0da90dff635aff5a20610a5a5ca90d610900ff5bc35c41000a620962ff0aa95a41a95b0ac3206200ff090ac3ff3f61202a00ff090ac3ff3f61202a00",
+          "int -81657",
+          "float -40828.5",
+          "int 2",
+          "bool true",
+          "bool true",
+          "hex 090ac3ff3f61202a00",
+          "int 1",
+          "hex c3a900",
+          "hex 090ac3ff3f61202a00",
+          "int 1",
+          "hex 090ac3ff3f61202a00",
+          "hex 090ac3ff3f61202a090ac3ff3f61202a00",
+          "bool true",
+          "int 3",
+          "hex 090ac3ff3f61202a090ac3ff3f61202a00",
+          "int 21",
+          "hex 0a635b63a961c3635c0d20a9c30963c35c0063632000",
+          "hex 0a435b43a941c3435c0d20a9c30943c35c0043432000",
+          "hex 635b63a941c3635c0d20a9c30963c35c00636300",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 0a635b63a941c3635c0d20a9c30963c35c0063632000",
+          "hex 0a635b63a941c3635c0d20a9c30963c35c0063632000",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 1",
+          "int 8",
+          "hex 616361200d00ff613f802aa920c33fc3610d000aa961095b00",
+          "bool false",
+          "int -1",
+          "hex 6263204100ff620a0a5c00ff0d5cff5a5c0da90dff635aff5a20610a5a5ca90d610900ff5bc35c41000a620962ff0aa95a41a95b0ac3206200ff090ac3ff3f61202a00ff090ac3ff3f61202a00ff0a635b63a941c3635c0d20a9c30963c35c0063632000ff616361200d00ff613f802aa920c33fc3610d000aa961095b00",
+          "int -65046",
+          "float -32523",
+          "int 3",
+          "bool true",
+          "bool true",
+          "hex 0a635b63a941c3635c0d20a9c30963c35c0063632000",
+          "int 2",
+          "hex c3a900",
+          "hex 090ac3ff3f61202a00",
+          "hex 6100",
+          "hex 0a635b63a941c3635c0d20a9c30963c35c0063632000",
+          "int 1",
+          "hex 0a635b63a941c3635c0d20a9c30963c35c0063632000",
+          "hex 0a635b63a941c3635c0d20a9c30963c35c00636320412a2a2a205b3f0980635b418000",
+          "bool true",
+          "int 2",
+          "hex 0a635b63a941c3635c0d20a9c30963c35c00636320412a2a2a205b3f0980635b418000",
+          "int 24",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616261615c8000",
+          "hex 2a5ba95c2a093f2a4241425b3f41422a8043414241415c8000",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000",
+          "bool true",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 10",
+          "hex 2080a9a9415c2aa9ff20a9c300c33f005a63c3a95c5c00",
+          "bool true",
+          "int 9",
+          "hex 6263204100ff620a0a5c00ff0d5cff5a5c0da90dff635aff5a20610a5a5ca90d610900ff5bc35c41000a620962ff0aa95a41a95b0ac3206200ff090ac3ff3f61202a00ff090ac3ff3f61202a00ff2080a9a9415c2aa9ff20a9c300c33f005a63c3a95c5c00ff616361200d00ff613f802aa920c33fc3610d000aa961095b00ff2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000ff0d61c30d00",
+          "int 27308",
+          "float 13654",
+          "int 4",
+          "bool true",
+          "bool true",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000",
+          "int 3",
+          "hex c3a900",
+          "hex 090ac3ff3f61202a00",
+          "hex 6100",
+          "hex 0a635b63a941c3635c0d20a9c30963c35c0063632000",
+          "hex 00",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000",
+          "int 1",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c800d61c30d00",
+          "bool true",
+          "int 1",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c800d61c30d00",
+          "int 21",
+          "hex c3092a0d5c00c30080a90d2a09ff62c361202a616100",
+          "hex c3092a0d5c00c30080a90d2a09ff42c341202a414100",
+          "hex c3092a0d5c00c30080a90d2a09ff62c341202a414100",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 2",
+          "hex 00",
+          "hex c309625a090a09630a0063c3c32080610a630aff5a5ca95a00",
+          "hex c3092a0d5c00c30080a90d2a09ff62c341202a4141c3092a0d5c00c30080a90d2a09ff62c341202a4141c3092a0d5c00c30080a90d2a09ff62c341202a414100",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 12",
+          "hex 625a090a09630a0063c3c32080610a630aff5a5ca95a00",
+          "bool true",
+          "int 11",
+          "hex 6263204100ff625a090a09630a0063c3c32080610a630aff5a5ca95a00ff0d5cff5a5c0da90dff635aff5a20610a5a5ca90d610900ff5bc35c41000a620962ff0aa95a41a95b0ac3206200ff090ac3ff3f61202a00ff090ac3ff3f61202a00ff2080a9a9415c2aa9ff20a9c300c33f005a63c3a95c5c00ff616361200d00ff613f802aa920c33fc3610d000aa961095b00ff2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000ff0d61c30d00ffc3092a0d5c00c30080a90d2a09ff62c341202a414100ff2a0d5c00c30080a90d2a09ff62c341202a414100",
+          "int 13645",
+          "float 6822.5",
+          "int 5",
+          "bool true",
+          "bool true",
+          "hex c3092a0d5c00c30080a90d2a09ff62c341202a414100",
+          "int 4",
+          "hex c3a900",
+          "hex 090ac3ff3f61202a00",
+          "hex 6100",
+          "hex 0a635b63a941c3635c0d20a9c30963c35c0063632000",
+          "hex 00",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000",
+          "hex ff00",
+          "hex c3092a0d5c00c30080a90d2a09ff62c341202a414100",
+          "int 2",
+          "hex c3092a0d5c00c30080a90d2a09ff62c341202a414100",
+          "hex c3092a0d5c00c30080a90d2a09ff62c341202a41412a0d5c00c30080a90d2a09ff62c341202a414100",
+          "bool true",
+          "int 1",
+          "hex c3092a0d5c00c30080a90d2a09ff62c341202a41412a0d5c00c30080a90d2a09ff62c341202a414100",
+          "int 22",
+          "hex 0da9095b625c3f2aa962616180622a612ac361003f6100",
+          "hex 0da9095b425c3f2aa942414180422a412ac341003f4100",
+          "hex a9095b625c3f2aa962416180622a612ac341003f4100",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 0da9095b625c3f2aa962416180622a612ac341003f4100",
+          "hex 0da9095b625c3f2aa962416180622a612ac341003f4100",
+          "hex 0da9095b625c3f2aa962416180622a612ac341003f4100",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 14",
+          "hex 625c005b208061a900",
+          "bool true",
+          "int 13",
+          "hex 6263204100ff625a090a09630a0063c3c32080610a630aff5a5ca95a00ff0d5cff5a5c0da90dff635aff5a20610a5a5ca90d610900ff5bc35c41000a620962ff0aa95a41a95b0ac3206200ff090ac3ff3f61202a00ff090ac3ff3f61202a00ff2080a9a9415c2aa9ff20a9c300c33f005a63c3a95c5c00ff616361200d00ff613f802aa920c33fc3610d000aa961095b00ff2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000ff0d61c30d00ff625c005b208061a900ff2a0d5c00c30080a90d2a09ff62c341202a414100ff0da9095b625c3f2aa962416180622a612ac341003f4100ff3f205a624100",
+          "int 86605",
+          "float 43302.5",
+          "int 6",
+          "bool true",
+          "bool true",
+          "hex 0da9095b625c3f2aa962416180622a612ac341003f4100",
+          "int 4",
+          "hex c3a900",
+          "hex 090ac3ff3f61202a00",
+          "hex 6100",
+          "hex 0da9095b625c3f2aa962416180622a612ac341003f4100",
+          "hex 00",
+          "hex 2a5ba95c2a093f2a6261625b3f61622a8063616241415c8000",
+          "hex ff00",
+          "hex c3092a0d5c00c30080a90d2a09ff62c341202a414100",
+          "int 2",
+          "hex 0da9095b625c3f2aa962416180622a612ac341003f4100",
+          "hex 0da9095b625c3f2aa962416180622a612ac341003f413f205a624100",
+          "bool true",
+          "int 1",
+          "hex 0da9095b625c3f2aa962416180622a612ac341003f413f205a624100",
+          "int 2",
+          "hex 636100",
+          "hex 434100",
+          "hex 636100",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 636100",
+          "hex 636100",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 2",
+          "hex 6362610a20410a5c00",
+          "bool false",
+          "int -1",
+          "hex 636100ff6362610a20410a5c00",
+          "int 89945",
+          "float 44972.5",
+          "int 0",
+          "bool true",
+          "bool true",
+          "hex 636100",
+          "int 1",
+          "hex 6200",
+          "hex 636100",
+          "int 1",
+          "hex 636100",
+          "hex 636161635a3f5c5b5aa95c415a2a00",
+          "bool true",
+          "int 1",
+          "hex 636161635a3f5c5b5aa95c415a2a00",
+          "int 3",
+          "hex 20636100",
+          "hex 20434100",
+          "hex 636100",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 2",
+          "hex 00",
+          "hex 20633f0a00633f3f2a4109ff623f0a80c33f80ff0d0d00",
+          "hex 00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 0",
+          "int 4",
+          "hex 3f0a00633f3f2a4109ff623f0a80c33f80ff0d0d00",
+          "bool false",
+          "int -1",
+          "hex 636100ff6362610a20410a5c00ff20636100ff3f0a00633f3f2a4109ff623f0a80c33f80ff0d0d00",
+          "int 58942",
+          "float 29471",
+          "int 1",
+          "bool true",
+          "bool true",
+          "hex 20636100",
+          "int 1",
+          "hex 6200",
+          "hex 20636100",
+          "int 1",
+          "hex 20636100",
+          "hex 2063616100",
+          "bool true",
+          "int 1",
+          "hex 2063616100"
+        ]
+      }
+    },
+    {
+      "name": "fuzz-0000000042-floatlist-1",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-floatlist-1.dsl",
+      "bytecode": "fuzz-0000000042-floatlist-1.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-floatlist-9223372036854775808",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-floatlist-9223372036854775808.dsl",
+      "bytecode": "fuzz-0000000042-floatlist-9223372036854775808.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: -9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-floatlist9223372036854775807",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-floatlist9223372036854775807.dsl",
+      "bytecode": "fuzz-0000000042-floatlist9223372036854775807.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: 9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-intlist-1",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-intlist-1.dsl",
+      "bytecode": "fuzz-0000000042-intlist-1.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-intlist-9223372036854775808",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-intlist-9223372036854775808.dsl",
+      "bytecode": "fuzz-0000000042-intlist-9223372036854775808.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: -9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-intlist9223372036854775807",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-intlist9223372036854775807.dsl",
+      "bytecode": "fuzz-0000000042-intlist9223372036854775807.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: 9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-map-missing",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-map-missing.dsl",
+      "bytecode": "fuzz-0000000042-map-missing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrMap.get: missing key"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-repeat-negative",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-repeat-negative.dsl",
+      "bytecode": "fuzz-0000000042-repeat-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "str_repeat: count must be nonnegative"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-split-empty",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-split-empty.dsl",
+      "bytecode": "fuzz-0000000042-split-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "str_split: separator must not be empty"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-strlist-1",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-strlist-1.dsl",
+      "bytecode": "fuzz-0000000042-strlist-1.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-strlist-9223372036854775808",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-strlist-9223372036854775808.dsl",
+      "bytecode": "fuzz-0000000042-strlist-9223372036854775808.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: -9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0000000042-strlist9223372036854775807",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0000000042-strlist9223372036854775807.dsl",
+      "bytecode": "fuzz-0000000042-strlist9223372036854775807.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: 9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024.dsl",
+      "bytecode": "fuzz-0020261024.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 18",
+          "hex 09806300205bff5c80615b5b7ac35b09093f00",
+          "hex 09804300205bff5c80415b5b5ac35b09093f00",
+          "hex 806300205bff5c80415b5b5ac35b09093f00",
+          "bool true",
+          "bool true",
+          "bool true",
+          "int 0",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f09806300205bff5c80415b5b5ac35b09093f00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 2",
+          "hex 0d62805a6100",
+          "bool false",
+          "int -1",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00ff0d62805a6100",
+          "int -85231",
+          "float -42615.5",
+          "int 0",
+          "bool true",
+          "bool true",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "int 1",
+          "hex 00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "int 1",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "bool true",
+          "int 1",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "int 2",
+          "hex 3f3f00",
+          "hex 3f3f00",
+          "hex 3f3f00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 3f3f00",
+          "hex 3f3f00",
+          "bool false",
+          "bool true",
+          "int 0",
+          "bool true",
+          "float -0",
+          "int 4",
+          "hex 5b0962a95c0a61630961ff5c5c0d2aa95c62630d200d5b00",
+          "bool false",
+          "int -1",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00ff0d62805a6100ff3f3f00ff5b0962a95c0a61630961ff5c5c0d2aa95c62630d200d5b00",
+          "int -38184",
+          "float -19092",
+          "int 1",
+          "bool true",
+          "bool true",
+          "hex 3f3f00",
+          "int 2",
+          "hex 00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "hex 6100",
+          "hex 3f3f00",
+          "int 1",
+          "hex 3f3f00",
+          "hex 3f3f5c0a5cff3f095a6100ff5b00a980635b0909ff2a00",
+          "bool true",
+          "int 2",
+          "hex 3f3f5c0a5cff3f095a6100ff5b00a980635b0909ff2a00",
+          "int 12",
+          "hex 0d7a62c37a7a625c61630a2000",
+          "hex 0d5a42c35a5a425c41430a2000",
+          "hex 5a62c35a5a625c416300",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 0d5a62c35a5a625c41630a2000",
+          "hex 00",
+          "bool true",
+          "bool true",
+          "int 0",
+          "bool true",
+          "float 0",
+          "int 6",
+          "hex 612a0a0dff5cffffa93fc32a5c5a5ba95a5ba9615a5a00",
+          "bool true",
+          "int 5",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00ff0d62805a6100ff3f3f00ff612a0a0dff5cffffa93fc32a5c5a5ba95a5ba9615a5a00ff0d5a62c35a5a625c41630a2000ff615b5c0080203fc300005b2a80612a0063a90a5a62000a00",
+          "int -4010",
+          "float -2005",
+          "int 2",
+          "bool true",
+          "bool true",
+          "hex 0d5a62c35a5a625c41630a2000",
+          "int 2",
+          "hex 00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "hex 6100",
+          "hex 0d5a62c35a5a625c41630a2000",
+          "int 2",
+          "hex 0d5a62c35a5a625c41630a2000",
+          "hex 0d5a62c35a5a625c41630a20615b5c0080203fc300005b2a80612a0063a90a5a62000a00",
+          "bool true",
+          "int 4",
+          "hex 0d5a62c35a5a625c41630a20615b5c0080203fc300005b2a80612a0063a90a5a62000a00",
+          "int 8",
+          "hex 3f00c363095bc36100",
+          "hex 3f00c343095bc34100",
+          "hex 3f00c363095bc36100",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 3",
+          "hex 00",
+          "hex 3f00c30aff4100",
+          "hex 3f00c363095bc3613f00c363095bc36100",
+          "bool true",
+          "bool true",
+          "int 9223372036854775807",
+          "bool true",
+          "float 9.22337203685478e+18",
+          "int 8",
+          "hex 0aff4100",
+          "bool true",
+          "int 7",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00ff0d62805a6100ff3f3f00ff0aff4100ff0d5a62c35a5a625c41630a2000ff615b5c0080203fc300005b2a80612a0063a90a5a62000a00ff3f00c363095bc36100ff63095bc36100",
+          "int 32268",
+          "float 16134",
+          "int 3",
+          "bool true",
+          "bool true",
+          "hex 3f00c363095bc36100",
+          "int 2",
+          "hex 00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "hex 6100",
+          "hex 3f00c363095bc36100",
+          "int 1",
+          "hex 3f00c363095bc36100",
+          "hex 3f00c363095bc36163095bc36100",
+          "bool true",
+          "int 1",
+          "hex 3f00c363095bc36163095bc36100",
+          "int 7",
+          "hex 6161007a7a5cff00",
+          "hex 4141005a5a5cff00",
+          "hex 4161005a5a5cff00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 4161005a5a5cff00",
+          "hex 4161005a5a5cff4161005a5a5cff00",
+          "bool true",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 9.22337203685478e+18",
+          "int 10",
+          "hex 80ff2000",
+          "bool true",
+          "int 9",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00ff0d62805a6100ff80ff2000ff0aff4100ff0d5a62c35a5a625c41630a2000ff615b5c0080203fc300005b2a80612a0063a90a5a62000a00ff3f00c363095bc36100ff63095bc36100ff4161005a5a5cff00ff0d622aff5b800a20002080ff63205b0d415c5c635a00",
+          "int -65823",
+          "float -32911.5",
+          "int 4",
+          "bool true",
+          "bool false",
+          "bool false",
+          "hex 80ff2000",
+          "int 2",
+          "hex 00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "hex 6100",
+          "hex 3f00c363095bc36100",
+          "int 2",
+          "hex 4161005a5a5cff00",
+          "hex 4161005a5a5cff0d622aff5b800a20002080ff63205b0d415c5c635a00",
+          "bool true",
+          "int 2",
+          "hex 4161005a5a5cff0d622aff5b800a20002080ff63205b0d415c5c635a00",
+          "int 15",
+          "hex a980ff5b5c0d0a095b5c626161616100",
+          "hex a980ff5b5c0d0a095b5c424141414100",
+          "hex a980ff5b5c0d0a095b5c624141416100",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex a980ff5b5c0d0a095b5c624141416100",
+          "hex a980ff5b5c0d0a095b5c6241414161a980ff5b5c0d0a095b5c624141416100",
+          "bool false",
+          "bool true",
+          "int -9223372036854775808",
+          "bool true",
+          "float -9.22337203685478e+18",
+          "int 12",
+          "hex 63ff610a630a620d5b625b5b200d00",
+          "bool true",
+          "int 11",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00ff0d62805a6100ff80ff2000ff0aff4100ff0d5a62c35a5a625c41630a2000ff615b5c0080203fc300005b2a80612a0063a90a5a62000a00ff3f00c363095bc36100ff63095bc36100ff63ff610a630a620d5b625b5b200d00ff0d622aff5b800a20002080ff63205b0d415c5c635a00ffa980ff5b5c0d0a095b5c624141416100ff205c5b5a625c00",
+          "int -30309",
+          "float -15154.5",
+          "int 5",
+          "bool true",
+          "bool true",
+          "hex a980ff5b5c0d0a095b5c624141416100",
+          "int 3",
+          "hex 00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "hex 6100",
+          "hex 3f00c363095bc36100",
+          "hex ff00",
+          "hex a980ff5b5c0d0a095b5c624141416100",
+          "int 2",
+          "hex a980ff5b5c0d0a095b5c624141416100",
+          "hex a980ff5b5c0d0a095b5c6241414161205c5b5a625c00",
+          "bool true",
+          "int 2",
+          "hex a980ff5b5c0d0a095b5c6241414161205c5b5a625c00",
+          "int 14",
+          "hex 0a5cff635ca9200d61092a622aa900",
+          "hex 0a5cff435ca9200d41092a422aa900",
+          "hex 5cff635ca9200d61092a622aa900",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 4",
+          "hex 0a5cff635ca9200d610900",
+          "hex 0a5cff633f41ffa9096109625ac3096309415b00",
+          "hex 0a5cff635ca9200d61092a622aa90a5cff635ca9200d61092a622aa90a5cff635ca9200d61092a622aa900",
+          "bool true",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 14",
+          "hex 3f41ffa9096109625ac3096309415b00",
+          "bool true",
+          "int 13",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00ff0d62805a6100ff3f41ffa9096109625ac3096309415b00ff0aff4100ff0d5a62c35a5a625c41630a2000ff615b5c0080203fc300005b2a80612a0063a90a5a62000a00ff3f00c363095bc36100ff63095bc36100ff63ff610a630a620d5b625b5b200d00ff0d622aff5b800a20002080ff63205b0d415c5c635a00ffa980ff5b5c0d0a095b5c624141416100ff205c5b5a625c00ff0a5cff635ca9200d61092a622aa900ff5ca9200d61092a622aa900",
+          "int -35272",
+          "float -17636",
+          "int 6",
+          "bool true",
+          "bool true",
+          "hex 0a5cff635ca9200d61092a622aa900",
+          "int 3",
+          "hex 00",
+          "hex 09806300205bff5c80415b5b5ac35b09093f00",
+          "hex 6100",
+          "hex 3f00c363095bc36100",
+          "hex ff00",
+          "hex 0a5cff635ca9200d61092a622aa900",
+          "int 2",
+          "hex 0a5cff635ca9200d61092a622aa900",
+          "hex 0a5cff635ca9200d61092a622aa95ca9200d61092a622aa900",
+          "bool true",
+          "int 2",
+          "hex 0a5cff635ca9200d61092a622aa95ca9200d61092a622aa900",
+          "int 15",
+          "hex 5cff5c3f612a000d615c0a09097a0900",
+          "hex 5cff5c3f412a000d415c0a09095a0900",
+          "hex 5cff5c3f612a000d415c0a09095a00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "hex 5cff5c3f612a000d415c0a09095a095cff5c3f612a000d415c0a09095a095cff5c3f612a000d415c0a09095a0900",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 2",
+          "hex 802aa9205c61ff2a5b00",
+          "bool true",
+          "int 1",
+          "hex 802aa9205c61ff2a5b00ff62a9638063002a6162ff610a09613f0900",
+          "int -65323",
+          "float -32661.5",
+          "int 0",
+          "bool true",
+          "bool true",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "int 1",
+          "hex ff00",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "int 1",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "hex 5cff5c3f612a000d415c0a09095a0962a9638063002a6162ff610a09613f0900",
+          "bool true",
+          "int 3",
+          "hex 5cff5c3f612a000d415c0a09095a0962a9638063002a6162ff610a09613f0900",
+          "int 14",
+          "hex 61ff00093f0aa95ca90a8080615b00",
+          "hex 41ff00093f0aa95ca90a8080415b00",
+          "hex 41ff00093f0aa95ca90a8080615b00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 41ff00093f0aa95ca90a8080615b00",
+          "hex 41ff00093f0aa95ca90a8080615b41ff00093f0aa95ca90a8080615b41ff00093f0aa95ca90a8080615b00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 4.94065645841247e-324",
+          "int 4",
+          "hex 5b2a2a61006361635affa9613f63630d00",
+          "bool false",
+          "int -1",
+          "hex 802aa9205c61ff2a5b00ff62a9638063002a6162ff610a09613f0900ff41ff00093f0aa95ca90a8080615b00ff5b2a2a61006361635affa9613f63630d00",
+          "int -5481",
+          "float -2740.5",
+          "int 1",
+          "bool true",
+          "bool true",
+          "hex 41ff00093f0aa95ca90a8080615b00",
+          "int 2",
+          "hex ff00",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "hex 6100",
+          "hex 41ff00093f0aa95ca90a8080615b00",
+          "int 3",
+          "hex 41ff00093f0aa95ca90a8080615b00",
+          "hex 41ff00093f0aa95ca90a8080615ba9806209ff62202a415b6241005a202a2a615c6200",
+          "bool true",
+          "int 3",
+          "hex 41ff00093f0aa95ca90a8080615ba9806209ff62202a415b6241005a202a2a615c6200",
+          "int 3",
+          "hex 0da96200",
+          "hex 0da94200",
+          "hex a96200",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 2",
+          "hex 00",
+          "hex 0da9a90d5cc35c00",
+          "hex 0da96200",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 0.5",
+          "int 6",
+          "hex a90d5cc35c00",
+          "bool true",
+          "int 5",
+          "hex 802aa9205c61ff2a5b00ff62a9638063002a6162ff610a09613f0900ff41ff00093f0aa95ca90a8080615b00ffa90d5cc35c00ff0da96200ff6200",
+          "int 20270",
+          "float 10135",
+          "int 2",
+          "bool true",
+          "bool true",
+          "hex 0da96200",
+          "int 2",
+          "hex ff00",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "hex 6100",
+          "hex 0da96200",
+          "int 1",
+          "hex 0da96200",
+          "hex 0da9626200",
+          "bool true",
+          "int 1",
+          "hex 0da9626200",
+          "int 15",
+          "hex 2a0d638062ff0d800d61c36309620a00",
+          "hex 2a0d438042ff0d800d41c34309420a00",
+          "hex 2a0d638062ff0d800d41c363096200",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 2a0d638062ff0d800d41c36309620a00",
+          "hex 2a0d638062ff0d800d41c36309620a00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 1",
+          "int 8",
+          "hex 09093f00",
+          "bool true",
+          "int 7",
+          "hex 802aa9205c61ff2a5b00ff62a9638063002a6162ff610a09613f0900ff41ff00093f0aa95ca90a8080615b00ffa90d5cc35c00ff09093f00ff6200ff2a0d638062ff0d800d41c36309620a00ff2a2a203f205ba9620a62415c00",
+          "int -42670",
+          "float -21335",
+          "int 3",
+          "bool true",
+          "bool true",
+          "hex 2a0d638062ff0d800d41c36309620a00",
+          "int 2",
+          "hex ff00",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "hex 6100",
+          "hex 2a0d638062ff0d800d41c36309620a00",
+          "int 2",
+          "hex 2a0d638062ff0d800d41c36309620a00",
+          "hex 2a0d638062ff0d800d41c36309620a2a2a203f205ba9620a62415c00",
+          "bool true",
+          "int 3",
+          "hex 2a0d638062ff0d800d41c36309620a2a2a203f205ba9620a62415c00",
+          "int 19",
+          "hex 617aa961a95c807a5c80806100a9095c7a5c6300",
+          "hex 415aa941a95c805a5c80804100a9095c5a5c4300",
+          "hex 615aa941a95c805a5c80806100a9095c5a5c6300",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 615aa941a95c805a5c80806100a9095c5a5c6300",
+          "hex 615aa941a95c805a5c80806100a9095c5a5c6300",
+          "hex 615aa941a95c805a5c80806100a9095c5a5c63615aa941a95c805a5c80806100a9095c5a5c63615aa941a95c805a5c80806100a9095c5a5c6300",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 10",
+          "hex 63c3805b2a5c63410a3fa90a5b3f5b5a800d410d00",
+          "bool true",
+          "int 9",
+          "hex 802aa9205c61ff2a5b00ff62a9638063002a6162ff610a09613f0900ff41ff00093f0aa95ca90a8080615b00ffa90d5cc35c00ff63c3805b2a5c63410a3fa90a5b3f5b5a800d410d00ff6200ff2a0d638062ff0d800d41c36309620a00ff2a2a203f205ba9620a62415c00ff615aa941a95c805a5c80806100a9095c5a5c6300ff2a3f5b0d612aff5b63a9612a630d3f415ca9c35a4100",
+          "int -90003",
+          "float -45001.5",
+          "int 4",
+          "bool true",
+          "bool false",
+          "bool false",
+          "hex 63c3805b2a5c63410a3fa90a5b3f5b5a800d410d00",
+          "int 2",
+          "hex ff00",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "hex 6100",
+          "hex 2a0d638062ff0d800d41c36309620a00",
+          "int 2",
+          "hex 615aa941a95c805a5c80806100a9095c5a5c6300",
+          "hex 615aa941a95c805a5c80806100a9095c5a5c632a3f5b0d612aff5b63a9612a630d3f415ca9c35a4100",
+          "bool true",
+          "int 1",
+          "hex 615aa941a95c805a5c80806100a9095c5a5c632a3f5b0d612aff5b63a9612a630d3f415ca9c35a4100",
+          "int 6",
+          "hex 615c3fff5cc300",
+          "hex 415c3fff5cc300",
+          "hex 615c3fff5cc300",
+          "bool false",
+          "bool true",
+          "bool true",
+          "int 4",
+          "hex 00",
+          "hex 615c3fff2a5b6141615ca900c33f0d5b632a5b626200",
+          "hex 00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 12",
+          "hex 2a5b6141615ca900c33f0d5b632a5b626200",
+          "bool true",
+          "int 11",
+          "hex 802aa9205c61ff2a5b00ff2a5b6141615ca900c33f0d5b632a5b626200ff41ff00093f0aa95ca90a8080615b00ffa90d5cc35c00ff63c3805b2a5c63410a3fa90a5b3f5b5a800d410d00ff6200ff2a0d638062ff0d800d41c36309620a00ff2a2a203f205ba9620a62415c00ff615aa941a95c805a5c80806100a9095c5a5c6300ff2a3f5b0d612aff5b63a9612a630d3f415ca9c35a4100ff615c3fff5cc300ff5cc300",
+          "int -82973",
+          "float -41486.5",
+          "int 5",
+          "bool true",
+          "bool true",
+          "hex 615c3fff5cc300",
+          "int 3",
+          "hex ff00",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "hex 6100",
+          "hex 2a0d638062ff0d800d41c36309620a00",
+          "hex 00",
+          "hex 615c3fff5cc300",
+          "int 2",
+          "hex 615c3fff5cc300",
+          "hex 615c3fff5cc35cc300",
+          "bool true",
+          "int 1",
+          "hex 615c3fff5cc35cc300",
+          "int 4",
+          "hex 7a620a6100",
+          "hex 5a420a4100",
+          "hex 5a620a4100",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 5a620a4100",
+          "hex 00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 14",
+          "hex ff5a2aff635a5a6141c35b5b0d5c636161805c61ff00",
+          "bool true",
+          "int 13",
+          "hex 802aa9205c61ff2a5b00ff2a5b6141615ca900c33f0d5b632a5b626200ff41ff00093f0aa95ca90a8080615b00ffa90d5cc35c00ff63c3805b2a5c63410a3fa90a5b3f5b5a800d410d00ff6200ffff5a2aff635a5a6141c35b5b0d5c636161805c61ff00ff2a2a203f205ba9620a62415c00ff615aa941a95c805a5c80806100a9095c5a5c6300ff2a3f5b0d612aff5b63a9612a630d3f415ca9c35a4100ff615c3fff5cc300ff5cc300ff5a620a4100ff0d09a9ffff2a8009635a09c35a00",
+          "int -63485",
+          "float -31742.5",
+          "int 6",
+          "bool true",
+          "bool true",
+          "hex 5a620a4100",
+          "int 4",
+          "hex ff00",
+          "hex 5cff5c3f612a000d415c0a09095a0900",
+          "hex 6100",
+          "hex 2a0d638062ff0d800d41c36309620a00",
+          "hex 00",
+          "hex 615c3fff5cc300",
+          "hex 0000",
+          "hex 5a620a4100",
+          "int 1",
+          "hex 5a620a4100",
+          "hex 5a620a410d09a9ffff2a8009635a09c35a00",
+          "bool true",
+          "int 2",
+          "hex 5a620a410d09a9ffff2a8009635a09c35a00",
+          "int 0",
+          "hex 00",
+          "hex 00",
+          "hex 00",
+          "bool false",
+          "bool false",
+          "bool false",
+          "int -1",
+          "hex 00",
+          "hex 00",
+          "hex 00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool false",
+          "float 0",
+          "int 2",
+          "hex 00a95a2a3fa980612a805b6200",
+          "bool false",
+          "int -1",
+          "hex 00ff00a95a2a3fa980612a805b6200",
+          "int -35982",
+          "float -17991",
+          "int 0",
+          "bool true",
+          "bool true",
+          "hex 00",
+          "int 1",
+          "hex 0000",
+          "hex 00",
+          "int 1",
+          "hex 00",
+          "hex c32a5a5bc361c3412a00",
+          "bool true",
+          "int 1",
+          "hex c32a5a5bc361c3412a00",
+          "int 4",
+          "hex 3f61620a00",
+          "hex 3f41420a00",
+          "hex 3f416200",
+          "bool true",
+          "bool true",
+          "bool true",
+          "int 0",
+          "hex 3f41620a00",
+          "hex 3f41620a00",
+          "hex 3f41620a3f41620a3f41620a00",
+          "bool false",
+          "bool false",
+          "int 0",
+          "bool true",
+          "float 0",
+          "int 4",
+          "hex a92063c32aa96209615b00",
+          "bool true",
+          "int 3",
+          "hex a92063c32aa96209615b00ff00a95a2a3fa980612a805b6200ff3f41620a00ff00",
+          "int -42642",
+          "float -21321",
+          "int 1",
+          "bool true",
+          "bool true",
+          "hex 3f41620a00",
+          "int 1",
+          "hex 0000",
+          "hex 3f41620a00",
+          "int 2",
+          "hex 3f41620a00",
+          "hex 3f41620a00",
+          "bool true",
+          "int 2",
+          "hex 3f41620a00"
+        ]
+      }
+    },
+    {
+      "name": "fuzz-0020261024-floatlist-1",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-floatlist-1.dsl",
+      "bytecode": "fuzz-0020261024-floatlist-1.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-floatlist-9223372036854775808",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-floatlist-9223372036854775808.dsl",
+      "bytecode": "fuzz-0020261024-floatlist-9223372036854775808.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: -9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-floatlist9223372036854775807",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-floatlist9223372036854775807.dsl",
+      "bytecode": "fuzz-0020261024-floatlist9223372036854775807.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "FloatList.at: index out of range: 9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-intlist-1",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-intlist-1.dsl",
+      "bytecode": "fuzz-0020261024-intlist-1.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-intlist-9223372036854775808",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-intlist-9223372036854775808.dsl",
+      "bytecode": "fuzz-0020261024-intlist-9223372036854775808.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: -9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-intlist9223372036854775807",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-intlist9223372036854775807.dsl",
+      "bytecode": "fuzz-0020261024-intlist9223372036854775807.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "IntList.at: index out of range: 9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-map-missing",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-map-missing.dsl",
+      "bytecode": "fuzz-0020261024-map-missing.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrMap.get: missing key"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-repeat-negative",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-repeat-negative.dsl",
+      "bytecode": "fuzz-0020261024-repeat-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "str_repeat: count must be nonnegative"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-split-empty",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-split-empty.dsl",
+      "bytecode": "fuzz-0020261024-split-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "str_split: separator must not be empty"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-strlist-1",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-strlist-1.dsl",
+      "bytecode": "fuzz-0020261024-strlist-1.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: -1"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-strlist-9223372036854775808",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-strlist-9223372036854775808.dsl",
+      "bytecode": "fuzz-0020261024-strlist-9223372036854775808.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: -9223372036854775808"
+        }
+      }
+    },
+    {
+      "name": "fuzz-0020261024-strlist9223372036854775807",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-0020261024-strlist9223372036854775807.dsl",
+      "bytecode": "fuzz-0020261024-strlist9223372036854775807.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "StrList.at: index out of range: 9223372036854775807"
+        }
+      }
+    },
+    {
+      "name": "fuzz-large-file",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-large-file.dsl",
+      "bytecode": "fuzz-large-file.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 1200005",
+          "hex 00ff0aff0000",
+          "int 400002",
+          "hex ff0000",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "fuzz-map-churn",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "fuzz-map-churn.dsl",
+      "bytecode": "fuzz-map-churn.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 1",
+          "bool false",
+          "hex 737461626c6500",
+          "hex 737461626c6500",
+          "hex 6f7468657200",
+          "hex 00ff00",
+          "bool true",
+          "int 2048",
+          "int 4194304",
+          "hex 3000",
+          "hex 3100"
+        ]
+      }
+    },
+    {
+      "name": "glob-over-old-work-budget",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "glob-over-old-work-budget.dsl",
+      "bytecode": "glob-over-old-work-budget.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "is-float",
+      "covers": "str_is_float byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "is-float.dsl",
+      "bytecode": "is-float.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool false",
+          "bool false",
+          "bool false",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "is-int",
+      "covers": "str_is_int byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "is-int.dsl",
+      "bytecode": "is-int.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool false",
+          "bool false",
+          "bool false",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "json-arena-over-old-object-budget",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "json-arena-over-old-object-budget.dsl",
+      "bytecode": "json-arena-over-old-object-budget.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 65537"
+        ]
+      }
+    },
+    {
+      "name": "len",
+      "covers": "str_len byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "len.dsl",
+      "bytecode": "len.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 6",
+          "int 4"
+        ]
+      }
+    },
+    {
+      "name": "lower",
+      "covers": "str_lower byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "lower.dsl",
+      "bytecode": "lower.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 617a2dc3a9",
+          "hex 61ff007a"
+        ]
+      }
+    },
+    {
+      "name": "match",
+      "covers": "str_match byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "match.dsl",
+      "bytecode": "match.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool false",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool false",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "math-abs",
+      "schema": "math.schema.json",
+      "source": "math-abs.dsl",
+      "bytecode": "math-abs.dslb",
+      "mutated": false,
+      "covers": "math catalog integer/float overloads and edge semantics",
+      "expect": {
+        "trace": [
+          "int 7",
+          "int -9223372036854775808",
+          "float 2.5",
+          "float 0"
+        ]
+      }
+    },
+    {
+      "name": "math-ceil",
+      "schema": "math.schema.json",
+      "source": "math-ceil.dsl",
+      "bytecode": "math-ceil.dslb",
+      "mutated": false,
+      "covers": "math catalog integer/float overloads and edge semantics",
+      "expect": {
+        "trace": [
+          "int 9223372036854775807",
+          "float -1",
+          "float 2",
+          "float -0"
+        ]
+      }
+    },
+    {
+      "name": "math-floor",
+      "schema": "math.schema.json",
+      "source": "math-floor.dsl",
+      "bytecode": "math-floor.dslb",
+      "mutated": false,
+      "covers": "math catalog integer/float overloads and edge semantics",
+      "expect": {
+        "trace": [
+          "int -9223372036854775808",
+          "float -2",
+          "float 1",
+          "float -0"
+        ]
+      }
+    },
+    {
+      "name": "math-max",
+      "schema": "math.schema.json",
+      "source": "math-max.dsl",
+      "bytecode": "math-max.dslb",
+      "mutated": false,
+      "covers": "math catalog integer/float overloads and edge semantics",
+      "expect": {
+        "trace": [
+          "int 3",
+          "float 2.5",
+          "float -0",
+          "float 0"
+        ]
+      }
+    },
+    {
+      "name": "math-min",
+      "schema": "math.schema.json",
+      "source": "math-min.dsl",
+      "bytecode": "math-min.dslb",
+      "mutated": false,
+      "covers": "math catalog integer/float overloads and edge semantics",
+      "expect": {
+        "trace": [
+          "int -7",
+          "float -3.5",
+          "float -0",
+          "float 0"
+        ]
+      }
+    },
+    {
+      "name": "math-nan",
+      "schema": "math.schema.json",
+      "source": "math-nan.dsl",
+      "bytecode": "math-nan.dslb",
+      "mutated": false,
+      "covers": "math catalog integer/float overloads and edge semantics",
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true",
+          "float 1",
+          "float 1",
+          "float 1",
+          "float inf"
+        ]
+      }
+    },
+    {
+      "name": "math-pow",
+      "schema": "math.schema.json",
+      "source": "math-pow.dsl",
+      "bytecode": "math-pow.dslb",
+      "mutated": false,
+      "covers": "math catalog integer/float overloads and edge semantics",
+      "expect": {
+        "trace": [
+          "int 1",
+          "int -9223372036854775808",
+          "int 0",
+          "int -8",
+          "float 8",
+          "float -0",
+          "float -inf"
+        ]
+      }
+    },
+    {
+      "name": "math-pow-negative",
+      "schema": "math.schema.json",
+      "source": "math-pow-negative.dsl",
+      "bytecode": "math-pow-negative.dslb",
+      "mutated": false,
+      "covers": "invalid integer math domain reports located host error",
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_HOST",
+          "line": 2,
+          "column": 7,
+          "message": "math_pow: integer exponent must be nonnegative"
+        }
+      }
+    },
+    {
+      "name": "math-round",
+      "schema": "math.schema.json",
+      "source": "math-round.dsl",
+      "bytecode": "math-round.dslb",
+      "mutated": false,
+      "covers": "math catalog integer/float overloads and edge semantics",
+      "expect": {
+        "trace": [
+          "int 9223372036854775807",
+          "float -1",
+          "float 1",
+          "float -0",
+          "float 4.5035996273705e+15"
+        ]
+      }
+    },
+    {
+      "name": "math-sqrt",
+      "schema": "math.schema.json",
+      "source": "math-sqrt.dsl",
+      "bytecode": "math-sqrt.dslb",
+      "mutated": false,
+      "covers": "math catalog integer/float overloads and edge semantics",
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 4",
+          "int 3037000499",
+          "int 3037000498",
+          "float 2",
+          "~ float 1.4142135623730951",
+          "float -0"
+        ]
+      }
+    },
+    {
+      "name": "math-sqrt-negative",
+      "schema": "math.schema.json",
+      "source": "math-sqrt-negative.dsl",
+      "bytecode": "math-sqrt-negative.dslb",
+      "mutated": false,
+      "covers": "invalid integer math domain reports located host error",
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_HOST",
+          "line": 2,
+          "column": 7,
+          "message": "math_sqrt: integer argument must be nonnegative"
+        }
+      }
+    },
+    {
+      "name": "repeat",
+      "covers": "str_repeat byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "repeat.dsl",
+      "bytecode": "repeat.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex ff00ff00",
+          "int 0",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "repeat-limit",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "repeat-limit.dsl",
+      "bytecode": "repeat-limit.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 67108865"
+        ]
+      }
+    },
+    {
+      "name": "repeat-negative",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "repeat-negative.dsl",
+      "bytecode": "repeat-negative.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "str_repeat: count must be nonnegative"
+        }
+      }
+    },
+    {
+      "name": "replace",
+      "covers": "str_replace byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "replace.dsl",
+      "bytecode": "replace.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 626261",
+          "hex 6162",
+          "hex c3a900c3a9"
+        ]
+      }
+    },
+    {
+      "name": "replace-over-old-size-ceiling",
+      "covers": "seeded standard byte/property corpus",
+      "schema": "fuzz.schema.json",
+      "source": "replace-over-old-size-ceiling.dsl",
+      "bytecode": "replace-over-old-size-ceiling.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 68157440"
+        ]
+      }
+    },
+    {
+      "name": "starts-with",
+      "covers": "str_starts_with byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "starts-with.dsl",
+      "bytecode": "starts-with.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool true",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "substr",
+      "covers": "str_substr byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "substr.dsl",
+      "bytecode": "substr.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex a9",
+          "hex 616263",
+          "int 0",
+          "int 0",
+          "hex ff00"
+        ]
+      }
+    },
+    {
+      "name": "testing-close",
+      "covers": "testing sink and numeric assertion",
+      "schema": "collections.schema.json",
+      "source": "testing-close.dsl",
+      "bytecode": "testing-close.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "testing-close-expected-nan",
+      "covers": "testing sink and numeric assertion",
+      "schema": "collections.schema.json",
+      "source": "testing-close-expected-nan.dsl",
+      "bytecode": "testing-close-expected-nan.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "assert_close failed: 1 vs nan (tol 0.1)"
+        }
+      }
+    },
+    {
+      "name": "testing-close-fail",
+      "covers": "testing sink and numeric assertion",
+      "schema": "collections.schema.json",
+      "source": "testing-close-fail.dsl",
+      "bytecode": "testing-close-fail.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "assert_close failed: 1 vs 2 (tol 0.5)"
+        }
+      }
+    },
+    {
+      "name": "testing-close-infinity",
+      "covers": "testing sink and numeric assertion",
+      "schema": "collections.schema.json",
+      "source": "testing-close-infinity.dsl",
+      "bytecode": "testing-close-infinity.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "assert_close failed: inf vs inf (tol 0)"
+        }
+      }
+    },
+    {
+      "name": "testing-close-nan",
+      "covers": "negative NaN assertion diagnostics use canonical nan text",
+      "schema": "collections.schema.json",
+      "source": "testing-close-nan.dsl",
+      "bytecode": "testing-close-nan.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "assert_close failed: nan vs 1 (tol 0.1)"
+        }
+      }
+    },
+    {
+      "name": "testing-close-negative-tolerance",
+      "covers": "testing sink and numeric assertion",
+      "schema": "collections.schema.json",
+      "source": "testing-close-negative-tolerance.dsl",
+      "bytecode": "testing-close-negative-tolerance.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "assert_close failed: 1 vs 1 (tol -1)"
+        }
+      }
+    },
+    {
+      "name": "testing-close-tolerance-nan",
+      "covers": "testing sink and numeric assertion",
+      "schema": "collections.schema.json",
+      "source": "testing-close-tolerance-nan.dsl",
+      "bytecode": "testing-close-tolerance-nan.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": {
+          "code": "RUN_HOST",
+          "message": "assert_close failed: 1 vs 1 (tol nan)"
+        }
+      }
+    },
+    {
+      "name": "testing-print",
+      "covers": "testing sink and numeric assertion",
+      "schema": "collections.schema.json",
+      "source": "testing-print.dsl",
+      "bytecode": "testing-print.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex ff00610a0ac3a90a"
+        ]
+      }
+    },
+    {
+      "name": "to-float",
+      "covers": "str_to_float byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "to-float.dsl",
+      "bytecode": "to-float.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "float 125",
+          "float -0",
+          "float 0",
+          "float 0",
+          "float 0"
+        ]
+      }
+    },
+    {
+      "name": "to-int",
+      "covers": "str_to_int byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "to-int.dsl",
+      "bytecode": "to-int.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 42",
+          "int -9223372036854775808",
+          "int 0",
+          "int 0",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "trim",
+      "covers": "str_trim byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "trim.dsl",
+      "bytecode": "trim.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 61",
+          "hex 6100",
+          "hex c3a9"
+        ]
+      }
+    },
+    {
+      "name": "upper",
+      "covers": "str_upper byte semantics and edge cases",
+      "schema": "schema.json",
+      "source": "upper.dsl",
+      "bytecode": "upper.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 415a2dc3a9",
+          "hex 41ff005a"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-alphabet",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-alphabet.dsl",
+      "bytecode": "v3-base64-alphabet.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-extra-padding",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-extra-padding.dsl",
+      "bytecode": "v3-base64-extra-padding.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-interior-padding",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-interior-padding.dsl",
+      "bytecode": "v3-base64-interior-padding.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-mid-quartet",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-mid-quartet.dsl",
+      "bytecode": "v3-base64-mid-quartet.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-missing-padding",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-missing-padding.dsl",
+      "bytecode": "v3-base64-missing-padding.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-nonascii",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-nonascii.dsl",
+      "bytecode": "v3-base64-nonascii.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-pad-bits",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-pad-bits.dsl",
+      "bytecode": "v3-base64-pad-bits.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-raw-high",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-raw-high.dsl",
+      "bytecode": "v3-base64-raw-high.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-raw-nul",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-raw-nul.dsl",
+      "bytecode": "v3-base64-raw-nul.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-two-pad-bits",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-two-pad-bits.dsl",
+      "bytecode": "v3-base64-two-pad-bits.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-url",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-url.dsl",
+      "bytecode": "v3-base64-url.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-base64-whitespace",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-base64-whitespace.dsl",
+      "bytecode": "v3-base64-whitespace.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_base64_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-codecs-all256",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-codecs-all256.dsl",
+      "bytecode": "v3-codecs-all256.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 344",
+          "int 512",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "v3-codecs-all256-oracle",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-codecs-all256-oracle.dsl",
+      "bytecode": "v3-codecs-all256-oracle.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 41414543417751464267634943516f4c4441304f4478415245684d554652595847426b6147787764486838674953496a4a43556d4a7967704b6973734c5334764d4445794d7a51314e6a63344f546f375044302b50304242516b4e4552555a4853456c4b5330784e546b395155564a54564656575631685a576c746358563566594746695932526c5a6d646f615770726247317562334278636e4e3064585a3365486c3665337839666e2b4167594b44684957476834694a696f754d6a5936506b4a47536b3553566c7065596d5a71626e4a32656e3643686f714f6b7061616e714b6d717136797472712b7773624b7a744c573274376935757275387662362f774d484377385446787366497963724c7a4d334f7a3944523074505531646258324e6e6132397a6433742f6734654c6a354f586d352b6a70367576733765377638504879382f5431397666342b6672372f50332b2f773d3d",
+          "hex 3030303130323033303430353036303730383039306130623063306430653066313031313132313331343135313631373138313931613162316331643165316632303231323232333234323532363237323832393261326232633264326532663330333133323333333433353336333733383339336133623363336433653366343034313432343334343435343634373438343934613462346334643465346635303531353235333534353535363537353835393561356235633564356535663630363136323633363436353636363736383639366136623663366436653666373037313732373337343735373637373738373937613762376337643765376638303831383238333834383538363837383838393861386238633864386538663930393139323933393439353936393739383939396139623963396439653966613061316132613361346135613661376138613961616162616361646165616662306231623262336234623562366237623862396261626262636264626562666330633163326333633463356336633763386339636163626363636463656366643064316432643364346435643664376438643964616462646364646465646665306531653265336534653565366537653865396561656265636564656565666630663166326633663466356636663766386639666166626663666466656666",
+          "hex 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+          "hex 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff"
+        ]
+      }
+    },
+    {
+      "name": "v3-codecs-basic",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-codecs-basic.dsl",
+      "bytecode": "v3-codecs-basic.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 414145432f773d3d",
+          "hex 3030303130326666",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "v3-codecs-empty",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-codecs-empty.dsl",
+      "bytecode": "v3-codecs-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 0",
+          "int 0",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "v3-codecs-large",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-codecs-large.dsl",
+      "bytecode": "v3-codecs-large.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 1398124",
+          "int 2097186",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "v3-codecs-rfc",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-codecs-rfc.dsl",
+      "bytecode": "v3-codecs-rfc.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 5a673d3d",
+          "hex 5a6d383d",
+          "hex 5a6d3976",
+          "hex 5a6d397659673d3d",
+          "hex 5a6d3976596d453d",
+          "hex 5a6d3976596d4679",
+          "hex 66",
+          "hex 666f",
+          "hex 666f6f",
+          "hex 666f6f62",
+          "hex 666f6f6261",
+          "hex 666f6f626172"
+        ]
+      }
+    },
+    {
+      "name": "v3-hex-digit",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-hex-digit.dsl",
+      "bytecode": "v3-hex-digit.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_hex_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-hex-odd",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-hex-odd.dsl",
+      "bytecode": "v3-hex-odd.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_hex_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-hex-prefix",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-hex-prefix.dsl",
+      "bytecode": "v3-hex-prefix.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_hex_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-hex-raw-high",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-hex-raw-high.dsl",
+      "bytecode": "v3-hex-raw-high.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_hex_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-hex-whitespace",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-hex-whitespace.dsl",
+      "bytecode": "v3-hex-whitespace.dslb",
+      "mutated": false,
+      "expect": {
+        "runtime_error_exact": [
+          "RUN_HOST",
+          "str_hex_decode: invalid encoding"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-float",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-float.dsl",
+      "bytecode": "v3-snapshots-float.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 6e616e",
+          "hex 7a",
+          "bool true",
+          "float -0"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-float-empty",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-float-empty.dsl",
+      "bytecode": "v3-snapshots-float-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-float-independence",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-float-independence.dsl",
+      "bytecode": "v3-snapshots-float-independence.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 612c632c62",
+          "float 1.25",
+          "float 2.5",
+          "hex 612c632c62",
+          "float 9.5",
+          "int 4",
+          "int 4"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-float-keys-over-old-object-budget",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-float-keys-over-old-object-budget.dsl",
+      "bytecode": "v3-snapshots-float-keys-over-old-object-budget.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-float-values-over-old-object-budget",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-float-values-over-old-object-budget.dsl",
+      "bytecode": "v3-snapshots-float-values-over-old-object-budget.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-int",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-int.dsl",
+      "bytecode": "v3-snapshots-int.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 61",
+          "hex 62",
+          "int -9223372036854775808",
+          "int 9223372036854775807",
+          "int 2",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-int-empty",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-int-empty.dsl",
+      "bytecode": "v3-snapshots-int-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-int-independence",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-int-independence.dsl",
+      "bytecode": "v3-snapshots-int-independence.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 612c632c62",
+          "int 1",
+          "int 2",
+          "hex 612c632c62",
+          "int 9",
+          "int 4",
+          "int 4"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-int-keys-over-old-object-budget",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-int-keys-over-old-object-budget.dsl",
+      "bytecode": "v3-snapshots-int-keys-over-old-object-budget.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-int-values-over-old-object-budget",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-int-values-over-old-object-budget.dsl",
+      "bytecode": "v3-snapshots-int-values-over-old-object-budget.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-str",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-str.dsl",
+      "bytecode": "v3-snapshots-str.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 6100ff",
+          "hex 62",
+          "hex 7800fe",
+          "hex 79",
+          "hex 62",
+          "hex 79",
+          "hex 63"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-str-empty",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-str-empty.dsl",
+      "bytecode": "v3-snapshots-str-empty.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-str-independence",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-str-independence.dsl",
+      "bytecode": "v3-snapshots-str-independence.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "hex 612c632c62",
+          "hex 6f6e65",
+          "hex 74776f",
+          "hex 612c632c62",
+          "hex 4e4557",
+          "int 4",
+          "int 4"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-str-keys-over-old-object-budget",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-str-keys-over-old-object-budget.dsl",
+      "bytecode": "v3-snapshots-str-keys-over-old-object-budget.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "v3-snapshots-str-values-over-old-object-budget",
+      "covers": "v3 byte codecs and map snapshots",
+      "schema": "v3.schema.json",
+      "source": "v3-snapshots-str-values-over-old-object-budget.dsl",
+      "bytecode": "v3-snapshots-str-values-over-old-object-budget.dslb",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0"
+        ]
+      }
+    }
+  ]
+}

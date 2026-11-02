@@ -1,0 +1,1 @@
+let intqueue = int_queue().push(1).push(1); t.int(intqueue.len()); t.bool(intqueue.empty()); t.int(intqueue.peek()); t.int(intqueue.at(0)); t.int(intqueue.pop()); intqueue.clear(); t.bool(intqueue.empty());

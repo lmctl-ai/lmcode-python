@@ -1,0 +1,9 @@
+trace
+bound 3
+len 3
+at 0
+int 0
+at 1
+int 1
+at 2
+int 2

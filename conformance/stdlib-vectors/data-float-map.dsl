@@ -1,0 +1,1 @@
+let floatmap = float_map().set(bytes("6100ff"), 1.5).set("b", 1.5); t.int(floatmap.len()); t.bool(floatmap.has(bytes("6100ff"))); t.float(floatmap.get(bytes("6100ff"))); t.float(floatmap.get_or("missing", 1.5)); t.hex(floatmap.key_at(0)); t.bool(floatmap.remove("b")); floatmap.clear(); t.int(floatmap.len());

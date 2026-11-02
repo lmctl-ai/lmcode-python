@@ -1,0 +1,3 @@
+trace
+str "quoted"!
+bool true

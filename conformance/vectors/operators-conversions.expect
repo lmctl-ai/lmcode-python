@@ -1,0 +1,21 @@
+trace
+thing 5
+thing 6
+thing -4
+thing 7
+expr 0
+thing 2
+expr 0
+thing 0
+expr 0
+thing 0
+bound 2
+var 3
+expr 3
+thing 6
+thing 7
+var 1
+var 2
+expr 1
+expr 2
+thing 3

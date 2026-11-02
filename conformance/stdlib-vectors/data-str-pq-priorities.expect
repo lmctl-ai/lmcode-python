@@ -1,0 +1,7 @@
+trace
+hex 6200fe
+int 3
+hex 6200fe
+hex 6300fd
+hex 6100ff
+bool true

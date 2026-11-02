@@ -1,0 +1,1 @@
+let floatstack = float_stack().push(1.5).push(1.5); t.int(floatstack.len()); t.bool(floatstack.empty()); t.float(floatstack.peek()); t.float(floatstack.at(0)); t.float(floatstack.pop()); floatstack.clear(); t.bool(floatstack.empty());

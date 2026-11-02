@@ -1,0 +1,9 @@
+trace
+hex 6300fd
+hex 6200fe
+hex 6100ff
+int 3
+hex 6200fe
+hex 6300fd
+hex 6200fe
+int 0

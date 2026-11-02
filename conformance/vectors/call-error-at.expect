@@ -1,0 +1,6 @@
+call_error_at
+fail_rule [{"type":"Thing","id":0}]
+RUN_HOST
+3
+3
+entry fault

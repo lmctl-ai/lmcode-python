@@ -1,0 +1,4 @@
+call_error
+increment []
+RUN_HOST
+call entry 'increment' expects 1 argument

@@ -1,0 +1,14 @@
+t.bool(1 < 2);
+t.bool(2 <= 2);
+t.bool(3 > 4);
+t.bool(4 >= 4);
+t.bool(1.5 < 1.5);
+t.bool(1.5 <= 1.5);
+t.bool(2.5 > 1.0);
+t.bool(0.0 >= 0.1);
+t.bool(3 == 3);
+t.bool(3 != 3);
+t.bool(2.0 == 2.0);
+t.bool("a" == "a");
+t.bool("a" != "b");
+t.bool(true == false);

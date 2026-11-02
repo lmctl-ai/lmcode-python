@@ -1,0 +1,1 @@
+let x=int_map().set(bytes("6100ff"),7).set("b",8).set(bytes("6100ff"),9); t.hex(x.key_at(0)); t.hex(x.key_at(1)); t.int(x.get(bytes("6100ff"))); t.int(x.get_or("b",7)); t.int(x.get_or("z",7)); t.bool(x.has("z")); t.bool(x.remove(bytes("6100ff"))); t.bool(x.remove(bytes("6100ff"))); x.set(bytes("6100ff"),7); t.hex(x.key_at(0)); t.hex(x.key_at(1)); x.clear(); t.bool(x.has("b"));

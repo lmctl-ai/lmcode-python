@@ -1,0 +1,136 @@
+{
+  "dsl.schema": 2,
+  "name": "file_catalog_conformance",
+  "types": {
+    "Trace": {
+      "methods": {
+        "int": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "void"
+          }
+        ],
+        "hex": [
+          {
+            "params": [
+              "string"
+            ],
+            "returns": "void"
+          }
+        ],
+        "bool": [
+          {
+            "params": [
+              "bool"
+            ],
+            "returns": "void"
+          }
+        ]
+      }
+    },
+    "StrList": {
+      "methods": {
+        "len": [
+          {
+            "params": [],
+            "returns": "int"
+          }
+        ],
+        "at": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "string"
+          }
+        ]
+      }
+    }
+  },
+  "context": {
+    "t": "Trace"
+  },
+  "functions": {
+    "bytes": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "string"
+      }
+    ],
+    "test_temp_dir": [
+      {
+        "params": [],
+        "returns": "string"
+      }
+    ],
+    "str_repeat": [
+      {
+        "params": [
+          "string",
+          "int"
+        ],
+        "returns": "string"
+      }
+    ],
+    "str_len": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "int"
+      }
+    ],
+    "file_read": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "string"
+      }
+    ],
+    "file_write": [
+      {
+        "params": [
+          "string",
+          "string"
+        ],
+        "returns": "void"
+      }
+    ],
+    "file_append": [
+      {
+        "params": [
+          "string",
+          "string"
+        ],
+        "returns": "void"
+      }
+    ],
+    "file_exists": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "bool"
+      }
+    ],
+    "file_lines": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "StrList"
+      }
+    ],
+    "test_long_path": [
+      {
+        "params": [],
+        "returns": "string"
+      }
+    ]
+  }
+}

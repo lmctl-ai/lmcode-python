@@ -1,0 +1,5 @@
+call
+visit [{"type":"Thing","id":2}]
+result void
+int 2
+str thing-2

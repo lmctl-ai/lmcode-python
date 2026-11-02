@@ -1,0 +1,18 @@
+trace
+int 0
+int 3
+bool true
+bool false
+hex 00ff
+hex fe00
+hex 6f6e65
+hex 61
+hex 75706461746564
+int 3
+bool false
+bool true
+hex ff00
+hex 63
+hex 61
+int 1
+hex 7a

@@ -1,0 +1,1 @@
+let m=int_map().set("a",(-9007199254740991 * 1024 - 1024)).set("b",(9007199254740991 * 1024 + 1023)); let ks=m.keys(); let vs=m.values(); t.hex(ks.at(0)); t.hex(ks.at(1)); t.int(vs.at(0)); t.int(vs.at(1)); m.clear(); t.int(ks.len()); t.int(vs.len());

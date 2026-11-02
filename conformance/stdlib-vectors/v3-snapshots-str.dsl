@@ -1,0 +1,1 @@
+let m=str_map().set(bytes("6100ff"),bytes("7800fe")).set("b","y"); let ks=m.keys(); let vs=m.values(); t.hex(ks.at(0)); t.hex(ks.at(1)); t.hex(vs.at(0)); t.hex(vs.at(1)); m.remove("b"); m.set("c","z"); t.hex(ks.at(1)); t.hex(vs.at(1)); t.hex(m.keys().at(1));

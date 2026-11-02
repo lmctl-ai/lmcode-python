@@ -1,0 +1,1 @@
+let x=str_queue().push(bytes("6100ff")).push(bytes("6200fe")).push(bytes("6300fd")); for (item in x) { t.hex(item); } t.int(x.len()); t.hex(x.at(1)); t.hex(x.pop()); t.hex(x.peek()); x.clear(); t.int(x.len());

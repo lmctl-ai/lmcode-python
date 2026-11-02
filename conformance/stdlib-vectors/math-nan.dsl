@@ -1,0 +1,15 @@
+let n = math_sqrt(-1.0);
+t.bool(n != n);
+t.bool(math_min(n, 1.0) != math_min(n, 1.0));
+t.bool(math_min(1.0, n) != math_min(1.0, n));
+t.bool(math_max(n, 1.0) != math_max(n, 1.0));
+t.bool(math_max(1.0, n) != math_max(1.0, n));
+t.bool(math_round(n) != math_round(n));
+t.bool(math_floor(n) != math_floor(n));
+t.bool(math_ceil(n) != math_ceil(n));
+t.bool(math_abs(n) != math_abs(n));
+t.bool(math_pow(-2.0, 0.5) != math_pow(-2.0, 0.5));
+t.float(math_pow(n, 0.0));
+t.float(math_pow(1.0, n));
+t.float(math_pow(-1.0, 1.0 / 0.0));
+t.float(math_sqrt(1.0 / 0.0));

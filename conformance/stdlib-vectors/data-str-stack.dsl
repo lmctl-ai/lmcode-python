@@ -1,0 +1,1 @@
+let strstack = str_stack().push(bytes("6100ff")).push(bytes("6100ff")); t.int(strstack.len()); t.bool(strstack.empty()); t.hex(strstack.peek()); t.hex(strstack.at(0)); t.hex(strstack.pop()); strstack.clear(); t.bool(strstack.empty());

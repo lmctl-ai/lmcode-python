@@ -1,0 +1,12 @@
+trace
+hex 6100ff
+hex 62
+int 9
+int 8
+int 7
+bool false
+bool true
+bool false
+hex 62
+hex 6100ff
+bool false

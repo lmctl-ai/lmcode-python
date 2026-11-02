@@ -1,0 +1,7 @@
+trace
+str 0.3
+str 1
+str 123456789.125
+str 0.333333333333333
+str -0
+str inf

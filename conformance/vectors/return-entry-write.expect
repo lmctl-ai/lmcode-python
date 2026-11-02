@@ -1,0 +1,4 @@
+call
+write [7]
+result int 8
+sink {"json":"{\"body\":1,\"value\":7}","frame":"LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":{\"body\":1,\"value\":7}}\nLMCODE_RETURN_END\n"}

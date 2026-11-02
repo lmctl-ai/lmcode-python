@@ -1,0 +1,1 @@
+let intstack = int_stack().push(1).push(1); t.int(intstack.len()); t.bool(intstack.empty()); t.int(intstack.peek()); t.int(intstack.at(0)); t.int(intstack.pop()); intstack.clear(); t.bool(intstack.empty());

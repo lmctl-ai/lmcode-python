@@ -1,0 +1,12 @@
+trace
+int 3
+float 1.5
+bool false
+int -1
+bool true
+int 2
+float -0
+float 2.5
+bool false
+int 1
+float 3.5

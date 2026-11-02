@@ -1,0 +1,7 @@
+call_error_at
+write [7]
+RUN_HOST
+5
+3
+entry fault after write
+sink {"json":"{\"body\":1,\"value\":7}","frame":"LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"run\",\"code\":\"RUN_HOST\",\"message\":\"dsl line 5:3: entry fault after write\",\"line\":5,\"column\":3}\nLMCODE_RETURN_END\n"}

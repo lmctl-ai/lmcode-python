@@ -1,0 +1,4 @@
+call
+increment [4]
+result int 5
+int 9

@@ -1,0 +1,3 @@
+call
+increment [1]
+result int 3

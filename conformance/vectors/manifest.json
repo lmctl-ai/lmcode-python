@@ -1,0 +1,6163 @@
+{
+  "format": "dsl-conformance/3",
+  "bytecode_version": 6,
+  "generated_by": "lmscript dsl.ts (scripts/generate-dsl-conformance.ts)",
+  "schema": "schema.json",
+  "host": {
+    "description": "Context t (Trace) records lines: int/float/str/bool/thing. Context root is Thing id 0 and xs is IntList [0,1,2,3]. lmcode_return_* writes a separate invocation sink and adds no trace line. Host functions and methods follow their schema names and preserve the existing trace semantics. Rule entries are called by name after load; primitive args are JSON scalar values and object args are {type:Thing,id:N}, stored into parameter slots 0..n-1. Entry calls return one typed value or void.",
+    "entry_call": "entries expect NAME ANNOTATION INTERFACE; every call runs the body once first, then selects the named entry. call expects line 2 ENTRY ARGS-JSON, args are stored in parameter slots 0..n-1, line 3 result int N|float X|string S|bool true|false|thing ID|void (an enum result is its constant name as string S; an object result is thing ID), then trace lines; call_error expects line 2 ENTRY ARGS-JSON, line 3 CODE, line 4 MESSAGE; call_error_at expects line 2 ENTRY ARGS-JSON, line 3 CODE, line 4 LINE, line 5 COLUMN, line 6 MESSAGE. Interface text is canonical `interface I(T1, ...) -> R` (parameter names are not on the wire). Loader rules per entry (LOAD_BAD_BYTECODE, message substrings pinned by the load-entry-* vectors): nparams equals the interface parameter count (`entry 'NAME' declares N parameter(s); interface I(...) -> R has M`), parameter local i has the interface's type i (`entry 'NAME' parameter I has type T; the interface expects U`), no parameter local is hidden (`entry 'NAME' parameter I is hidden`), and HALT depth is 0 for void or 1 otherwise (`entry 'NAME': HALT leaves N values`). call arity: RUN_HOST `call entry 'NAME' expects N argument(s); found M`. call needs no prior run(); it returns the single HALT value (none for void).",
+    "result_sink": "Optional trailing .expect line: sink JSON-OBJECT, mirrored as expect.sink in manifest. json is the exact serialized sink payload, including partial writes on failure. frame is one terminal LMCODE_RETURN_BEGIN/END frame: success wraps payload in {ok:true,result}; controlled failure carries {ok:false,phase,code,message,line,column} without payload. Bind one sink across body and selected entry; publish only after invocation completion. Existing located VM diagnostic spellings are wire data.",
+    "expect": "trace: the recorded lines in order, after a successful run. entries: one canonical entry line per rule in source order. call: line 2 selects an entry and JSON args, line 3 is the result, remaining lines are trace. call_error: calling with the wrong arity fails before execution. call_error_at: an entry runtime error carries exact code, line and column plus a message substring. runtime_error/runtime_error_at cover body execution. load_error: load() throws before execution; line 2 is the exact error code and line 3 a message substring. The manifest stores {code, message}."
+  },
+  "vectors": [
+    {
+      "name": "foreach-inline",
+      "covers": "host collection foreach in inline function; ordinary temporary slots; snapshot once; existing range opcodes",
+      "schema": "schema.json",
+      "bytecode": "foreach-inline.dslb",
+      "source": "foreach-inline.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 3",
+          "len 3",
+          "at 0",
+          "int 0",
+          "at 1",
+          "int 1",
+          "at 2",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "switch-values",
+      "covers": "int/string/enum switch; writable discriminator; once-only evaluation; no fallthrough",
+      "schema": "schema.json",
+      "bytecode": "switch-values.dslb",
+      "source": "switch-values.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2",
+          "str negative",
+          "str fallback",
+          "str optimal"
+        ]
+      }
+    },
+    {
+      "name": "overloads-enum",
+      "covers": "S2 exact overload selection and enum constants",
+      "schema": "schema.json",
+      "bytecode": "overloads-enum.dslb",
+      "source": "overloads-enum.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 7",
+          "float 2.5",
+          "bool true",
+          "str OPTIMAL",
+          "float 2.5",
+          "int 6"
+        ]
+      }
+    },
+    {
+      "name": "operators-conversions",
+      "covers": "S2 object operators, reversed forms, receiver and argument conversions",
+      "schema": "schema.json",
+      "bytecode": "operators-conversions.dslb",
+      "source": "operators-conversions.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "thing 5",
+          "thing 6",
+          "thing -4",
+          "thing 7",
+          "expr 0",
+          "thing 2",
+          "expr 0",
+          "thing 0",
+          "expr 0",
+          "thing 0",
+          "bound 2",
+          "var 3",
+          "expr 3",
+          "thing 6",
+          "thing 7",
+          "var 1",
+          "var 2",
+          "expr 1",
+          "expr 2",
+          "thing 3"
+        ]
+      }
+    },
+    {
+      "name": "math-exact",
+      "covers": "MATH all exact float functions and integer overloads",
+      "schema": "schema.json",
+      "bytecode": "math-exact.dslb",
+      "source": "math-exact.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "float 2",
+          "float 2.5",
+          "float -3",
+          "float 2.5",
+          "float 3.5",
+          "float 2",
+          "float 3",
+          "float 10",
+          "float 0.15625",
+          "float 0.0625",
+          "float 0.4375",
+          "int -2",
+          "int 7",
+          "int 3",
+          "int 7",
+          "int 5"
+        ]
+      }
+    },
+    {
+      "name": "math-libm",
+      "covers": "sin cos pow: platform binary64 libm, relative tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "math-libm.dslb",
+      "source": "math-libm.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 0.479425538604203",
+          "~ float 0.877582561890373",
+          "~ float 1.4142135623730951",
+          "~ float 0.3333333333333333",
+          "float 0",
+          "float 1",
+          "float 8"
+        ]
+      }
+    },
+    {
+      "name": "math-value-edges",
+      "covers": "R34 no new errors: saturating int, wrapping abs, reversed clamp, NaN propagation, signed zero",
+      "schema": "schema.json",
+      "bytecode": "math-value-edges.dslb",
+      "source": "math-value-edges.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "int 0",
+          "int 9223372036854775807",
+          "int -9223372036854775808",
+          "int 9223372036854775807",
+          "int -9223372036854775808",
+          "int -9223372036854775808",
+          "int 2",
+          "float 2",
+          "bool true",
+          "bool true",
+          "float -0",
+          "float 0",
+          "float 0",
+          "float 0",
+          "float 1",
+          "float 0",
+          "float 1"
+        ]
+      }
+    },
+    {
+      "name": "math-loop",
+      "covers": "common math in nested DSL animation loops; integer conversion result feeds range",
+      "schema": "schema.json",
+      "bytecode": "math-loop.dslb",
+      "source": "math-loop.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "float 9"
+        ]
+      }
+    },
+    {
+      "name": "literals",
+      "covers": "PUSH_INT PUSH_FLOAT PUSH_STR PUSH_BOOL I2S F2S B2S CALL_METHOD LOAD_CTX HALT",
+      "schema": "schema.json",
+      "bytecode": "literals.dslb",
+      "source": "literals.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 42",
+          "int -7",
+          "float 2.5",
+          "float -0.5",
+          "str hi \"there\"\n",
+          "bool true",
+          "bool false",
+          "str 121.25false"
+        ]
+      }
+    },
+    {
+      "name": "int-arith",
+      "covers": "ADD_I SUB_I MUL_I DIV_I NEG_I",
+      "schema": "schema.json",
+      "bytecode": "int-arith.dslb",
+      "source": "int-arith.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 12",
+          "int -3",
+          "int -42",
+          "int 3",
+          "int -3",
+          "int -7",
+          "int 2147483647"
+        ]
+      }
+    },
+    {
+      "name": "float-arith",
+      "covers": "ADD_F SUB_F MUL_F DIV_F NEG_F I2F",
+      "schema": "schema.json",
+      "bytecode": "float-arith.dslb",
+      "source": "float-arith.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "float 3.75",
+          "float -1.5",
+          "float 7",
+          "float 3.5",
+          "float -1.5",
+          "float 3.5",
+          "float inf"
+        ]
+      }
+    },
+    {
+      "name": "compare",
+      "covers": "LT_I LE_I GT_I GE_I LT_F LE_F GT_F GE_F EQ NE",
+      "schema": "schema.json",
+      "bytecode": "compare.dslb",
+      "source": "compare.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true",
+          "bool true",
+          "bool false",
+          "bool true",
+          "bool false",
+          "bool true",
+          "bool true",
+          "bool false",
+          "bool true",
+          "bool false",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "logic-short-circuit",
+      "covers": "NOT DUP JUMP_IF_TRUE JUMP_IF_FALSE POP",
+      "schema": "schema.json",
+      "bytecode": "logic-short-circuit.dslb",
+      "source": "logic-short-circuit.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false",
+          "bool true",
+          "bool true",
+          "bool true",
+          "bool false",
+          "yes",
+          "str one yes call"
+        ]
+      }
+    },
+    {
+      "name": "if-else-chain",
+      "covers": "JUMP JUMP_IF_FALSE",
+      "schema": "schema.json",
+      "bytecode": "if-else-chain.dslb",
+      "source": "if-else-chain.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str medium",
+          "str ten",
+          "str not eleven"
+        ]
+      }
+    },
+    {
+      "name": "locals-and-scopes",
+      "covers": "LOAD_LOCAL STORE_LOCAL",
+      "schema": "schema.json",
+      "bytecode": "locals-and-scopes.dslb",
+      "source": "locals-and-scopes.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 22",
+          "int 99",
+          "int 20"
+        ]
+      }
+    },
+    {
+      "name": "handles-and-chains",
+      "covers": "CALL_FN CALL_METHOD object values",
+      "schema": "schema.json",
+      "bytecode": "handles-and-chains.dslb",
+      "source": "handles-and-chains.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 2",
+          "str thing-2",
+          "thing 2",
+          "thing 7",
+          "float 4.5",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "strings",
+      "covers": "CONCAT I2S F2S B2S",
+      "schema": "schema.json",
+      "bytecode": "strings.dslb",
+      "source": "strings.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str hello, world!",
+          "str ",
+          "str thing-1:1"
+        ]
+      }
+    },
+    {
+      "name": "float-formatting",
+      "covers": "F2S %.15g",
+      "schema": "schema.json",
+      "bytecode": "float-formatting.dslb",
+      "source": "float-formatting.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str 0.3",
+          "str 1",
+          "str 123456789.125",
+          "str 0.333333333333333",
+          "str -0",
+          "str inf"
+        ]
+      }
+    },
+    {
+      "name": "runtime-host-error",
+      "covers": "host exception propagates",
+      "schema": "schema.json",
+      "bytecode": "runtime-host-error.dslb",
+      "source": "runtime-host-error.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error": "stop here"
+      }
+    },
+    {
+      "name": "runtime-div-zero",
+      "covers": "DIV_I by zero",
+      "schema": "schema.json",
+      "bytecode": "runtime-div-zero.dslb",
+      "source": "runtime-div-zero.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error": "int division by zero"
+      }
+    },
+    {
+      "name": "runtime-host-error-at",
+      "covers": "S5 located host error inside a nested while loop",
+      "schema": "schema.json",
+      "bytecode": "runtime-host-error-at.dslb",
+      "source": "runtime-host-error-at.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_HOST",
+          "line": 3,
+          "column": 3,
+          "message": "located host"
+        }
+      }
+    },
+    {
+      "name": "runtime-div-zero-at",
+      "covers": "S5 located integer division error after argument evaluation",
+      "schema": "schema.json",
+      "bytecode": "runtime-div-zero-at.dslb",
+      "source": "runtime-div-zero-at.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_ERROR",
+          "line": 2,
+          "column": 10,
+          "message": "int division by zero"
+        }
+      }
+    },
+    {
+      "name": "runtime-mod-zero-at",
+      "covers": "S5 located integer remainder error",
+      "schema": "schema.json",
+      "bytecode": "runtime-mod-zero-at.dslb",
+      "source": "runtime-mod-zero-at.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_ERROR",
+          "line": 2,
+          "column": 9,
+          "message": "int modulo by zero"
+        }
+      }
+    },
+    {
+      "name": "runtime-inline-error-at",
+      "covers": "S5 located error in an inlined callee",
+      "schema": "schema.json",
+      "bytecode": "runtime-inline-error-at.dslb",
+      "source": "runtime-inline-error-at.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_HOST",
+          "line": 1,
+          "column": 22,
+          "message": "inner fault"
+        }
+      }
+    },
+    {
+      "name": "runtime-after-inline-error-at",
+      "covers": "S5 caller location after a multiline host call with an inlined argument",
+      "schema": "schema.json",
+      "bytecode": "runtime-after-inline-error-at.dslb",
+      "source": "runtime-after-inline-error-at.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_HOST",
+          "line": 2,
+          "column": 1,
+          "message": "caller fault"
+        }
+      }
+    },
+    {
+      "name": "runtime-empty-lines-fallback",
+      "covers": "S5 empty line table leaves runtime location unavailable",
+      "schema": "schema.json",
+      "bytecode": "runtime-empty-lines-fallback.dslb",
+      "source": "runtime-empty-lines-fallback.dsl",
+      "mutated": true,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_HOST",
+          "line": 0,
+          "column": 0,
+          "message": "no source table"
+        }
+      }
+    },
+    {
+      "name": "runtime-long-column-fallback",
+      "covers": "S5 columns beyond u16 encode as zero while preserving line",
+      "schema": "schema.json",
+      "bytecode": "runtime-long-column-fallback.dslb",
+      "source": "runtime-long-column-fallback.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_HOST",
+          "line": 1,
+          "column": 0,
+          "message": "long column"
+        }
+      }
+    },
+    {
+      "name": "int64-wraparound",
+      "covers": "PUSH_INT i64, two's complement wraparound of ADD_I SUB_I MUL_I DIV_I MOD_I NEG_I (R34: no overflow trap), I2S of 64-bit values",
+      "schema": "schema.json",
+      "bytecode": "int64-wraparound.dslb",
+      "source": "int64-wraparound.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 9007199254740992",
+          "int -9007199254740992",
+          "int -9223372036854775808",
+          "int 9223372036854775807",
+          "int -9223372036854775808",
+          "int -9223372036854775808",
+          "int 0",
+          "int -9223372036854775808",
+          "int -2",
+          "str -9223372036854775808"
+        ]
+      }
+    },
+    {
+      "name": "int-remainder",
+      "covers": "MOD_I takes the dividend's sign; DIV_I truncates toward zero",
+      "schema": "schema.json",
+      "bytecode": "int-remainder.dslb",
+      "source": "int-remainder.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 1",
+          "int -1",
+          "int 1",
+          "int -1",
+          "int 2",
+          "int -3"
+        ]
+      }
+    },
+    {
+      "name": "runtime-mod-zero",
+      "covers": "MOD_I by zero",
+      "schema": "schema.json",
+      "bytecode": "runtime-mod-zero.dslb",
+      "source": "runtime-mod-zero.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error": "int modulo by zero"
+      }
+    },
+    {
+      "name": "range-deep",
+      "covers": "nesting beyond the withdrawn 16-level cap",
+      "schema": "schema.json",
+      "bytecode": "range-deep.dslb",
+      "source": "range-deep.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 17"
+        ]
+      }
+    },
+    {
+      "name": "range-empty",
+      "covers": "FOR_RANGE empty and reversed ranges; negative counters",
+      "schema": "schema.json",
+      "bytecode": "range-empty.dslb",
+      "source": "range-empty.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int -2",
+          "int -1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "range-nested-snapshot",
+      "covers": "nested FOR_RANGE/FOR_NEXT with computed bounds and bound snapshot",
+      "schema": "schema.json",
+      "bytecode": "range-nested-snapshot.dslb",
+      "source": "range-nested-snapshot.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 10",
+          "int 11",
+          "int 20",
+          "int 21",
+          "int 22",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "range-computed",
+      "covers": "host-computed bounds evaluated exactly once left-to-right; if inside loop",
+      "schema": "schema.json",
+      "bytecode": "range-computed.dslb",
+      "source": "range-computed.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 4",
+          "int 1",
+          "int 3"
+        ]
+      }
+    },
+    {
+      "name": "range-million",
+      "covers": "large finite count without budget, wrapping i64 accumulator",
+      "schema": "schema.json",
+      "bytecode": "range-million.dslb",
+      "source": "range-million.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 499999500000"
+        ]
+      }
+    },
+    {
+      "name": "range-i64-edges",
+      "covers": "short loops near INT64_MIN/MAX terminate without overflow; extreme reversed range empty",
+      "schema": "schema.json",
+      "bytecode": "range-i64-edges.dslb",
+      "source": "range-i64-edges.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 9223372036854775805",
+          "int 9223372036854775806",
+          "int -9223372036854775808",
+          "int -9223372036854775807"
+        ]
+      }
+    },
+    {
+      "name": "range-scopes",
+      "covers": "fresh counter scopes, branch around a whole loop, local reinitialization per iteration",
+      "schema": "schema.json",
+      "bytecode": "range-scopes.dslb",
+      "source": "range-scopes.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 9",
+          "int 9",
+          "int 0",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "while-break-continue",
+      "covers": "v5 while host calls, break/continue, nested mixed loops and switch control targeting its enclosing loop",
+      "schema": "schema.json",
+      "bytecode": "while-break-continue.dslb",
+      "source": "while-break-continue.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 1",
+          "int 3",
+          "int 10",
+          "int 11",
+          "int 20",
+          "int 20"
+        ]
+      }
+    },
+    {
+      "name": "foreach-break-continue",
+      "covers": "break and continue in a schema collection foreach, lowered through FOR_RANGE",
+      "schema": "schema.json",
+      "bytecode": "foreach-break-continue.dslb",
+      "source": "foreach-break-continue.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "while-inline-mixed",
+      "covers": "inline loops with caller operands, mixed while/range/foreach, first break and last continue, loops in conditions",
+      "schema": "schema.json",
+      "bytecode": "while-inline-mixed.dslb",
+      "source": "while-inline-mixed.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 100",
+          "int 0",
+          "int 1",
+          "int 2",
+          "int 101",
+          "int 10",
+          "int 11",
+          "int 12",
+          "int 2",
+          "int 0",
+          "int 1",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "load-bad-magic",
+      "covers": "loader: magic",
+      "schema": "schema.json",
+      "bytecode": "load-bad-magic.dslb",
+      "source": "load-bad-magic.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "bad magic"
+        }
+      }
+    },
+    {
+      "name": "load-other-version",
+      "covers": "loader: old v5 version refused; v6 is the only runtime version",
+      "schema": "schema.json",
+      "bytecode": "load-other-version.dslb",
+      "source": "load-other-version.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "unsupported bytecode version 5"
+        }
+      }
+    },
+    {
+      "name": "load-bad-constant-tag",
+      "covers": "loader: constant tag",
+      "schema": "schema.json",
+      "bytecode": "load-bad-constant-tag.dslb",
+      "source": "load-bad-constant-tag.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "constant 0 has unknown tag 7"
+        }
+      }
+    },
+    {
+      "name": "load-context-type",
+      "covers": "loader: context declaration type",
+      "schema": "schema-ctx.json",
+      "bytecode": "load-context-type.dslb",
+      "source": "load-context-type.dsl",
+      "mutated": false,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_UNBOUND",
+          "message": "context variable 't' is declared as Thing by the bytecode, the host provides Trace"
+        }
+      }
+    },
+    {
+      "name": "load-truncated",
+      "covers": "loader: truncation",
+      "schema": "schema.json",
+      "bytecode": "load-truncated.dslb",
+      "source": "load-truncated.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "bytecode is truncated"
+        }
+      }
+    },
+    {
+      "name": "load-trailing",
+      "covers": "loader: trailing bytes",
+      "schema": "schema.json",
+      "bytecode": "load-trailing.dslb",
+      "source": "load-trailing.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "trailing byte"
+        }
+      }
+    },
+    {
+      "name": "load-schema-mismatch",
+      "covers": "loader: schema hash",
+      "schema": "schema.json",
+      "bytecode": "load-schema-mismatch.dslb",
+      "source": "load-schema-mismatch.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_SCHEMA_MISMATCH",
+          "message": "schema mismatch"
+        }
+      }
+    },
+    {
+      "name": "load-unbound-function",
+      "covers": "loader: unbound import",
+      "schema": "schema-extra.json",
+      "bytecode": "load-unbound-function.dslb",
+      "source": "load-unbound-function.dsl",
+      "mutated": false,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_UNBOUND",
+          "message": "import 'fn unbound_extra() -> int' is not provided by the host"
+        }
+      }
+    },
+    {
+      "name": "load-backward-jump",
+      "covers": "verifier: forward-only jumps",
+      "schema": "schema.json",
+      "bytecode": "load-backward-jump.dslb",
+      "source": "load-backward-jump.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "goes backwards"
+        }
+      }
+    },
+    {
+      "name": "load-bad-loop-pair",
+      "covers": "verifier: LOOP_BACK must target its paired WHILE_BEGIN",
+      "schema": "schema.json",
+      "bytecode": "load-bad-loop-pair.dslb",
+      "source": "load-bad-loop-pair.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "does not target its paired WHILE_BEGIN"
+        }
+      }
+    },
+    {
+      "name": "entries-order",
+      "covers": "v6 entries source order and plain helpers absent",
+      "schema": "schema.json",
+      "bytecode": "entries-order.dslb",
+      "source": "entries-order.dsl",
+      "mutated": false,
+      "expect": {
+        "entries": [
+          "first pair interface Step(int) -> int",
+          "second pair interface Step(int) -> int",
+          "third string interface Flag() -> bool"
+        ]
+      }
+    },
+    {
+      "name": "call-value",
+      "covers": "v6 value entry args occupy parameter slots",
+      "schema": "schema.json",
+      "bytecode": "call-value.dslb",
+      "source": "call-value.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "increment",
+          "args": [
+            41
+          ],
+          "result": "int 42"
+        }
+      }
+    },
+    {
+      "name": "call-trace",
+      "covers": "v6 void entry accepts a Thing handle",
+      "schema": "schema.json",
+      "bytecode": "call-trace.dslb",
+      "source": "call-trace.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "visit",
+          "args": [
+            {
+              "type": "Thing",
+              "id": 2
+            }
+          ],
+          "result": "void",
+          "trace": [
+            "int 2",
+            "str thing-2"
+          ]
+        }
+      }
+    },
+    {
+      "name": "call-helper-inlined",
+      "covers": "v6 helper inlining does not create an entry",
+      "schema": "schema.json",
+      "bytecode": "call-helper-inlined.dslb",
+      "source": "call-helper-inlined.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "increment",
+          "args": [
+            1
+          ],
+          "result": "int 3",
+          "trace": []
+        }
+      }
+    },
+    {
+      "name": "call-loop",
+      "covers": "v6 entry owns loop code and locals",
+      "schema": "schema.json",
+      "bytecode": "call-loop.dslb",
+      "source": "call-loop.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "visit",
+          "args": [
+            {
+              "type": "Thing",
+              "id": 0
+            }
+          ],
+          "result": "void",
+          "trace": [
+            "int 0",
+            "int 1",
+            "int 2"
+          ]
+        }
+      }
+    },
+    {
+      "name": "call-body-too",
+      "covers": "v6 rule can also be called inline from body",
+      "schema": "schema.json",
+      "bytecode": "call-body-too.dslb",
+      "source": "call-body-too.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "increment",
+          "args": [
+            4
+          ],
+          "result": "int 5",
+          "trace": [
+            "int 5"
+          ]
+        }
+      }
+    },
+    {
+      "name": "call-error-at",
+      "covers": "v6 entry errors preserve source locations",
+      "schema": "schema.json",
+      "bytecode": "call-error-at.dslb",
+      "source": "call-error-at.dsl",
+      "mutated": false,
+      "expect": {
+        "call_error_at": {
+          "entry": "fail_rule",
+          "args": [
+            {
+              "type": "Thing",
+              "id": 0
+            }
+          ],
+          "code": "RUN_HOST",
+          "line": 3,
+          "column": 3,
+          "message": "entry fault"
+        }
+      }
+    },
+    {
+      "name": "call-arity",
+      "covers": "v6 host arity errors name the entry",
+      "schema": "schema.json",
+      "bytecode": "call-arity.dslb",
+      "source": "call-arity.dsl",
+      "mutated": false,
+      "expect": {
+        "call_error": {
+          "entry": "increment",
+          "args": [],
+          "code": "RUN_HOST",
+          "message": "call entry 'increment' expects 1 argument"
+        }
+      }
+    },
+    {
+      "name": "entries-empty",
+      "covers": "v6 files without rules carry an empty entry table",
+      "schema": "schema.json",
+      "bytecode": "entries-empty.dslb",
+      "source": "entries-empty.dsl",
+      "mutated": false,
+      "expect": {
+        "entries": []
+      }
+    },
+    {
+      "name": "load-entry-jump-out",
+      "covers": "entry verifier rejects a jump outside its region",
+      "schema": "schema.json",
+      "bytecode": "load-entry-jump-out.dslb",
+      "source": "load-entry-jump-out.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "jump"
+        }
+      }
+    },
+    {
+      "name": "load-entry-halt-depth",
+      "covers": "entry verifier rejects a value HALT with the wrong stack depth",
+      "schema": "schema.json",
+      "bytecode": "load-entry-halt-depth.dslb",
+      "source": "load-entry-halt-depth.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "HALT leaves 0 values"
+        }
+      }
+    },
+    {
+      "name": "call-body-trace",
+      "covers": "v6 every call runs the body first: its trace precedes the entry result",
+      "schema": "schema.json",
+      "bytecode": "call-body-trace.dslb",
+      "source": "call-body-trace.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "increment",
+          "args": [
+            4
+          ],
+          "result": "int 5",
+          "trace": [
+            "int 9"
+          ]
+        }
+      }
+    },
+    {
+      "name": "call-multi-param",
+      "covers": "v6 int, float, string and bool arguments in parameter slots; string result",
+      "schema": "schema.json",
+      "bytecode": "call-multi-param.dslb",
+      "source": "call-multi-param.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "mix",
+          "args": [
+            7,
+            2.5,
+            "a",
+            true
+          ],
+          "result": "string a72.5true"
+        }
+      }
+    },
+    {
+      "name": "call-enum-return",
+      "covers": "v6 enum result is its constant name as a string",
+      "schema": "schema.json",
+      "bytecode": "call-enum-return.dslb",
+      "source": "call-enum-return.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "state",
+          "args": [],
+          "result": "string OPTIMAL"
+        }
+      }
+    },
+    {
+      "name": "call-object-return",
+      "covers": "v6 object result: the host receives the handle (result thing ID)",
+      "schema": "schema.json",
+      "bytecode": "call-object-return.dslb",
+      "source": "call-object-return.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "pick",
+          "args": [
+            {
+              "type": "Thing",
+              "id": 2
+            }
+          ],
+          "result": "thing 3"
+        }
+      }
+    },
+    {
+      "name": "call-switch-foreach",
+      "covers": "v6 foreach over a context collection and switch inside an entry; hidden slots after the parameter",
+      "schema": "schema.json",
+      "bytecode": "call-switch-foreach.dslb",
+      "source": "call-switch-foreach.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "flow",
+          "args": [
+            1
+          ],
+          "result": "int 106"
+        }
+      }
+    },
+    {
+      "name": "call-rule-calls-rule",
+      "covers": "v6 a rule calling another rule inlines it; both stay entries",
+      "schema": "schema.json",
+      "bytecode": "call-rule-calls-rule.dslb",
+      "source": "call-rule-calls-rule.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "outer",
+          "args": [
+            3
+          ],
+          "result": "int 13",
+          "trace": [
+            "int 3",
+            "int 6"
+          ]
+        }
+      }
+    },
+    {
+      "name": "load-entry-params-mismatch",
+      "covers": "loader: entry nparams must equal the interface's parameter count",
+      "schema": "schema.json",
+      "bytecode": "load-entry-params-mismatch.dslb",
+      "source": "load-entry-params-mismatch.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "entry 'increment' declares 0 parameter"
+        }
+      }
+    },
+    {
+      "name": "load-entry-hidden-param",
+      "covers": "loader: a parameter local must not carry the hidden flag",
+      "schema": "schema.json",
+      "bytecode": "load-entry-hidden-param.dslb",
+      "source": "load-entry-hidden-param.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "entry 'increment' parameter 1 is hidden"
+        }
+      }
+    },
+    {
+      "name": "load-entry-param-type",
+      "covers": "loader: parameter local types must equal the interface's parameter types",
+      "schema": "schema.json",
+      "bytecode": "load-entry-param-type.dslb",
+      "source": "load-entry-param-type.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "entry 'increment' parameter 1 has type step"
+        }
+      }
+    },
+    {
+      "name": "load-entry-lines-huge",
+      "covers": "loader: a line count larger than the file is a truncation/order error, never an allocation (WP11 F1)",
+      "schema": "schema.json",
+      "bytecode": "load-entry-lines-huge.dslb",
+      "source": "load-entry-lines-huge.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "line table"
+        }
+      }
+    },
+    {
+      "name": "load-entry-dup-name",
+      "covers": "loader: entry names are unique (WP11 F3)",
+      "schema": "schema.json",
+      "bytecode": "load-entry-dup-name.dslb",
+      "source": "load-entry-dup-name.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "duplicate entry name 'first'"
+        }
+      }
+    },
+    {
+      "name": "load-entry-hidden-store",
+      "covers": "verifier: a hidden local is compiler-owned; STORE_LOCAL to it is refused in every region (WP11 F2)",
+      "schema": "schema.json",
+      "bytecode": "load-entry-hidden-store.dslb",
+      "source": "load-entry-hidden-store.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "writes compiler-owned loop local 1"
+        }
+      }
+    },
+    {
+      "name": "return-root",
+      "covers": "slice 3: whole-result assignment lowers to lmcode_return_set without changing v6",
+      "schema": "schema.json",
+      "bytecode": "return-root.dslb",
+      "source": "return-root.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [],
+        "sink": {
+          "json": "17",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":17}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "return-field",
+      "covers": "slice 3: literal and computed one-level fields lower to lmcode_return_put",
+      "schema": "schema.json",
+      "bytecode": "return-field.dslb",
+      "source": "return-field.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [],
+        "sink": {
+          "json": "{\"name\":\"Ada\",\"score\":9}",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":{\"name\":\"Ada\",\"score\":9}}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "return-null",
+      "covers": "slice 3: explicit root and field null use the dedicated null imports",
+      "schema": "schema.json",
+      "bytecode": "return-null.dslb",
+      "source": "return-null.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [],
+        "sink": {
+          "json": "{\"name\":null}",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":{\"name\":null}}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "return-entry-write",
+      "covers": "slice 3: entry-side writes use the invocation sink; the entry return and HALT remain separate",
+      "schema": "schema.json",
+      "bytecode": "return-entry-write.dslb",
+      "source": "return-entry-write.dsl",
+      "mutated": false,
+      "expect": {
+        "call": {
+          "entry": "write",
+          "args": [
+            7
+          ],
+          "result": "int 8",
+          "trace": []
+        },
+        "sink": {
+          "json": "{\"body\":1,\"value\":7}",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":{\"body\":1,\"value\":7}}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "return-scalar-field",
+      "covers": "slice 3: a field write after a scalar root is RUN_HOST",
+      "schema": "schema.json",
+      "bytecode": "return-scalar-field.dslb",
+      "source": "return-scalar-field.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_HOST",
+          "line": 2,
+          "column": 1,
+          "message": "lmcode return: field assignment requires object or null"
+        },
+        "sink": {
+          "json": "1",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"run\",\"code\":\"RUN_HOST\",\"message\":\"dsl line 2:1: lmcode return: field assignment requires object or null\",\"line\":2,\"column\":1}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "return-entry-error",
+      "covers": "F3: body and entry share a sink, entry failure emits a failure envelope",
+      "schema": "schema.json",
+      "bytecode": "return-entry-error.dslb",
+      "source": "return-entry-error.dsl",
+      "mutated": false,
+      "expect": {
+        "call_error_at": {
+          "entry": "write",
+          "args": [
+            7
+          ],
+          "code": "RUN_HOST",
+          "line": 5,
+          "column": 3,
+          "message": "entry fault after write"
+        },
+        "sink": {
+          "json": "{\"body\":1,\"value\":7}",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"run\",\"code\":\"RUN_HOST\",\"message\":\"dsl line 5:3: entry fault after write\",\"line\":5,\"column\":3}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "return-multiline-helper",
+      "covers": "synthetic sink CALL maps to assignment after successful helper RHS",
+      "schema": "schema.json",
+      "bytecode": "return-multiline-helper.dslb",
+      "source": "return-multiline-helper.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_HOST",
+          "line": 3,
+          "column": 1,
+          "message": "lmcode return: field assignment requires object or null"
+        },
+        "sink": {
+          "json": "1",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"run\",\"code\":\"RUN_HOST\",\"message\":\"dsl line 3:1: lmcode return: field assignment requires object or null\",\"line\":3,\"column\":1}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "return-rhs-error",
+      "covers": "RHS failure retains expression location before synthetic sink CALL",
+      "schema": "schema.json",
+      "bytecode": "return-rhs-error.dslb",
+      "source": "return-rhs-error.dsl",
+      "mutated": false,
+      "expect": {
+        "runtime_error_at": {
+          "code": "RUN_ERROR",
+          "line": 3,
+          "column": 5,
+          "message": "division by zero"
+        },
+        "sink": {
+          "json": "1",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"run\",\"code\":\"RUN_ERROR\",\"message\":\"dsl line 3:5: int division by zero\",\"line\":3,\"column\":5}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "return-root-null",
+      "covers": "explicit root null remains observable at success framing",
+      "schema": "schema.json",
+      "bytecode": "return-root-null.dslb",
+      "source": "return-root-null.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [],
+        "sink": {
+          "json": "null",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":null}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "typed-result-map",
+      "covers": "R2: typed IntMap result accepts its declared root value without changing HALT",
+      "schema": "schema-typed.json",
+      "bytecode": "typed-result-map.dslb",
+      "source": "typed-result-map.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [],
+        "sink": {
+          "json": "{\"score\":7}",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":{\"score\":7}}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "typed-result-field",
+      "covers": "R2: typed IntMap field writes compile through the existing standard import",
+      "schema": "schema-typed.json",
+      "bytecode": "typed-result-field.dslb",
+      "source": "typed-result-field.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [],
+        "sink": {
+          "json": "{\"score\":7}",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":{\"score\":7}}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "typed-result-nullable",
+      "covers": "R2: nullable scalar contract permits explicit root null",
+      "schema": "schema-nullable.json",
+      "bytecode": "typed-result-nullable.dslb",
+      "source": "typed-result-nullable.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [],
+        "sink": {
+          "json": "null",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":null}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "typed-result-json-deferred",
+      "covers": "R2: Json root value remains compiler-checkable with runtime shape validation",
+      "schema": "schema-typed.json",
+      "bytecode": "typed-result-json-deferred.dslb",
+      "source": "typed-result-json-deferred.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [],
+        "sink": {
+          "json": "{\"score\":7}",
+          "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":{\"score\":7}}\nLMCODE_RETURN_END\n"
+        }
+      }
+    },
+    {
+      "name": "matrix-int-add-0",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-0.dslb",
+      "source": "matrix-int-add-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-1",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-1.dslb",
+      "source": "matrix-int-add-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-2",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-2.dslb",
+      "source": "matrix-int-add-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-3",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-3.dslb",
+      "source": "matrix-int-add-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-4",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-4.dslb",
+      "source": "matrix-int-add-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "int -2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-5",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-5.dslb",
+      "source": "matrix-int-add-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "int 10"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-6",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-6.dslb",
+      "source": "matrix-int-add-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "int -4"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-7",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-7.dslb",
+      "source": "matrix-int-add-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "int 4"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-8",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-8.dslb",
+      "source": "matrix-int-add-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "int -10"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-9",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-9.dslb",
+      "source": "matrix-int-add-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "int 2147483649"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-10",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-10.dslb",
+      "source": "matrix-int-add-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "int -2147483645"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-11",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-11.dslb",
+      "source": "matrix-int-add-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "int 4294967299"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-12",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-12.dslb",
+      "source": "matrix-int-add-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "int 9007199254740993"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-13",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-13.dslb",
+      "source": "matrix-int-add-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "int -9007199254740989"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-14",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-14.dslb",
+      "source": "matrix-int-add-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "int 9007199254739968"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-add-15",
+      "covers": "signed i64 add; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-add-15.dslb",
+      "source": "matrix-int-add-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "int 9007199254742016"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-0",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-0.dslb",
+      "source": "matrix-int-sub-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "int -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-1",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-1.dslb",
+      "source": "matrix-int-sub-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-2",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-2.dslb",
+      "source": "matrix-int-sub-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "int -2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-3",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-3.dslb",
+      "source": "matrix-int-sub-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-4",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-4.dslb",
+      "source": "matrix-int-sub-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-5",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-5.dslb",
+      "source": "matrix-int-sub-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "int 4"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-6",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-6.dslb",
+      "source": "matrix-int-sub-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "int -10"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-7",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-7.dslb",
+      "source": "matrix-int-sub-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "int 10"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-8",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-8.dslb",
+      "source": "matrix-int-sub-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "int -4"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-9",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-9.dslb",
+      "source": "matrix-int-sub-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "int 2147483645"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-10",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-10.dslb",
+      "source": "matrix-int-sub-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "int -2147483651"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-11",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-11.dslb",
+      "source": "matrix-int-sub-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "int 4294967293"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-12",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-12.dslb",
+      "source": "matrix-int-sub-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "int 9007199254740989"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-13",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-13.dslb",
+      "source": "matrix-int-sub-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "int -9007199254740993"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-14",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-14.dslb",
+      "source": "matrix-int-sub-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "int 9007199254742016"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-sub-15",
+      "covers": "signed i64 sub; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-sub-15.dslb",
+      "source": "matrix-int-sub-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "int 9007199254739968"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-0",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-0.dslb",
+      "source": "matrix-int-mul-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-1",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-1.dslb",
+      "source": "matrix-int-mul-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-2",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-2.dslb",
+      "source": "matrix-int-mul-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "int -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-3",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-3.dslb",
+      "source": "matrix-int-mul-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "int -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-4",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-4.dslb",
+      "source": "matrix-int-mul-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-5",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-5.dslb",
+      "source": "matrix-int-mul-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "int 21"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-6",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-6.dslb",
+      "source": "matrix-int-mul-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "int -21"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-7",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-7.dslb",
+      "source": "matrix-int-mul-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "int -21"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-8",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-8.dslb",
+      "source": "matrix-int-mul-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "int 21"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-9",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-9.dslb",
+      "source": "matrix-int-mul-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "int 4294967294"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-10",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-10.dslb",
+      "source": "matrix-int-mul-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "int -6442450944"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-11",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-11.dslb",
+      "source": "matrix-int-mul-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "int 12884901888"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-12",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-12.dslb",
+      "source": "matrix-int-mul-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "int 18014398509481982"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-13",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-13.dslb",
+      "source": "matrix-int-mul-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "int -18014398509481982"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-14",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-14.dslb",
+      "source": "matrix-int-mul-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "int -9223372036854775808"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-mul-15",
+      "covers": "signed i64 mul; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-mul-15.dslb",
+      "source": "matrix-int-mul-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "int -9223372036854775808"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-0",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-0.dslb",
+      "source": "matrix-int-div-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-1",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-1.dslb",
+      "source": "matrix-int-div-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-2",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-2.dslb",
+      "source": "matrix-int-div-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "int -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-3",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-3.dslb",
+      "source": "matrix-int-div-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "int -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-4",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-4.dslb",
+      "source": "matrix-int-div-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-5",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-5.dslb",
+      "source": "matrix-int-div-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-6",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-6.dslb",
+      "source": "matrix-int-div-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "int -2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-7",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-7.dslb",
+      "source": "matrix-int-div-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "int -2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-8",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-8.dslb",
+      "source": "matrix-int-div-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-9",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-9.dslb",
+      "source": "matrix-int-div-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "int 1073741823"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-10",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-10.dslb",
+      "source": "matrix-int-div-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "int -715827882"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-11",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-11.dslb",
+      "source": "matrix-int-div-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "int 1431655765"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-12",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-12.dslb",
+      "source": "matrix-int-div-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "int 4503599627370495"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-13",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-13.dslb",
+      "source": "matrix-int-div-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "int -4503599627370495"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-14",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-14.dslb",
+      "source": "matrix-int-div-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "int -8796093022208"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-div-15",
+      "covers": "signed i64 div; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-div-15.dslb",
+      "source": "matrix-int-div-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "int 8796093022208"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-0",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-0.dslb",
+      "source": "matrix-int-rem-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-1",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-1.dslb",
+      "source": "matrix-int-rem-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-2",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-2.dslb",
+      "source": "matrix-int-rem-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-3",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-3.dslb",
+      "source": "matrix-int-rem-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-4",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-4.dslb",
+      "source": "matrix-int-rem-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-5",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-5.dslb",
+      "source": "matrix-int-rem-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-6",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-6.dslb",
+      "source": "matrix-int-rem-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "int -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-7",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-7.dslb",
+      "source": "matrix-int-rem-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-8",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-8.dslb",
+      "source": "matrix-int-rem-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "int -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-9",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-9.dslb",
+      "source": "matrix-int-rem-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-10",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-10.dslb",
+      "source": "matrix-int-rem-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "int -2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-11",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-11.dslb",
+      "source": "matrix-int-rem-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-12",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-12.dslb",
+      "source": "matrix-int-rem-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-13",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-13.dslb",
+      "source": "matrix-int-rem-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "int -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-14",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-14.dslb",
+      "source": "matrix-int-rem-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-int-rem-15",
+      "covers": "signed i64 rem; zero/sign, int32, precision and wrapping boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-int-rem-15.dslb",
+      "source": "matrix-int-rem-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-0",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-0.dslb",
+      "source": "matrix-compare-eq-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-1",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-1.dslb",
+      "source": "matrix-compare-eq-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-2",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-2.dslb",
+      "source": "matrix-compare-eq-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-3",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-3.dslb",
+      "source": "matrix-compare-eq-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-4",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-4.dslb",
+      "source": "matrix-compare-eq-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-5",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-5.dslb",
+      "source": "matrix-compare-eq-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-6",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-6.dslb",
+      "source": "matrix-compare-eq-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-7",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-7.dslb",
+      "source": "matrix-compare-eq-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-8",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-8.dslb",
+      "source": "matrix-compare-eq-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-9",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-9.dslb",
+      "source": "matrix-compare-eq-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-10",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-10.dslb",
+      "source": "matrix-compare-eq-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-11",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-11.dslb",
+      "source": "matrix-compare-eq-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-12",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-12.dslb",
+      "source": "matrix-compare-eq-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-13",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-13.dslb",
+      "source": "matrix-compare-eq-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-14",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-14.dslb",
+      "source": "matrix-compare-eq-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-eq-15",
+      "covers": "signed integer eq, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-eq-15.dslb",
+      "source": "matrix-compare-eq-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-0",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-0.dslb",
+      "source": "matrix-compare-ne-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-1",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-1.dslb",
+      "source": "matrix-compare-ne-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-2",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-2.dslb",
+      "source": "matrix-compare-ne-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-3",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-3.dslb",
+      "source": "matrix-compare-ne-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-4",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-4.dslb",
+      "source": "matrix-compare-ne-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-5",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-5.dslb",
+      "source": "matrix-compare-ne-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-6",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-6.dslb",
+      "source": "matrix-compare-ne-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-7",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-7.dslb",
+      "source": "matrix-compare-ne-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-8",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-8.dslb",
+      "source": "matrix-compare-ne-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-9",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-9.dslb",
+      "source": "matrix-compare-ne-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-10",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-10.dslb",
+      "source": "matrix-compare-ne-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-11",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-11.dslb",
+      "source": "matrix-compare-ne-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-12",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-12.dslb",
+      "source": "matrix-compare-ne-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-13",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-13.dslb",
+      "source": "matrix-compare-ne-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-14",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-14.dslb",
+      "source": "matrix-compare-ne-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ne-15",
+      "covers": "signed integer ne, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ne-15.dslb",
+      "source": "matrix-compare-ne-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-0",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-0.dslb",
+      "source": "matrix-compare-lt-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-1",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-1.dslb",
+      "source": "matrix-compare-lt-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-2",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-2.dslb",
+      "source": "matrix-compare-lt-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-3",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-3.dslb",
+      "source": "matrix-compare-lt-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-4",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-4.dslb",
+      "source": "matrix-compare-lt-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-5",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-5.dslb",
+      "source": "matrix-compare-lt-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-6",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-6.dslb",
+      "source": "matrix-compare-lt-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-7",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-7.dslb",
+      "source": "matrix-compare-lt-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-8",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-8.dslb",
+      "source": "matrix-compare-lt-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-9",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-9.dslb",
+      "source": "matrix-compare-lt-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-10",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-10.dslb",
+      "source": "matrix-compare-lt-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-11",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-11.dslb",
+      "source": "matrix-compare-lt-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-12",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-12.dslb",
+      "source": "matrix-compare-lt-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-13",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-13.dslb",
+      "source": "matrix-compare-lt-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-14",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-14.dslb",
+      "source": "matrix-compare-lt-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-lt-15",
+      "covers": "signed integer lt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-lt-15.dslb",
+      "source": "matrix-compare-lt-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-0",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-0.dslb",
+      "source": "matrix-compare-le-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-1",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-1.dslb",
+      "source": "matrix-compare-le-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-2",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-2.dslb",
+      "source": "matrix-compare-le-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-3",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-3.dslb",
+      "source": "matrix-compare-le-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-4",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-4.dslb",
+      "source": "matrix-compare-le-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-5",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-5.dslb",
+      "source": "matrix-compare-le-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-6",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-6.dslb",
+      "source": "matrix-compare-le-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-7",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-7.dslb",
+      "source": "matrix-compare-le-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-8",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-8.dslb",
+      "source": "matrix-compare-le-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-9",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-9.dslb",
+      "source": "matrix-compare-le-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-10",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-10.dslb",
+      "source": "matrix-compare-le-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-11",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-11.dslb",
+      "source": "matrix-compare-le-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-12",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-12.dslb",
+      "source": "matrix-compare-le-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-13",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-13.dslb",
+      "source": "matrix-compare-le-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-14",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-14.dslb",
+      "source": "matrix-compare-le-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-le-15",
+      "covers": "signed integer le, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-le-15.dslb",
+      "source": "matrix-compare-le-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-0",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-0.dslb",
+      "source": "matrix-compare-gt-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-1",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-1.dslb",
+      "source": "matrix-compare-gt-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-2",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-2.dslb",
+      "source": "matrix-compare-gt-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-3",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-3.dslb",
+      "source": "matrix-compare-gt-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-4",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-4.dslb",
+      "source": "matrix-compare-gt-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-5",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-5.dslb",
+      "source": "matrix-compare-gt-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-6",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-6.dslb",
+      "source": "matrix-compare-gt-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-7",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-7.dslb",
+      "source": "matrix-compare-gt-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-8",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-8.dslb",
+      "source": "matrix-compare-gt-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-9",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-9.dslb",
+      "source": "matrix-compare-gt-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-10",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-10.dslb",
+      "source": "matrix-compare-gt-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-11",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-11.dslb",
+      "source": "matrix-compare-gt-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-12",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-12.dslb",
+      "source": "matrix-compare-gt-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-13",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-13.dslb",
+      "source": "matrix-compare-gt-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-14",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-14.dslb",
+      "source": "matrix-compare-gt-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-gt-15",
+      "covers": "signed integer gt, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-gt-15.dslb",
+      "source": "matrix-compare-gt-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-0",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-0.dslb",
+      "source": "matrix-compare-ge-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "bound 1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-1",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-1.dslb",
+      "source": "matrix-compare-ge-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound 1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-2",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-2.dslb",
+      "source": "matrix-compare-ge-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound 1",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-3",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-3.dslb",
+      "source": "matrix-compare-ge-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "bound -1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-4",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-4.dslb",
+      "source": "matrix-compare-ge-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "bound -1",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-5",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-5.dslb",
+      "source": "matrix-compare-ge-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-6",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-6.dslb",
+      "source": "matrix-compare-ge-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-7",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-7.dslb",
+      "source": "matrix-compare-ge-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 7",
+          "bound -3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-8",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-8.dslb",
+      "source": "matrix-compare-ge-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -7",
+          "bound -3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-9",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-9.dslb",
+      "source": "matrix-compare-ge-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2147483647",
+          "bound 2",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-10",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-10.dslb",
+      "source": "matrix-compare-ge-10.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2147483648",
+          "bound 3",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-11",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-11.dslb",
+      "source": "matrix-compare-ge-11.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4294967296",
+          "bound 3",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-12",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-12.dslb",
+      "source": "matrix-compare-ge-12.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740991",
+          "bound 2",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-13",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-13.dslb",
+      "source": "matrix-compare-ge-13.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -9007199254740991",
+          "bound 2",
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-14",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-14.dslb",
+      "source": "matrix-compare-ge-14.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound -1024",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-compare-ge-15",
+      "covers": "signed integer ge, including beyond double exact output range",
+      "schema": "schema.json",
+      "bytecode": "matrix-compare-ge-15.dslb",
+      "source": "matrix-compare-ge-15.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 9007199254740992",
+          "bound 1024",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-and-0",
+      "covers": "boolean and truth-table row 0",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-and-0.dslb",
+      "source": "matrix-bool-and-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-and-1",
+      "covers": "boolean and truth-table row 1",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-and-1.dslb",
+      "source": "matrix-bool-and-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-and-2",
+      "covers": "boolean and truth-table row 2",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-and-2.dslb",
+      "source": "matrix-bool-and-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-and-3",
+      "covers": "boolean and truth-table row 3",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-and-3.dslb",
+      "source": "matrix-bool-and-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-or-0",
+      "covers": "boolean or truth-table row 0",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-or-0.dslb",
+      "source": "matrix-bool-or-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-or-1",
+      "covers": "boolean or truth-table row 1",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-or-1.dslb",
+      "source": "matrix-bool-or-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-or-2",
+      "covers": "boolean or truth-table row 2",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-or-2.dslb",
+      "source": "matrix-bool-or-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-or-3",
+      "covers": "boolean or truth-table row 3",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-or-3.dslb",
+      "source": "matrix-bool-or-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-eq-0",
+      "covers": "boolean eq truth-table row 0",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-eq-0.dslb",
+      "source": "matrix-bool-eq-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-eq-1",
+      "covers": "boolean eq truth-table row 1",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-eq-1.dslb",
+      "source": "matrix-bool-eq-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-eq-2",
+      "covers": "boolean eq truth-table row 2",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-eq-2.dslb",
+      "source": "matrix-bool-eq-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-eq-3",
+      "covers": "boolean eq truth-table row 3",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-eq-3.dslb",
+      "source": "matrix-bool-eq-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-ne-0",
+      "covers": "boolean ne truth-table row 0",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-ne-0.dslb",
+      "source": "matrix-bool-ne-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-ne-1",
+      "covers": "boolean ne truth-table row 1",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-ne-1.dslb",
+      "source": "matrix-bool-ne-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-ne-2",
+      "covers": "boolean ne truth-table row 2",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-ne-2.dslb",
+      "source": "matrix-bool-ne-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-bool-ne-3",
+      "covers": "boolean ne truth-table row 3",
+      "schema": "schema.json",
+      "bytecode": "matrix-bool-ne-3.dslb",
+      "source": "matrix-bool-ne-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-add-0",
+      "covers": "binary64 add signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-add-0.dslb",
+      "source": "matrix-float-add-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-add-1",
+      "covers": "binary64 add signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-add-1.dslb",
+      "source": "matrix-float-add-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-add-2",
+      "covers": "binary64 add signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-add-2.dslb",
+      "source": "matrix-float-add-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-add-3",
+      "covers": "binary64 add signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-add-3.dslb",
+      "source": "matrix-float-add-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-add-4",
+      "covers": "binary64 add signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-add-4.dslb",
+      "source": "matrix-float-add-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 1026.25"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-add-5",
+      "covers": "binary64 add signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-add-5.dslb",
+      "source": "matrix-float-add-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 4.0000000001"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-sub-0",
+      "covers": "binary64 sub signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-sub-0.dslb",
+      "source": "matrix-float-sub-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float -2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-sub-1",
+      "covers": "binary64 sub signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-sub-1.dslb",
+      "source": "matrix-float-sub-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-sub-2",
+      "covers": "binary64 sub signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-sub-2.dslb",
+      "source": "matrix-float-sub-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float -2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-sub-3",
+      "covers": "binary64 sub signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-sub-3.dslb",
+      "source": "matrix-float-sub-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-sub-4",
+      "covers": "binary64 sub signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-sub-4.dslb",
+      "source": "matrix-float-sub-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 1022.25"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-sub-5",
+      "covers": "binary64 sub signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-sub-5.dslb",
+      "source": "matrix-float-sub-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float -3.9999999999"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-mul-0",
+      "covers": "binary64 mul signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-mul-0.dslb",
+      "source": "matrix-float-mul-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-mul-1",
+      "covers": "binary64 mul signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-mul-1.dslb",
+      "source": "matrix-float-mul-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 0.75"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-mul-2",
+      "covers": "binary64 mul signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-mul-2.dslb",
+      "source": "matrix-float-mul-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float -0.75"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-mul-3",
+      "covers": "binary64 mul signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-mul-3.dslb",
+      "source": "matrix-float-mul-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float -0.75"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-mul-4",
+      "covers": "binary64 mul signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-mul-4.dslb",
+      "source": "matrix-float-mul-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 2048.5"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-mul-5",
+      "covers": "binary64 mul signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-mul-5.dslb",
+      "source": "matrix-float-mul-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 4e-10"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-div-0",
+      "covers": "binary64 div signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-div-0.dslb",
+      "source": "matrix-float-div-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-div-1",
+      "covers": "binary64 div signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-div-1.dslb",
+      "source": "matrix-float-div-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 3"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-div-2",
+      "covers": "binary64 div signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-div-2.dslb",
+      "source": "matrix-float-div-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float -3"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-div-3",
+      "covers": "binary64 div signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-div-3.dslb",
+      "source": "matrix-float-div-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float -0.3333333333333333"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-div-4",
+      "covers": "binary64 div signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-div-4.dslb",
+      "source": "matrix-float-div-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 512.125"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-div-5",
+      "covers": "binary64 div signs, fractions and small exponents; tolerance 1e-12",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-div-5.dslb",
+      "source": "matrix-float-div-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "~ float 2.5e-11"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-eq-0",
+      "covers": "binary64 eq ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-eq-0.dslb",
+      "source": "matrix-float-compare-eq-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-eq-1",
+      "covers": "binary64 eq ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-eq-1.dslb",
+      "source": "matrix-float-compare-eq-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-eq-2",
+      "covers": "binary64 eq ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-eq-2.dslb",
+      "source": "matrix-float-compare-eq-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-eq-3",
+      "covers": "binary64 eq ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-eq-3.dslb",
+      "source": "matrix-float-compare-eq-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-eq-4",
+      "covers": "binary64 eq ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-eq-4.dslb",
+      "source": "matrix-float-compare-eq-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-eq-5",
+      "covers": "binary64 eq ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-eq-5.dslb",
+      "source": "matrix-float-compare-eq-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ne-0",
+      "covers": "binary64 ne ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ne-0.dslb",
+      "source": "matrix-float-compare-ne-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ne-1",
+      "covers": "binary64 ne ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ne-1.dslb",
+      "source": "matrix-float-compare-ne-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ne-2",
+      "covers": "binary64 ne ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ne-2.dslb",
+      "source": "matrix-float-compare-ne-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ne-3",
+      "covers": "binary64 ne ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ne-3.dslb",
+      "source": "matrix-float-compare-ne-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ne-4",
+      "covers": "binary64 ne ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ne-4.dslb",
+      "source": "matrix-float-compare-ne-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ne-5",
+      "covers": "binary64 ne ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ne-5.dslb",
+      "source": "matrix-float-compare-ne-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-lt-0",
+      "covers": "binary64 lt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-lt-0.dslb",
+      "source": "matrix-float-compare-lt-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-lt-1",
+      "covers": "binary64 lt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-lt-1.dslb",
+      "source": "matrix-float-compare-lt-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-lt-2",
+      "covers": "binary64 lt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-lt-2.dslb",
+      "source": "matrix-float-compare-lt-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-lt-3",
+      "covers": "binary64 lt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-lt-3.dslb",
+      "source": "matrix-float-compare-lt-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-lt-4",
+      "covers": "binary64 lt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-lt-4.dslb",
+      "source": "matrix-float-compare-lt-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-lt-5",
+      "covers": "binary64 lt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-lt-5.dslb",
+      "source": "matrix-float-compare-lt-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-le-0",
+      "covers": "binary64 le ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-le-0.dslb",
+      "source": "matrix-float-compare-le-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-le-1",
+      "covers": "binary64 le ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-le-1.dslb",
+      "source": "matrix-float-compare-le-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-le-2",
+      "covers": "binary64 le ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-le-2.dslb",
+      "source": "matrix-float-compare-le-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-le-3",
+      "covers": "binary64 le ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-le-3.dslb",
+      "source": "matrix-float-compare-le-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-le-4",
+      "covers": "binary64 le ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-le-4.dslb",
+      "source": "matrix-float-compare-le-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-le-5",
+      "covers": "binary64 le ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-le-5.dslb",
+      "source": "matrix-float-compare-le-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-gt-0",
+      "covers": "binary64 gt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-gt-0.dslb",
+      "source": "matrix-float-compare-gt-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-gt-1",
+      "covers": "binary64 gt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-gt-1.dslb",
+      "source": "matrix-float-compare-gt-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-gt-2",
+      "covers": "binary64 gt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-gt-2.dslb",
+      "source": "matrix-float-compare-gt-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-gt-3",
+      "covers": "binary64 gt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-gt-3.dslb",
+      "source": "matrix-float-compare-gt-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-gt-4",
+      "covers": "binary64 gt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-gt-4.dslb",
+      "source": "matrix-float-compare-gt-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-gt-5",
+      "covers": "binary64 gt ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-gt-5.dslb",
+      "source": "matrix-float-compare-gt-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ge-0",
+      "covers": "binary64 ge ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ge-0.dslb",
+      "source": "matrix-float-compare-ge-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ge-1",
+      "covers": "binary64 ge ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ge-1.dslb",
+      "source": "matrix-float-compare-ge-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ge-2",
+      "covers": "binary64 ge ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ge-2.dslb",
+      "source": "matrix-float-compare-ge-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ge-3",
+      "covers": "binary64 ge ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ge-3.dslb",
+      "source": "matrix-float-compare-ge-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ge-4",
+      "covers": "binary64 ge ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ge-4.dslb",
+      "source": "matrix-float-compare-ge-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-float-compare-ge-5",
+      "covers": "binary64 ge ordering of zero, fractions, negatives and small decimals",
+      "schema": "schema.json",
+      "bytecode": "matrix-float-compare-ge-5.dslb",
+      "source": "matrix-float-compare-ge-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bool false"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-continue-0",
+      "covers": "continue preserves range stepping and skips exactly one body",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-continue-0.dslb",
+      "source": "matrix-loop-continue-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 1",
+          "int 2",
+          "int 3",
+          "int 4",
+          "int 5",
+          "int 6"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-continue-1",
+      "covers": "continue preserves range stepping and skips exactly one body",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-continue-1.dslb",
+      "source": "matrix-loop-continue-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 2",
+          "int 3",
+          "int 4",
+          "int 5",
+          "int 6"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-continue-2",
+      "covers": "continue preserves range stepping and skips exactly one body",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-continue-2.dslb",
+      "source": "matrix-loop-continue-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1",
+          "int 3",
+          "int 4",
+          "int 5",
+          "int 6"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-continue-3",
+      "covers": "continue preserves range stepping and skips exactly one body",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-continue-3.dslb",
+      "source": "matrix-loop-continue-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1",
+          "int 2",
+          "int 4",
+          "int 5",
+          "int 6"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-continue-4",
+      "covers": "continue preserves range stepping and skips exactly one body",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-continue-4.dslb",
+      "source": "matrix-loop-continue-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1",
+          "int 2",
+          "int 3",
+          "int 5",
+          "int 6"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-continue-5",
+      "covers": "continue preserves range stepping and skips exactly one body",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-continue-5.dslb",
+      "source": "matrix-loop-continue-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1",
+          "int 2",
+          "int 3",
+          "int 4",
+          "int 6"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-continue-6",
+      "covers": "continue preserves range stepping and skips exactly one body",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-continue-6.dslb",
+      "source": "matrix-loop-continue-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1",
+          "int 2",
+          "int 3",
+          "int 4",
+          "int 5"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-break-0",
+      "covers": "break targets the innermost range exit, including first iteration",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-break-0.dslb",
+      "source": "matrix-loop-break-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": []
+      }
+    },
+    {
+      "name": "matrix-loop-break-1",
+      "covers": "break targets the innermost range exit, including first iteration",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-break-1.dslb",
+      "source": "matrix-loop-break-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-break-2",
+      "covers": "break targets the innermost range exit, including first iteration",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-break-2.dslb",
+      "source": "matrix-loop-break-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-break-3",
+      "covers": "break targets the innermost range exit, including first iteration",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-break-3.dslb",
+      "source": "matrix-loop-break-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1",
+          "int 2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-break-4",
+      "covers": "break targets the innermost range exit, including first iteration",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-break-4.dslb",
+      "source": "matrix-loop-break-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1",
+          "int 2",
+          "int 3"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-break-5",
+      "covers": "break targets the innermost range exit, including first iteration",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-break-5.dslb",
+      "source": "matrix-loop-break-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1",
+          "int 2",
+          "int 3",
+          "int 4"
+        ]
+      }
+    },
+    {
+      "name": "matrix-loop-break-6",
+      "covers": "break targets the innermost range exit, including first iteration",
+      "schema": "schema.json",
+      "bytecode": "matrix-loop-break-6.dslb",
+      "source": "matrix-loop-break-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0",
+          "int 1",
+          "int 2",
+          "int 3",
+          "int 4",
+          "int 5"
+        ]
+      }
+    },
+    {
+      "name": "matrix-range-0",
+      "covers": "half-open signed ranges, empty/reversed/singleton boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-range-0.dslb",
+      "source": "matrix-range-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": []
+      }
+    },
+    {
+      "name": "matrix-range-1",
+      "covers": "half-open signed ranges, empty/reversed/singleton boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-range-1.dslb",
+      "source": "matrix-range-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int 0"
+        ]
+      }
+    },
+    {
+      "name": "matrix-range-2",
+      "covers": "half-open signed ranges, empty/reversed/singleton boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-range-2.dslb",
+      "source": "matrix-range-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": []
+      }
+    },
+    {
+      "name": "matrix-range-3",
+      "covers": "half-open signed ranges, empty/reversed/singleton boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-range-3.dslb",
+      "source": "matrix-range-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int -2",
+          "int -1",
+          "int 0",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-range-4",
+      "covers": "half-open signed ranges, empty/reversed/singleton boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-range-4.dslb",
+      "source": "matrix-range-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "int -3",
+          "int -2"
+        ]
+      }
+    },
+    {
+      "name": "matrix-range-5",
+      "covers": "half-open signed ranges, empty/reversed/singleton boundaries",
+      "schema": "schema.json",
+      "bytecode": "matrix-range-5.dslb",
+      "source": "matrix-range-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": []
+      }
+    },
+    {
+      "name": "matrix-switch-0",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-0.dslb",
+      "source": "matrix-switch-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -3",
+          "str other"
+        ]
+      }
+    },
+    {
+      "name": "matrix-switch-1",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-1.dslb",
+      "source": "matrix-switch-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2",
+          "str negative"
+        ]
+      }
+    },
+    {
+      "name": "matrix-switch-2",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-2.dslb",
+      "source": "matrix-switch-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "str other"
+        ]
+      }
+    },
+    {
+      "name": "matrix-switch-3",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-3.dslb",
+      "source": "matrix-switch-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "str zero"
+        ]
+      }
+    },
+    {
+      "name": "matrix-switch-4",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-4.dslb",
+      "source": "matrix-switch-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "str other"
+        ]
+      }
+    },
+    {
+      "name": "matrix-switch-5",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-5.dslb",
+      "source": "matrix-switch-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2",
+          "str other"
+        ]
+      }
+    },
+    {
+      "name": "matrix-switch-6",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-6.dslb",
+      "source": "matrix-switch-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 3",
+          "str three"
+        ]
+      }
+    },
+    {
+      "name": "matrix-switch-7",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-7.dslb",
+      "source": "matrix-switch-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4",
+          "str other"
+        ]
+      }
+    },
+    {
+      "name": "matrix-switch-8",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-8.dslb",
+      "source": "matrix-switch-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 5",
+          "str other"
+        ]
+      }
+    },
+    {
+      "name": "matrix-switch-9",
+      "covers": "switch chooses exactly one case/default without fall-through",
+      "schema": "schema.json",
+      "bytecode": "matrix-switch-9.dslb",
+      "source": "matrix-switch-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 6",
+          "str other"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-0",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-0.dslb",
+      "source": "matrix-string-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str !",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-1",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-1.dslb",
+      "source": "matrix-string-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str ASCII!",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-2",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-2.dslb",
+      "source": "matrix-string-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str 雪🦊!",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-3",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-3.dslb",
+      "source": "matrix-string-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str a\tb!",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-4",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-4.dslb",
+      "source": "matrix-string-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str a\nb!",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-5",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-5.dslb",
+      "source": "matrix-string-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str \"quoted\"!",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-6",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-6.dslb",
+      "source": "matrix-string-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str back\\slash!",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-7",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-7.dslb",
+      "source": "matrix-string-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str price $5!",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-8",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-8.dslb",
+      "source": "matrix-string-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str é!",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-string-9",
+      "covers": "byte-preserving string constants, concatenation and equality including UTF-8 and escapes",
+      "schema": "schema.json",
+      "bytecode": "matrix-string-9.dslb",
+      "source": "matrix-string-9.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "str <tag>!",
+          "bool true"
+        ]
+      }
+    },
+    {
+      "name": "matrix-inline-0",
+      "covers": "multiple inlined calls keep parameter/local slots independent",
+      "schema": "schema.json",
+      "bytecode": "matrix-inline-0.dslb",
+      "source": "matrix-inline-0.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -4",
+          "int -7",
+          "bound -3",
+          "int -5"
+        ]
+      }
+    },
+    {
+      "name": "matrix-inline-1",
+      "covers": "multiple inlined calls keep parameter/local slots independent",
+      "schema": "schema.json",
+      "bytecode": "matrix-inline-1.dslb",
+      "source": "matrix-inline-1.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -3",
+          "int -5",
+          "bound -2",
+          "int -3"
+        ]
+      }
+    },
+    {
+      "name": "matrix-inline-2",
+      "covers": "multiple inlined calls keep parameter/local slots independent",
+      "schema": "schema.json",
+      "bytecode": "matrix-inline-2.dslb",
+      "source": "matrix-inline-2.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -2",
+          "int -3",
+          "bound -1",
+          "int -1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-inline-3",
+      "covers": "multiple inlined calls keep parameter/local slots independent",
+      "schema": "schema.json",
+      "bytecode": "matrix-inline-3.dslb",
+      "source": "matrix-inline-3.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound -1",
+          "int -1",
+          "bound 0",
+          "int 1"
+        ]
+      }
+    },
+    {
+      "name": "matrix-inline-4",
+      "covers": "multiple inlined calls keep parameter/local slots independent",
+      "schema": "schema.json",
+      "bytecode": "matrix-inline-4.dslb",
+      "source": "matrix-inline-4.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 0",
+          "int 1",
+          "bound 1",
+          "int 3"
+        ]
+      }
+    },
+    {
+      "name": "matrix-inline-5",
+      "covers": "multiple inlined calls keep parameter/local slots independent",
+      "schema": "schema.json",
+      "bytecode": "matrix-inline-5.dslb",
+      "source": "matrix-inline-5.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 1",
+          "int 3",
+          "bound 2",
+          "int 5"
+        ]
+      }
+    },
+    {
+      "name": "matrix-inline-6",
+      "covers": "multiple inlined calls keep parameter/local slots independent",
+      "schema": "schema.json",
+      "bytecode": "matrix-inline-6.dslb",
+      "source": "matrix-inline-6.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 2",
+          "int 5",
+          "bound 3",
+          "int 7"
+        ]
+      }
+    },
+    {
+      "name": "matrix-inline-7",
+      "covers": "multiple inlined calls keep parameter/local slots independent",
+      "schema": "schema.json",
+      "bytecode": "matrix-inline-7.dslb",
+      "source": "matrix-inline-7.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 3",
+          "int 7",
+          "bound 4",
+          "int 9"
+        ]
+      }
+    },
+    {
+      "name": "matrix-inline-8",
+      "covers": "multiple inlined calls keep parameter/local slots independent",
+      "schema": "schema.json",
+      "bytecode": "matrix-inline-8.dslb",
+      "source": "matrix-inline-8.dsl",
+      "mutated": false,
+      "expect": {
+        "trace": [
+          "bound 4",
+          "int 9",
+          "bound 5",
+          "int 11"
+        ]
+      }
+    },
+    {
+      "name": "hostile-bool-operand",
+      "covers": "verifier rejects PUSH_BOOL values other than 0 or 1",
+      "schema": "schema.json",
+      "bytecode": "hostile-bool-operand.dslb",
+      "source": "hostile-bool-operand.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "PUSH_BOOL operand"
+        }
+      }
+    },
+    {
+      "name": "hostile-local-index",
+      "covers": "verifier rejects an out-of-range local operand",
+      "schema": "schema.json",
+      "bytecode": "hostile-local-index.dslb",
+      "source": "hostile-local-index.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "local slot"
+        }
+      }
+    },
+    {
+      "name": "hostile-context-index",
+      "covers": "verifier rejects an out-of-range context operand",
+      "schema": "schema.json",
+      "bytecode": "hostile-context-index.dslb",
+      "source": "hostile-context-index.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "context index"
+        }
+      }
+    },
+    {
+      "name": "hostile-call-fn-arity",
+      "covers": "verifier rejects CALL_FN argument count mismatch",
+      "schema": "schema.json",
+      "bytecode": "hostile-call-fn-arity.dslb",
+      "source": "hostile-call-fn-arity.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "CALL_FN at offset"
+        }
+      }
+    },
+    {
+      "name": "hostile-call-fn-import",
+      "covers": "verifier rejects an out-of-range CALL_FN import",
+      "schema": "schema.json",
+      "bytecode": "hostile-call-fn-import.dslb",
+      "source": "hostile-call-fn-import.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "import index"
+        }
+      }
+    },
+    {
+      "name": "hostile-call-method-arity",
+      "covers": "verifier rejects CALL_METHOD argument count mismatch",
+      "schema": "schema.json",
+      "bytecode": "hostile-call-method-arity.dslb",
+      "source": "hostile-call-method-arity.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "CALL_METHOD at offset"
+        }
+      }
+    },
+    {
+      "name": "hostile-call-method-import",
+      "covers": "verifier rejects an out-of-range CALL_METHOD import",
+      "schema": "schema.json",
+      "bytecode": "hostile-call-method-import.dslb",
+      "source": "hostile-call-method-import.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "import index"
+        }
+      }
+    },
+    {
+      "name": "hostile-math-id",
+      "covers": "verifier rejects an unknown MATH function id",
+      "schema": "schema.json",
+      "bytecode": "hostile-math-id.dslb",
+      "source": "hostile-math-id.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "unknown MATH function"
+        }
+      }
+    },
+    {
+      "name": "hostile-jump-backward",
+      "covers": "verifier rejects an ordinary backwards jump",
+      "schema": "schema.json",
+      "bytecode": "hostile-jump-backward.dslb",
+      "source": "hostile-jump-backward.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "goes backwards"
+        }
+      }
+    },
+    {
+      "name": "hostile-jump-target",
+      "covers": "verifier rejects a jump to a non-instruction boundary",
+      "schema": "schema.json",
+      "bytecode": "hostile-jump-target.dslb",
+      "source": "hostile-jump-target.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "not an instruction start"
+        }
+      }
+    },
+    {
+      "name": "hostile-range-same-slot",
+      "covers": "verifier rejects a range whose counter and end slots alias",
+      "schema": "schema.json",
+      "bytecode": "hostile-range-same-slot.dslb",
+      "source": "hostile-range-same-slot.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "counter and end slots must be distinct"
+        }
+      }
+    },
+    {
+      "name": "hostile-range-overlap",
+      "covers": "verifier rejects nested range slot ownership overlap",
+      "schema": "schema.json",
+      "bytecode": "hostile-range-overlap.dslb",
+      "source": "hostile-range-overlap.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "already owned by another range loop"
+        }
+      }
+    },
+    {
+      "name": "hostile-range-backward-exit",
+      "covers": "verifier rejects a range with a backwards exit",
+      "schema": "schema.json",
+      "bytecode": "hostile-range-backward-exit.dslb",
+      "source": "hostile-range-backward-exit.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "FOR_RANGE at offset"
+        }
+      }
+    },
+    {
+      "name": "hostile-for-next-orphan",
+      "covers": "verifier rejects FOR_NEXT without a matching FOR_RANGE",
+      "schema": "schema.json",
+      "bytecode": "hostile-for-next-orphan.dslb",
+      "source": "hostile-for-next-orphan.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "has no matching FOR_RANGE"
+        }
+      }
+    },
+    {
+      "name": "hostile-for-next-end",
+      "covers": "verifier rejects FOR_NEXT naming the wrong end slot",
+      "schema": "schema.json",
+      "bytecode": "hostile-for-next-end.dslb",
+      "source": "hostile-for-next-end.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "names end slot"
+        }
+      }
+    },
+    {
+      "name": "hostile-for-next-target",
+      "covers": "verifier rejects FOR_NEXT targeting outside its loop body",
+      "schema": "schema.json",
+      "bytecode": "hostile-for-next-target.dslb",
+      "source": "hostile-for-next-target.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "must return to its FOR_RANGE body"
+        }
+      }
+    },
+    {
+      "name": "hostile-while-test-orphan",
+      "covers": "verifier rejects WHILE_TEST without WHILE_BEGIN",
+      "schema": "schema.json",
+      "bytecode": "hostile-while-test-orphan.dslb",
+      "source": "hostile-while-test-orphan.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "WHILE_TEST at offset"
+        }
+      }
+    },
+    {
+      "name": "hostile-loopback-target",
+      "covers": "verifier rejects LOOP_BACK targeting the wrong instruction",
+      "schema": "schema.json",
+      "bytecode": "hostile-loopback-target.dslb",
+      "source": "hostile-loopback-target.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "does not target its paired WHILE_BEGIN"
+        }
+      }
+    },
+    {
+      "name": "hostile-halt-inside-loop",
+      "covers": "verifier rejects HALT encountered inside a loop",
+      "schema": "schema.json",
+      "bytecode": "hostile-halt-inside-loop.dslb",
+      "source": "hostile-halt-inside-loop.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "HALT inside loop"
+        }
+      }
+    },
+    {
+      "name": "hostile-unknown-opcode",
+      "covers": "verifier rejects an unknown instruction opcode",
+      "schema": "schema.json",
+      "bytecode": "hostile-unknown-opcode.dslb",
+      "source": "hostile-unknown-opcode.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "unknown opcode"
+        }
+      }
+    },
+    {
+      "name": "hostile-line-pc",
+      "covers": "loader rejects a line table pc beyond code",
+      "schema": "schema.json",
+      "bytecode": "hostile-line-pc.dslb",
+      "source": "hostile-line-pc.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "line table entry points"
+        }
+      }
+    },
+    {
+      "name": "hostile-line-unsorted",
+      "covers": "loader rejects an unsorted line table",
+      "schema": "schema.json",
+      "bytecode": "hostile-line-unsorted.dslb",
+      "source": "hostile-line-unsorted.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "line table is not sorted"
+        }
+      }
+    },
+    {
+      "name": "hostile-entry-jump-target",
+      "covers": "entry verifier rejects a jump to a non-entry instruction",
+      "schema": "schema.json",
+      "bytecode": "hostile-entry-jump-target.dslb",
+      "source": "hostile-entry-jump-target.dsl",
+      "mutated": true,
+      "expect": {
+        "load_error": {
+          "code": "LOAD_BAD_BYTECODE",
+          "message": "jump"
+        }
+      }
+    }
+  ]
+}

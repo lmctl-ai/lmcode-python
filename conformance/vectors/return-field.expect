@@ -1,0 +1,2 @@
+trace
+sink {"json":"{\"name\":\"Ada\",\"score\":9}","frame":"LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":{\"name\":\"Ada\",\"score\":9}}\nLMCODE_RETURN_END\n"}

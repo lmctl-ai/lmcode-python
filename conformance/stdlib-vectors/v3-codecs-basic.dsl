@@ -1,0 +1,1 @@
+let raw=bytes("000102ff"); let b=str_base64_encode(raw); let h=str_hex_encode(raw); t.hex(b); t.hex(h); t.bool(str_len(str_base64_decode(b))==str_len(raw)); t.bool(str_find(str_base64_decode(b),raw)==0); t.bool(str_len(str_hex_decode(h))==str_len(raw)); t.bool(str_find(str_hex_decode(h),raw)==0);

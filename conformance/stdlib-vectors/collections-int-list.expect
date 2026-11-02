@@ -1,0 +1,13 @@
+trace
+int 3
+int -2
+bool true
+int 0
+bool false
+int -1
+int 11
+int -2
+int 7
+int 0
+int 1
+int 42

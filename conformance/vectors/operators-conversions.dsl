@@ -1,0 +1,10 @@
+t.thing(thing(2) + thing(3));
+t.thing(2 * thing(3));
+t.thing(-thing(4));
+t.thing(10 - thing(3));
+t.thing(v + 2);
+t.thing(2 * v);
+t.thing(-v);
+t.thing(bound(2) * var(3));
+t.thing(thing(5).set(7));
+t.thing(var(1) + var(2));

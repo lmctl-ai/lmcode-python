@@ -1,0 +1,1 @@
+let context=json_parse(bytes("7b226e616d65223a2253616d222c226974656d73223a5b312c325d2c226f6b223a747275657d")); t.hex(template_render("<if(ok)><name>:<items:{item|<index>=<item>}; separator=\",\"><endif>",context));

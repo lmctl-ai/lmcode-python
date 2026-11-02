@@ -1,0 +1,342 @@
+{
+  "dsl.schema": 2,
+  "name": "conformance",
+  "enums": {
+    "Status": [
+      "OPTIMAL",
+      "UNKNOWN"
+    ]
+  },
+  "types": {
+    "Trace": {
+      "methods": {
+        "int": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "void"
+          },
+          {
+            "params": [
+              "float"
+            ],
+            "returns": "void"
+          }
+        ],
+        "float": [
+          {
+            "params": [
+              "float"
+            ],
+            "returns": "void"
+          }
+        ],
+        "str": [
+          {
+            "params": [
+              "string"
+            ],
+            "returns": "void"
+          }
+        ],
+        "bool": [
+          {
+            "params": [
+              "bool"
+            ],
+            "returns": "void"
+          }
+        ],
+        "thing": [
+          {
+            "params": [
+              "Thing"
+            ],
+            "returns": "void"
+          }
+        ],
+        "status": [
+          {
+            "params": [],
+            "returns": "Status"
+          }
+        ]
+      }
+    },
+    "Thing": {
+      "operators": {
+        "+": "plus",
+        "-": "minus",
+        "*": "times",
+        "neg": "neg",
+        "r+": "plus",
+        "r-": "rminus",
+        "r*": "times"
+      },
+      "methods": {
+        "len": [
+          {
+            "params": [],
+            "returns": "int"
+          }
+        ],
+        "at": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "Thing"
+          }
+        ],
+        "id": [
+          {
+            "params": [],
+            "returns": "int"
+          }
+        ],
+        "next": [
+          {
+            "params": [],
+            "returns": "Thing"
+          }
+        ],
+        "name": [
+          {
+            "params": [],
+            "returns": "string"
+          }
+        ],
+        "scaled": [
+          {
+            "params": [
+              "float"
+            ],
+            "returns": "float"
+          }
+        ],
+        "plus": [
+          {
+            "params": [
+              "Thing"
+            ],
+            "returns": "Thing"
+          }
+        ],
+        "minus": [
+          {
+            "params": [
+              "Thing"
+            ],
+            "returns": "Thing"
+          }
+        ],
+        "times": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "Thing"
+          }
+        ],
+        "neg": [
+          {
+            "params": [],
+            "returns": "Thing"
+          }
+        ],
+        "rminus": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "Thing"
+          }
+        ],
+        "set": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "self"
+          }
+        ]
+      }
+    },
+    "Var": {
+      "methods": {
+        "expr": [
+          {
+            "params": [],
+            "returns": "Thing"
+          }
+        ],
+        "id": [
+          {
+            "params": [],
+            "returns": "int"
+          }
+        ]
+      }
+    },
+    "IntList": {
+      "methods": {
+        "len": [
+          {
+            "params": [],
+            "returns": "int"
+          }
+        ],
+        "at": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "int"
+          }
+        ]
+      }
+    }
+  },
+  "functions": {
+    "bound": [
+      {
+        "params": [
+          "int"
+        ],
+        "returns": "int"
+      }
+    ],
+    "thing": [
+      {
+        "params": [
+          "int"
+        ],
+        "returns": "Thing"
+      }
+    ],
+    "var": [
+      {
+        "params": [
+          "int"
+        ],
+        "returns": "Var"
+      }
+    ],
+    "twice": [
+      {
+        "params": [
+          "int"
+        ],
+        "returns": "int"
+      },
+      {
+        "params": [
+          "float"
+        ],
+        "returns": "float"
+      }
+    ],
+    "half": [
+      {
+        "params": [
+          "float"
+        ],
+        "returns": "float"
+      }
+    ],
+    "fail": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "void"
+      }
+    ],
+    "yes": [
+      {
+        "params": [],
+        "returns": "bool"
+      }
+    ]
+  },
+  "conversions": [
+    {
+      "from": "Var",
+      "to": "Thing",
+      "via": "Var.expr"
+    },
+    {
+      "from": "int",
+      "to": "Thing",
+      "via": "thing"
+    }
+  ],
+  "interfaces": {
+    "Step": {
+      "params": [
+        {
+          "name": "x",
+          "type": "int"
+        }
+      ],
+      "returns": "int"
+    },
+    "Visit": {
+      "params": [
+        {
+          "name": "t",
+          "type": "Thing"
+        }
+      ],
+      "returns": "void"
+    },
+    "Flag": {
+      "params": [],
+      "returns": "bool"
+    },
+    "Mix": {
+      "params": [
+        {
+          "name": "x",
+          "type": "int"
+        },
+        {
+          "name": "f",
+          "type": "float"
+        },
+        {
+          "name": "s",
+          "type": "string"
+        },
+        {
+          "name": "b",
+          "type": "bool"
+        }
+      ],
+      "returns": "string"
+    },
+    "Pick": {
+      "params": [
+        {
+          "name": "t",
+          "type": "Thing"
+        }
+      ],
+      "returns": "Thing"
+    },
+    "State": {
+      "params": [],
+      "returns": "Status"
+    }
+  },
+  "context": {
+    "t": "Trace",
+    "root": "Thing",
+    "v": "Var",
+    "xs": "IntList"
+  },
+  "result": {
+    "type": "IntMap"
+  }
+}

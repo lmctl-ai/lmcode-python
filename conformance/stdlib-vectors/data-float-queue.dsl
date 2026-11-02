@@ -1,0 +1,1 @@
+let floatqueue = float_queue().push(1.5).push(1.5); t.int(floatqueue.len()); t.bool(floatqueue.empty()); t.float(floatqueue.peek()); t.float(floatqueue.at(0)); t.float(floatqueue.pop()); floatqueue.clear(); t.bool(floatqueue.empty());

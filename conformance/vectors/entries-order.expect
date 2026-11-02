@@ -1,0 +1,4 @@
+entries
+first pair interface Step(int) -> int
+second pair interface Step(int) -> int
+third string interface Flag() -> bool

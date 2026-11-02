@@ -1,0 +1,3 @@
+call
+increment [41]
+result int 42

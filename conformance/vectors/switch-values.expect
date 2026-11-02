@@ -1,0 +1,5 @@
+trace
+bound -2
+str negative
+str fallback
+str optimal

@@ -1,0 +1,6 @@
+trace
+hex 6f626a656374
+int 2
+int 123
+bool true
+hex 7b226e223a3132332c2261223a5b747275652c6e756c6c5d7d

@@ -1,0 +1,12 @@
+trace
+int 1
+bool false
+hex 737461626c6500
+hex 737461626c6500
+hex 6f7468657200
+hex 00ff00
+bool true
+int 2048
+int 4194304
+hex 3000
+hex 3100

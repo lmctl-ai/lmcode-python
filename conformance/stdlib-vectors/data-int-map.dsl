@@ -1,0 +1,1 @@
+let intmap = int_map().set(bytes("6100ff"), 1).set("b", 1); t.int(intmap.len()); t.bool(intmap.has(bytes("6100ff"))); t.int(intmap.get(bytes("6100ff"))); t.int(intmap.get_or("missing", 1)); t.hex(intmap.key_at(0)); t.bool(intmap.remove("b")); intmap.clear(); t.int(intmap.len());

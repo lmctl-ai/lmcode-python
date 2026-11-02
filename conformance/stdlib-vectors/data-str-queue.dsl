@@ -1,0 +1,1 @@
+let strqueue = str_queue().push(bytes("6100ff")).push(bytes("6100ff")); t.int(strqueue.len()); t.bool(strqueue.empty()); t.hex(strqueue.peek()); t.hex(strqueue.at(0)); t.hex(strqueue.pop()); strqueue.clear(); t.bool(strqueue.empty());

@@ -1,0 +1,13 @@
+trace
+int 0
+int 3
+bool true
+int 0
+bool false
+int -1
+hex c3a9
+hex ff0000c3a900ff00
+hex 78
+int 4
+int 1
+hex 616761696e

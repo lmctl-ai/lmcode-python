@@ -1,0 +1,6 @@
+runtime_error_at
+RUN_HOST
+2
+1
+lmcode return: field assignment requires object or null
+sink {"json":"1","frame":"LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"run\",\"code\":\"RUN_HOST\",\"message\":\"dsl line 2:1: lmcode return: field assignment requires object or null\",\"line\":2,\"column\":1}\nLMCODE_RETURN_END\n"}

@@ -1,0 +1,9 @@
+trace
+int 42
+int -7
+float 2.5
+float -0.5
+str hi "there"\n
+bool true
+bool false
+str 121.25false

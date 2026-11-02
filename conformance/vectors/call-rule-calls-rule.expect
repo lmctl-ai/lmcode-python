@@ -1,0 +1,5 @@
+call
+outer [3]
+result int 13
+int 3
+int 6

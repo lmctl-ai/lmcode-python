@@ -1,0 +1,16 @@
+t.float(sqrt(4.0));
+t.float(abs(-2.5));
+t.float(floor(-2.5));
+t.float(min(2.5, 3.5));
+t.float(max(2.5, 3.5));
+t.float(clamp(5.0, 0.0, 2.0));
+t.float(lerp(2.0, 6.0, 0.25));
+t.float(lerp(2.0, 6.0, 2.0));
+t.float(ease(0.25));
+t.float(ease_in(0.25));
+t.float(ease_out(0.25));
+t.int(int(-2.75));
+t.int(abs(-7));
+t.int(min(3, 7));
+t.int(max(3, 7));
+t.int(clamp(9, 2, 5));

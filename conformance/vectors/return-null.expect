@@ -1,0 +1,2 @@
+trace
+sink {"json":"{\"name\":null}","frame":"LMCODE_RETURN_BEGIN\n{\"ok\":true,\"result\":{\"name\":null}}\nLMCODE_RETURN_END\n"}

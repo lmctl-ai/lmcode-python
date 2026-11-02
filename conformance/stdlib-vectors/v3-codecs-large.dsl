@@ -1,0 +1,1 @@
+let raw=str_repeat("a", 1048593); let b=str_base64_encode(raw); let h=str_hex_encode(raw); t.int(str_len(b)); t.int(str_len(h)); t.bool(str_len(str_base64_decode(b))==str_len(raw)); t.bool(str_find(str_base64_decode(b),raw)==0); t.bool(str_len(str_hex_decode(h))==str_len(raw)); t.bool(str_find(str_hex_decode(h),raw)==0);

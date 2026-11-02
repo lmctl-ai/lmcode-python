@@ -1,0 +1,1761 @@
+{
+  "notes": {
+    "bytes": "All strings are raw bytes; lengths and offsets are byte-based, NUL and invalid UTF-8 are preserved.",
+    "errors": "Catalog failures use RUN_HOST; file failures use FUNCTION: PATH: OS reason.",
+    "lifetime": "Default registries own standard collection lifetimes; handles are valid only for the active run. Collections and Json roots have no implicit object-count budget; platform representability and allocation errors remain.",
+    "paths": "Relative file paths use the process cwd without sandbox or root checks. Unix preserves native path bytes; Windows requires strict UTF-8 and supports long drive/UNC paths. Every platform rejects embedded NUL. Symlinks are followed; missing/broken paths and nonregular objects return false from file_exists, while other metadata errors trap.",
+    "registration": "Default registries install 206 built-ins; testing print/assertions remain explicit host registrations.",
+    "json": "Json is immutable strict UTF-8 JSON: scalar Unicode, signed int64 or finite binary64, depth 256, duplicate decoded keys/BOM rejected. Compact output preserves number/string token spellings; navigation borrows nodes until run end.",
+    "priority": "PQ is min-first with insertion-order ties; signed zero priorities tie. Nonfinite priorities and next sequence 2^63-1 fail without mutation; clear resets sequence to zero.",
+    "encoding": "Hex is lowercase on encode and accepts ASCII mixed-case digits on decode. Base64 is canonical padded RFC 4648 section 4, rejecting whitespace, URL-safe alphabet, invalid padding and nonzero pad bits. Strings are raw bytes.",
+    "snapshots": "Map keys()/values() each allocate one independent list snapshot in insertion order; mutation never aliases map storage. Float payload bits are preserved.",
+    "templates": "One-pass text rendering with nested JSON context, zero-based indexed lists, list loops and strict boolean conditions. Strings insert verbatim; other values use compact JSON. No recursive interpolation or format-specific escaping."
+  },
+  "schema": "std/lmcode-std.schema.json",
+  "signatures": {
+    "fn file_append(string, string) -> void": {
+      "area": "file",
+      "errors": [
+        "FUNCTION: PATH: OS reason"
+      ],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Create or append all raw bytes to a regular file."
+    },
+    "fn file_exists(string) -> bool": {
+      "area": "file",
+      "errors": [
+        "FUNCTION: PATH: OS reason"
+      ],
+      "params": [
+        "string"
+      ],
+      "summary": "Return true only when metadata identifies a regular file; missing and nonregular paths return false."
+    },
+    "fn file_lines(string) -> StrList": {
+      "area": "file",
+      "errors": [
+        "FUNCTION: PATH: OS reason"
+      ],
+      "params": [
+        "string"
+      ],
+      "summary": "Read raw bytes and split on every LF, preserving CR and empty fields: empty file gives [\"\"], and \"a\\n\" gives [\"a\", \"\"]. Return an arena-owned StrList."
+    },
+    "fn file_read(string) -> string": {
+      "area": "file",
+      "errors": [
+        "FUNCTION: PATH: OS reason"
+      ],
+      "params": [
+        "string"
+      ],
+      "summary": "Read a complete regular file as raw bytes."
+    },
+    "fn file_write(string, string) -> void": {
+      "area": "file",
+      "errors": [
+        "FUNCTION: PATH: OS reason"
+      ],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Create or truncate a regular file and write all raw bytes."
+    },
+    "fn float_list() -> FloatList": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Construct an empty FloatList in the active collection arena."
+    },
+    "fn float_map() -> FloatMap": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an insertion-ordered byte-key map.",
+      "errors": []
+    },
+    "fn float_pq() -> FloatPQ": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an empty FloatPQ in the run arena.",
+      "errors": []
+    },
+    "fn float_queue() -> FloatQueue": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an empty FloatQueue in the run arena.",
+      "errors": []
+    },
+    "fn float_stack() -> FloatStack": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an empty FloatStack in the run arena.",
+      "errors": []
+    },
+    "fn int_list() -> IntList": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Construct an empty IntList in the active collection arena."
+    },
+    "fn int_map() -> IntMap": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an insertion-ordered byte-key map.",
+      "errors": []
+    },
+    "fn int_pq() -> IntPQ": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an empty IntPQ in the run arena.",
+      "errors": []
+    },
+    "fn int_queue() -> IntQueue": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an empty IntQueue in the run arena.",
+      "errors": []
+    },
+    "fn int_stack() -> IntStack": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an empty IntStack in the run arena.",
+      "errors": []
+    },
+    "fn json_parse(string) -> Json": {
+      "area": "json",
+      "params": [
+        "string"
+      ],
+      "summary": "Parse strict UTF-8 JSON eagerly; int64 integers, finite binary64 decimals, depth <=256, duplicate decoded keys rejected.",
+      "errors": [
+        "json_parse: REASON at byte N"
+      ]
+    },
+    "fn math_abs(float) -> float": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "float"
+      ],
+      "summary": "Absolute value; integer arithmetic wraps, and float signed zero is cleared."
+    },
+    "fn math_abs(int) -> int": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "int"
+      ],
+      "summary": "Absolute value; integer arithmetic wraps, and float signed zero is cleared."
+    },
+    "fn math_ceil(float) -> float": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "float"
+      ],
+      "summary": "Identity for int; ceiling for binary64 while preserving signed zero."
+    },
+    "fn math_ceil(int) -> int": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "int"
+      ],
+      "summary": "Identity for int; ceiling for binary64 while preserving signed zero."
+    },
+    "fn math_floor(float) -> float": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "float"
+      ],
+      "summary": "Identity for int; floor for binary64 while preserving signed zero."
+    },
+    "fn math_floor(int) -> int": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "int"
+      ],
+      "summary": "Identity for int; floor for binary64 while preserving signed zero."
+    },
+    "fn math_max(float, float) -> float": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "float",
+        "float"
+      ],
+      "summary": "Maximum; integer comparison, or NaN propagation with first-operand ties for floats."
+    },
+    "fn math_max(int, int) -> int": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "int",
+        "int"
+      ],
+      "summary": "Maximum; integer comparison, or NaN propagation with first-operand ties for floats."
+    },
+    "fn math_min(float, float) -> float": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "float",
+        "float"
+      ],
+      "summary": "Minimum; integer comparison, or NaN propagation with first-operand ties for floats."
+    },
+    "fn math_min(int, int) -> int": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "int",
+        "int"
+      ],
+      "summary": "Minimum; integer comparison, or NaN propagation with first-operand ties for floats."
+    },
+    "fn math_pow(float, float) -> float": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "float",
+        "float"
+      ],
+      "summary": "Float power follows IEEE/libm special cases."
+    },
+    "fn math_pow(int, int) -> int": {
+      "area": "math",
+      "errors": [
+        "math_pow: integer exponent must be nonnegative"
+      ],
+      "params": [
+        "int",
+        "int"
+      ],
+      "summary": "Integer exponentiation wraps modulo 2^64; the exponent must be nonnegative."
+    },
+    "fn math_round(float) -> float": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "float"
+      ],
+      "summary": "Identity for int; binary64 nearest integer with halfway cases away from zero."
+    },
+    "fn math_round(int) -> int": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "int"
+      ],
+      "summary": "Identity for int; binary64 nearest integer with halfway cases away from zero."
+    },
+    "fn math_sqrt(float) -> float": {
+      "area": "math",
+      "errors": [],
+      "params": [
+        "float"
+      ],
+      "summary": "Binary64 square root for float."
+    },
+    "fn math_sqrt(int) -> int": {
+      "area": "math",
+      "errors": [
+        "math_sqrt: integer argument must be nonnegative"
+      ],
+      "params": [
+        "int"
+      ],
+      "summary": "Exact floor integer square root; the argument must be nonnegative."
+    },
+    "fn str_base64_decode(string) -> string": {
+      "area": "encoding",
+      "params": [
+        "string"
+      ],
+      "summary": "Decode canonical padded RFC 4648 Base64; reject whitespace, URL-safe symbols, invalid padding and nonzero pad bits. Empty input is legal.",
+      "errors": [
+        "str_base64_decode: invalid encoding"
+      ]
+    },
+    "fn str_base64_encode(string) -> string": {
+      "area": "encoding",
+      "params": [
+        "string"
+      ],
+      "summary": "Encode bytes as canonical padded RFC 4648 Base64 without line breaks. Empty input is legal.",
+      "errors": [
+        "str_base64_encode: size overflow"
+      ]
+    },
+    "fn str_contains(string, string) -> bool": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Byte substring search; an empty needle matches."
+    },
+    "fn str_ends_with(string, string) -> bool": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Byte suffix comparison; an empty suffix matches."
+    },
+    "fn str_find(string, string) -> int": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Return the first byte offset or -1; an empty needle returns 0."
+    },
+    "fn str_hex_decode(string) -> string": {
+      "area": "encoding",
+      "params": [
+        "string"
+      ],
+      "summary": "Decode an even number of ASCII 0-9/a-f/A-F digits; reject separators, prefixes and whitespace. Empty input is legal.",
+      "errors": [
+        "str_hex_decode: invalid encoding"
+      ]
+    },
+    "fn str_hex_encode(string) -> string": {
+      "area": "encoding",
+      "params": [
+        "string"
+      ],
+      "summary": "Encode bytes as lowercase ASCII hex. Empty input is legal.",
+      "errors": [
+        "str_hex_encode: size overflow"
+      ]
+    },
+    "fn str_is_float(string) -> bool": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Accept a complete signed decimal with optional decimal point and exponent, including representable subnormals. Reject whitespace, hex, NaN/infinity, overflow and underflow to zero."
+    },
+    "fn str_is_int(string) -> bool": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Report whether the complete signed decimal token fits int64."
+    },
+    "fn str_len(string) -> int": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Return the raw byte length, including NUL and invalid UTF-8 bytes."
+    },
+    "fn str_list() -> StrList": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Construct an empty StrList in the active collection arena."
+    },
+    "fn str_lower(string) -> string": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Lowercase ASCII A-Z bytes; preserve every other byte."
+    },
+    "fn str_map() -> StrMap": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Construct an empty insertion-ordered StrMap in the active collection arena."
+    },
+    "fn str_match(string, string) -> bool": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Match a whole byte string with *, ?, classes, ranges, negation, and backslash escapes."
+    },
+    "fn str_pq() -> StrPQ": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an empty StrPQ in the run arena.",
+      "errors": []
+    },
+    "fn str_queue() -> StrQueue": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an empty StrQueue in the run arena.",
+      "errors": []
+    },
+    "fn str_repeat(string, int) -> string": {
+      "area": "string",
+      "errors": [
+        "str_repeat: count must be nonnegative",
+        "str_repeat: result size exceeds platform capacity"
+      ],
+      "params": [
+        "string",
+        "int"
+      ],
+      "summary": "Repeat raw bytes; reject negative counts and platform-unrepresentable result sizes."
+    },
+    "fn str_replace(string, string, string) -> string": {
+      "area": "string",
+      "errors": [
+        "str_replace: result size exceeds platform capacity"
+      ],
+      "params": [
+        "string",
+        "string",
+        "string"
+      ],
+      "summary": "Replace nonoverlapping byte matches left to right; an empty search leaves bytes unchanged. No implicit result-size budget."
+    },
+    "fn str_split(string, string) -> StrList": {
+      "area": "collections",
+      "errors": [
+        "str_split: separator must not be empty"
+      ],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Split raw bytes on every nonoverlapping nonempty separator into a StrList."
+    },
+    "fn str_stack() -> StrStack": {
+      "area": "collections",
+      "params": [],
+      "summary": "Create an empty StrStack in the run arena.",
+      "errors": []
+    },
+    "fn str_starts_with(string, string) -> bool": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Byte prefix comparison; an empty prefix matches."
+    },
+    "fn str_substr(string, int, int) -> string": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string",
+        "int",
+        "int"
+      ],
+      "summary": "Return a byte slice; clamp negative starts and overlong counts, with nonpositive counts empty."
+    },
+    "fn str_to_float(string) -> float": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Parse the same complete decimal grammar as str_is_float; return 0.0 on invalid input, overflow or underflow to zero. Preserve valid signed zero."
+    },
+    "fn str_to_int(string) -> int": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Parse a complete signed decimal int64 token; return zero on failure."
+    },
+    "fn str_trim(string) -> string": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Remove ASCII space and bytes 0x09 through 0x0d from both ends."
+    },
+    "fn str_upper(string) -> string": {
+      "area": "string",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Uppercase ASCII a-z bytes; preserve every other byte."
+    },
+    "method FloatList.add(float) -> FloatList": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "float"
+      ],
+      "summary": "Append a float and return the receiver."
+    },
+    "method FloatList.at(int) -> float": {
+      "area": "collections",
+      "errors": [
+        "FloatList.at: index out of range: i"
+      ],
+      "params": [
+        "int"
+      ],
+      "summary": "Return the element at a zero-based index."
+    },
+    "method FloatList.clear() -> FloatList": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Remove elements and return the receiver."
+    },
+    "method FloatList.contains(float) -> bool": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "float"
+      ],
+      "summary": "Test float == equality; NaN never matches."
+    },
+    "method FloatList.index_of(float) -> int": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "float"
+      ],
+      "summary": "Return the first float == index or -1; NaN never matches."
+    },
+    "method FloatList.len() -> int": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Return element count."
+    },
+    "method FloatList.set(int, float) -> FloatList": {
+      "area": "collections",
+      "errors": [
+        "FloatList.set: index out of range: i"
+      ],
+      "params": [
+        "int",
+        "float"
+      ],
+      "summary": "Replace an indexed float and return the receiver."
+    },
+    "method FloatMap.clear() -> FloatMap": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all keys; return self.",
+      "errors": []
+    },
+    "method FloatMap.get(string) -> float": {
+      "area": "collections",
+      "params": [
+        "string"
+      ],
+      "summary": "Read a value.",
+      "errors": [
+        "FloatMap.get: missing key"
+      ]
+    },
+    "method FloatMap.get_or(string, float) -> float": {
+      "area": "collections",
+      "params": [
+        "string",
+        "float"
+      ],
+      "summary": "Read a value or the supplied fallback.",
+      "errors": []
+    },
+    "method FloatMap.has(string) -> bool": {
+      "area": "collections",
+      "params": [
+        "string"
+      ],
+      "summary": "Test a byte-exact key.",
+      "errors": []
+    },
+    "method FloatMap.key_at(int) -> string": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Read a live key in insertion order.",
+      "errors": [
+        "FloatMap.key_at: index out of range: N"
+      ]
+    },
+    "method FloatMap.keys() -> StrList": {
+      "area": "containers",
+      "params": [],
+      "summary": "Allocate an independent StrList snapshot of keys in insertion order; later map/list mutations do not alias. Preserve raw bytes and float payload bits.",
+      "errors": []
+    },
+    "method FloatMap.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Count live keys.",
+      "errors": []
+    },
+    "method FloatMap.remove(string) -> bool": {
+      "area": "collections",
+      "params": [
+        "string"
+      ],
+      "summary": "Remove a key; reinsertion goes last.",
+      "errors": []
+    },
+    "method FloatMap.set(string, float) -> FloatMap": {
+      "area": "collections",
+      "params": [
+        "string",
+        "float"
+      ],
+      "summary": "Insert/update; overwrites retain original position; return self.",
+      "errors": []
+    },
+    "method FloatMap.values() -> FloatList": {
+      "area": "containers",
+      "params": [],
+      "summary": "Allocate an independent FloatList snapshot of values in insertion order; later map/list mutations do not alias. Preserve raw bytes and float payload bits.",
+      "errors": []
+    },
+    "method FloatPQ.clear() -> FloatPQ": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all items; return self; reset PQ insertion sequence.",
+      "errors": []
+    },
+    "method FloatPQ.empty() -> bool": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return whether there are no items.",
+      "errors": []
+    },
+    "method FloatPQ.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return the number of items.",
+      "errors": []
+    },
+    "method FloatPQ.peek() -> float": {
+      "area": "collections",
+      "params": [],
+      "summary": "Read without removing the next item in pop order.",
+      "errors": [
+        "FloatPQ.peek: empty"
+      ]
+    },
+    "method FloatPQ.pop() -> float": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove and return the next item in pop order.",
+      "errors": [
+        "FloatPQ.pop: empty"
+      ]
+    },
+    "method FloatPQ.push(float, float) -> FloatPQ": {
+      "area": "collections",
+      "params": [
+        "float",
+        "float"
+      ],
+      "summary": "Push with finite min-first priority; stable insertion-order ties including signed zero.",
+      "errors": [
+        "FloatPQ.push: priority must be finite",
+        "FloatPQ.push: insertion sequence exhausted"
+      ]
+    },
+    "method FloatQueue.at(int) -> float": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Read in pop order without consuming; index zero is next to pop.",
+      "errors": [
+        "FloatQueue.at: index out of range: N"
+      ]
+    },
+    "method FloatQueue.clear() -> FloatQueue": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all items; return self; reset PQ insertion sequence.",
+      "errors": []
+    },
+    "method FloatQueue.empty() -> bool": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return whether there are no items.",
+      "errors": []
+    },
+    "method FloatQueue.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return the number of items.",
+      "errors": []
+    },
+    "method FloatQueue.peek() -> float": {
+      "area": "collections",
+      "params": [],
+      "summary": "Read without removing the next item in pop order.",
+      "errors": [
+        "FloatQueue.peek: empty"
+      ]
+    },
+    "method FloatQueue.pop() -> float": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove and return the next item in pop order.",
+      "errors": [
+        "FloatQueue.pop: empty"
+      ]
+    },
+    "method FloatQueue.push(float) -> FloatQueue": {
+      "area": "collections",
+      "params": [
+        "float"
+      ],
+      "summary": "Append an item; return the same container.",
+      "errors": []
+    },
+    "method FloatStack.at(int) -> float": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Read in pop order without consuming; index zero is next to pop.",
+      "errors": [
+        "FloatStack.at: index out of range: N"
+      ]
+    },
+    "method FloatStack.clear() -> FloatStack": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all items; return self; reset PQ insertion sequence.",
+      "errors": []
+    },
+    "method FloatStack.empty() -> bool": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return whether there are no items.",
+      "errors": []
+    },
+    "method FloatStack.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return the number of items.",
+      "errors": []
+    },
+    "method FloatStack.peek() -> float": {
+      "area": "collections",
+      "params": [],
+      "summary": "Read without removing the next item in pop order.",
+      "errors": [
+        "FloatStack.peek: empty"
+      ]
+    },
+    "method FloatStack.pop() -> float": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove and return the next item in pop order.",
+      "errors": [
+        "FloatStack.pop: empty"
+      ]
+    },
+    "method FloatStack.push(float) -> FloatStack": {
+      "area": "collections",
+      "params": [
+        "float"
+      ],
+      "summary": "Append an item; return the same container.",
+      "errors": []
+    },
+    "method IntList.add(int) -> IntList": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "int"
+      ],
+      "summary": "Append an int and return the receiver."
+    },
+    "method IntList.at(int) -> int": {
+      "area": "collections",
+      "errors": [
+        "IntList.at: index out of range: i"
+      ],
+      "params": [
+        "int"
+      ],
+      "summary": "Return the element at a zero-based index."
+    },
+    "method IntList.clear() -> IntList": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Remove elements and return the receiver."
+    },
+    "method IntList.contains(int) -> bool": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "int"
+      ],
+      "summary": "Test integer equality of elements."
+    },
+    "method IntList.index_of(int) -> int": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "int"
+      ],
+      "summary": "Return the first equal index or -1."
+    },
+    "method IntList.len() -> int": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Return element count."
+    },
+    "method IntList.set(int, int) -> IntList": {
+      "area": "collections",
+      "errors": [
+        "IntList.set: index out of range: i"
+      ],
+      "params": [
+        "int",
+        "int"
+      ],
+      "summary": "Replace an indexed int and return the receiver."
+    },
+    "method IntMap.clear() -> IntMap": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all keys; return self.",
+      "errors": []
+    },
+    "method IntMap.get(string) -> int": {
+      "area": "collections",
+      "params": [
+        "string"
+      ],
+      "summary": "Read a value.",
+      "errors": [
+        "IntMap.get: missing key"
+      ]
+    },
+    "method IntMap.get_or(string, int) -> int": {
+      "area": "collections",
+      "params": [
+        "string",
+        "int"
+      ],
+      "summary": "Read a value or the supplied fallback.",
+      "errors": []
+    },
+    "method IntMap.has(string) -> bool": {
+      "area": "collections",
+      "params": [
+        "string"
+      ],
+      "summary": "Test a byte-exact key.",
+      "errors": []
+    },
+    "method IntMap.key_at(int) -> string": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Read a live key in insertion order.",
+      "errors": [
+        "IntMap.key_at: index out of range: N"
+      ]
+    },
+    "method IntMap.keys() -> StrList": {
+      "area": "containers",
+      "params": [],
+      "summary": "Allocate an independent StrList snapshot of keys in insertion order; later map/list mutations do not alias. Preserve raw bytes and float payload bits.",
+      "errors": []
+    },
+    "method IntMap.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Count live keys.",
+      "errors": []
+    },
+    "method IntMap.remove(string) -> bool": {
+      "area": "collections",
+      "params": [
+        "string"
+      ],
+      "summary": "Remove a key; reinsertion goes last.",
+      "errors": []
+    },
+    "method IntMap.set(string, int) -> IntMap": {
+      "area": "collections",
+      "params": [
+        "string",
+        "int"
+      ],
+      "summary": "Insert/update; overwrites retain original position; return self.",
+      "errors": []
+    },
+    "method IntMap.values() -> IntList": {
+      "area": "containers",
+      "params": [],
+      "summary": "Allocate an independent IntList snapshot of values in insertion order; later map/list mutations do not alias. Preserve raw bytes and float payload bits.",
+      "errors": []
+    },
+    "method IntPQ.clear() -> IntPQ": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all items; return self; reset PQ insertion sequence.",
+      "errors": []
+    },
+    "method IntPQ.empty() -> bool": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return whether there are no items.",
+      "errors": []
+    },
+    "method IntPQ.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return the number of items.",
+      "errors": []
+    },
+    "method IntPQ.peek() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Read without removing the next item in pop order.",
+      "errors": [
+        "IntPQ.peek: empty"
+      ]
+    },
+    "method IntPQ.pop() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove and return the next item in pop order.",
+      "errors": [
+        "IntPQ.pop: empty"
+      ]
+    },
+    "method IntPQ.push(int, float) -> IntPQ": {
+      "area": "collections",
+      "params": [
+        "int",
+        "float"
+      ],
+      "summary": "Push with finite min-first priority; stable insertion-order ties including signed zero.",
+      "errors": [
+        "IntPQ.push: priority must be finite",
+        "IntPQ.push: insertion sequence exhausted"
+      ]
+    },
+    "method IntQueue.at(int) -> int": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Read in pop order without consuming; index zero is next to pop.",
+      "errors": [
+        "IntQueue.at: index out of range: N"
+      ]
+    },
+    "method IntQueue.clear() -> IntQueue": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all items; return self; reset PQ insertion sequence.",
+      "errors": []
+    },
+    "method IntQueue.empty() -> bool": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return whether there are no items.",
+      "errors": []
+    },
+    "method IntQueue.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return the number of items.",
+      "errors": []
+    },
+    "method IntQueue.peek() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Read without removing the next item in pop order.",
+      "errors": [
+        "IntQueue.peek: empty"
+      ]
+    },
+    "method IntQueue.pop() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove and return the next item in pop order.",
+      "errors": [
+        "IntQueue.pop: empty"
+      ]
+    },
+    "method IntQueue.push(int) -> IntQueue": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Append an item; return the same container.",
+      "errors": []
+    },
+    "method IntStack.at(int) -> int": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Read in pop order without consuming; index zero is next to pop.",
+      "errors": [
+        "IntStack.at: index out of range: N"
+      ]
+    },
+    "method IntStack.clear() -> IntStack": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all items; return self; reset PQ insertion sequence.",
+      "errors": []
+    },
+    "method IntStack.empty() -> bool": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return whether there are no items.",
+      "errors": []
+    },
+    "method IntStack.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return the number of items.",
+      "errors": []
+    },
+    "method IntStack.peek() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Read without removing the next item in pop order.",
+      "errors": [
+        "IntStack.peek: empty"
+      ]
+    },
+    "method IntStack.pop() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove and return the next item in pop order.",
+      "errors": [
+        "IntStack.pop: empty"
+      ]
+    },
+    "method IntStack.push(int) -> IntStack": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Append an item; return the same container.",
+      "errors": []
+    },
+    "method Json.as_bool() -> bool": {
+      "area": "json",
+      "params": [],
+      "summary": "Read a boolean.",
+      "errors": [
+        "Json.as_bool: expected bool"
+      ]
+    },
+    "method Json.as_float() -> float": {
+      "area": "json",
+      "params": [],
+      "summary": "Read binary64; integer conversion may round.",
+      "errors": [
+        "Json.as_float: expected number"
+      ]
+    },
+    "method Json.as_int() -> int": {
+      "area": "json",
+      "params": [],
+      "summary": "Read a signed int64 integer.",
+      "errors": [
+        "Json.as_int: expected int"
+      ]
+    },
+    "method Json.as_string() -> string": {
+      "area": "json",
+      "params": [],
+      "summary": "Read decoded UTF-8 bytes including escaped NUL.",
+      "errors": [
+        "Json.as_string: expected string"
+      ]
+    },
+    "method Json.at(int) -> Json": {
+      "area": "json",
+      "params": [
+        "int"
+      ],
+      "summary": "Borrow an array child.",
+      "errors": [
+        "Json.at: expected array",
+        "Json.at: index out of range: N"
+      ]
+    },
+    "method Json.get(string) -> Json": {
+      "area": "json",
+      "params": [
+        "string"
+      ],
+      "summary": "Borrow an object member.",
+      "errors": [
+        "Json.get: expected object",
+        "Json.get: missing key"
+      ]
+    },
+    "method Json.has(string) -> bool": {
+      "area": "json",
+      "params": [
+        "string"
+      ],
+      "summary": "Test a decoded object key.",
+      "errors": [
+        "Json.has: expected object"
+      ]
+    },
+    "method Json.keys() -> StrList": {
+      "area": "json",
+      "params": [],
+      "summary": "Snapshot keys in insertion order.",
+      "errors": [
+        "Json.keys: expected object"
+      ]
+    },
+    "method Json.kind() -> string": {
+      "area": "json",
+      "params": [],
+      "summary": "Return null/bool/int/float/string/array/object.",
+      "errors": []
+    },
+    "method Json.len() -> int": {
+      "area": "json",
+      "params": [],
+      "summary": "Count array items or object keys.",
+      "errors": [
+        "Json.len: expected array or object"
+      ]
+    },
+    "method Json.to_json() -> string": {
+      "area": "json",
+      "params": [],
+      "summary": "Emit compact tokens preserving number/string spellings and object order.",
+      "errors": []
+    },
+    "method StrList.add(string) -> StrList": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Append a byte string and return the receiver."
+    },
+    "method StrList.at(int) -> string": {
+      "area": "collections",
+      "errors": [
+        "StrList.at: index out of range: i"
+      ],
+      "params": [
+        "int"
+      ],
+      "summary": "Return the element at a zero-based index."
+    },
+    "method StrList.clear() -> StrList": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Remove elements and return the receiver."
+    },
+    "method StrList.contains(string) -> bool": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Test byte equality of elements."
+    },
+    "method StrList.index_of(string) -> int": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Return the first byte-equal index or -1."
+    },
+    "method StrList.join(string) -> string": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Join byte strings with a byte separator."
+    },
+    "method StrList.len() -> int": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Return element count."
+    },
+    "method StrList.set(int, string) -> StrList": {
+      "area": "collections",
+      "errors": [
+        "StrList.set: index out of range: i"
+      ],
+      "params": [
+        "int",
+        "string"
+      ],
+      "summary": "Replace an indexed byte string and return the receiver."
+    },
+    "method StrMap.clear() -> StrMap": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Remove entries and return the receiver."
+    },
+    "method StrMap.get(string) -> string": {
+      "area": "collections",
+      "errors": [
+        "StrMap.get: missing key"
+      ],
+      "params": [
+        "string"
+      ],
+      "summary": "Return a byte-key value."
+    },
+    "method StrMap.get_or(string, string) -> string": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Return a byte-key value or the fallback."
+    },
+    "method StrMap.has(string) -> bool": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Test byte-key presence."
+    },
+    "method StrMap.key_at(int) -> string": {
+      "area": "collections",
+      "errors": [
+        "StrMap.key_at: index out of range: i"
+      ],
+      "params": [
+        "int"
+      ],
+      "summary": "Return the insertion-order key at a zero-based index."
+    },
+    "method StrMap.keys() -> StrList": {
+      "area": "collections",
+      "params": [],
+      "summary": "Allocate an independent StrList snapshot of keys in insertion order; later map/list mutations do not alias. Preserve raw bytes and float payload bits.",
+      "errors": []
+    },
+    "method StrMap.len() -> int": {
+      "area": "collections",
+      "errors": [],
+      "params": [],
+      "summary": "Return insertion-order entry count."
+    },
+    "method StrMap.remove(string) -> bool": {
+      "area": "collections",
+      "errors": [],
+      "params": [
+        "string"
+      ],
+      "summary": "Remove a key and report whether it existed."
+    },
+    "method StrMap.set(string, string) -> StrMap": {
+      "area": "collections",
+      "errors": [
+        "StrMap.set: index out of range: i"
+      ],
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Insert or replace a value while preserving an existing key position; removal tombstones compact on key_at."
+    },
+    "method StrMap.values() -> StrList": {
+      "area": "collections",
+      "params": [],
+      "summary": "Allocate an independent StrList snapshot of values in insertion order; later map/list mutations do not alias. Preserve raw bytes and float payload bits.",
+      "errors": []
+    },
+    "method StrPQ.clear() -> StrPQ": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all items; return self; reset PQ insertion sequence.",
+      "errors": []
+    },
+    "method StrPQ.empty() -> bool": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return whether there are no items.",
+      "errors": []
+    },
+    "method StrPQ.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return the number of items.",
+      "errors": []
+    },
+    "method StrPQ.peek() -> string": {
+      "area": "collections",
+      "params": [],
+      "summary": "Read without removing the next item in pop order.",
+      "errors": [
+        "StrPQ.peek: empty"
+      ]
+    },
+    "method StrPQ.pop() -> string": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove and return the next item in pop order.",
+      "errors": [
+        "StrPQ.pop: empty"
+      ]
+    },
+    "method StrPQ.push(string, float) -> StrPQ": {
+      "area": "collections",
+      "params": [
+        "string",
+        "float"
+      ],
+      "summary": "Push with finite min-first priority; stable insertion-order ties including signed zero.",
+      "errors": [
+        "StrPQ.push: priority must be finite",
+        "StrPQ.push: insertion sequence exhausted"
+      ]
+    },
+    "method StrQueue.at(int) -> string": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Read in pop order without consuming; index zero is next to pop.",
+      "errors": [
+        "StrQueue.at: index out of range: N"
+      ]
+    },
+    "method StrQueue.clear() -> StrQueue": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all items; return self; reset PQ insertion sequence.",
+      "errors": []
+    },
+    "method StrQueue.empty() -> bool": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return whether there are no items.",
+      "errors": []
+    },
+    "method StrQueue.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return the number of items.",
+      "errors": []
+    },
+    "method StrQueue.peek() -> string": {
+      "area": "collections",
+      "params": [],
+      "summary": "Read without removing the next item in pop order.",
+      "errors": [
+        "StrQueue.peek: empty"
+      ]
+    },
+    "method StrQueue.pop() -> string": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove and return the next item in pop order.",
+      "errors": [
+        "StrQueue.pop: empty"
+      ]
+    },
+    "method StrQueue.push(string) -> StrQueue": {
+      "area": "collections",
+      "params": [
+        "string"
+      ],
+      "summary": "Append an item; return the same container.",
+      "errors": []
+    },
+    "method StrStack.at(int) -> string": {
+      "area": "collections",
+      "params": [
+        "int"
+      ],
+      "summary": "Read in pop order without consuming; index zero is next to pop.",
+      "errors": [
+        "StrStack.at: index out of range: N"
+      ]
+    },
+    "method StrStack.clear() -> StrStack": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove all items; return self; reset PQ insertion sequence.",
+      "errors": []
+    },
+    "method StrStack.empty() -> bool": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return whether there are no items.",
+      "errors": []
+    },
+    "method StrStack.len() -> int": {
+      "area": "collections",
+      "params": [],
+      "summary": "Return the number of items.",
+      "errors": []
+    },
+    "method StrStack.peek() -> string": {
+      "area": "collections",
+      "params": [],
+      "summary": "Read without removing the next item in pop order.",
+      "errors": [
+        "StrStack.peek: empty"
+      ]
+    },
+    "method StrStack.pop() -> string": {
+      "area": "collections",
+      "params": [],
+      "summary": "Remove and return the next item in pop order.",
+      "errors": [
+        "StrStack.pop: empty"
+      ]
+    },
+    "method StrStack.push(string) -> StrStack": {
+      "area": "collections",
+      "params": [
+        "string"
+      ],
+      "summary": "Append an item; return the same container.",
+      "errors": []
+    },
+    "fn template_render(string, Json) -> string": {
+      "area": "string",
+      "params": [
+        "string",
+        "Json"
+      ],
+      "summary": "Render arbitrary text with <path>, <items[0]>, <items:{item|body}; separator=\", \"> and <if(flag)>yes<else>no<endif>. Loop index is zero-based. << emits <. Inserted values remain literal.",
+      "errors": [
+        "template_render: context must be an object",
+        "template_render: missing variable PATH",
+        "template_render: loop requires a list: PATH",
+        "template_render: condition requires a bool: PATH",
+        "template_render: unterminated block",
+        "template_render: unexpected conditional delimiter",
+        "template_render: invalid loop separator",
+        "template_render: index is reserved",
+        "template_render: maximum nesting exceeded"
+      ]
+    },
+    "fn lmcode_return_set(int) -> void": {
+      "area": "runtime",
+      "params": [
+        "int"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, int) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "int"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(float) -> void": {
+      "area": "runtime",
+      "params": [
+        "float"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, float) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "float"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(bool) -> void": {
+      "area": "runtime",
+      "params": [
+        "bool"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, bool) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "bool"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(string) -> void": {
+      "area": "runtime",
+      "params": [
+        "string"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, string) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "string"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(Json) -> void": {
+      "area": "runtime",
+      "params": [
+        "Json"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, Json) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "Json"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(StrList) -> void": {
+      "area": "runtime",
+      "params": [
+        "StrList"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, StrList) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "StrList"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(IntList) -> void": {
+      "area": "runtime",
+      "params": [
+        "IntList"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, IntList) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "IntList"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(FloatList) -> void": {
+      "area": "runtime",
+      "params": [
+        "FloatList"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, FloatList) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "FloatList"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(StrMap) -> void": {
+      "area": "runtime",
+      "params": [
+        "StrMap"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, StrMap) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "StrMap"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(IntMap) -> void": {
+      "area": "runtime",
+      "params": [
+        "IntMap"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, IntMap) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "IntMap"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_set(FloatMap) -> void": {
+      "area": "runtime",
+      "params": [
+        "FloatMap"
+      ],
+      "summary": "Replace the invocation return value with a deep owned copy; writing again replaces it.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_put(string, FloatMap) -> void": {
+      "area": "runtime",
+      "params": [
+        "string",
+        "FloatMap"
+      ],
+      "summary": "Store a deep owned copy at a top-level return field. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null",
+        "lmcode return: invalid JSON value at PATH: REASON"
+      ]
+    },
+    "fn lmcode_return_null() -> void": {
+      "area": "runtime",
+      "params": [],
+      "summary": "Set the invocation return value to JSON null.",
+      "errors": [
+        "lmcode return: no result sink"
+      ]
+    },
+    "fn lmcode_return_put_null(string) -> void": {
+      "area": "runtime",
+      "params": [
+        "string"
+      ],
+      "summary": "Set a top-level return field to JSON null. A null root is promoted to an object.",
+      "errors": [
+        "lmcode return: no result sink",
+        "lmcode return: field assignment requires object or null"
+      ]
+    }
+  },
+  "version": 3
+}

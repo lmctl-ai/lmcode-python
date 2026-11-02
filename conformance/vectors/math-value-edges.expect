@@ -1,0 +1,19 @@
+trace
+bool true
+int 0
+int 9223372036854775807
+int -9223372036854775808
+int 9223372036854775807
+int -9223372036854775808
+int -9223372036854775808
+int 2
+float 2
+bool true
+bool true
+float -0
+float 0
+float 0
+float 0
+float 1
+float 0
+float 1

@@ -1,0 +1,12 @@
+trace
+hex 6100ff
+hex 62
+float 3.5
+float 2.5
+float 1.5
+bool false
+bool true
+bool false
+hex 62
+hex 6100ff
+bool false

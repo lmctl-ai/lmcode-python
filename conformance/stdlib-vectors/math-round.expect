@@ -1,0 +1,6 @@
+trace
+int 9223372036854775807
+float -1
+float 1
+float -0
+float 4.5035996273705e+15

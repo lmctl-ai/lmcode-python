@@ -1,0 +1,5 @@
+trace
+int 3
+float 2.5
+float -0
+float 0
