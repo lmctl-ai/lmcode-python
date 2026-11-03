@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ["3.9", "3.13"]
+        python: ["3.10", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -61,4 +61,4 @@ jobs:
           "$PY" scripts/check-wheel.py .build/wheels
           "$PY" -m pip install --no-deps --no-build-isolation .build/wheels/lmcode_python-0.1.0-py3-none-any.whl
           mkdir -p .build-clean
-          (cd .build-clean && PYTHONPATH= "$(realpath ../$PY)" -c 'import lmcode, sample.main; from lmcode import Registry; assert len(Registry().std_signatures)==206; assert sample.main.VERSION=="0.1.0"')
+          "$PY" -I -c 'import lmcode, sample.main; from lmcode import Registry; assert len(Registry().std_signatures)==206; assert sample.main.VERSION=="0.1.0"'

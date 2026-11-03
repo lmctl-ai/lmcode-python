@@ -26,7 +26,7 @@ def _discover(args,schema_bytes):
         sys.stdout.buffer.write(schema_bytes);return 0
     if args==["--lmcode-signatures"]:
         host=Host()
-        sys.stdout.write("\n".join(host.registry.signatures())+"\n");return 0
+        sys.stdout.buffer.write(("\n".join(host.registry.signatures())+"\n").encode("utf-8"));return 0
     return None
 
 def _parse_command(args):
