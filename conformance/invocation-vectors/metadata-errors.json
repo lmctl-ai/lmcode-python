@@ -1,0 +1,149 @@
+[
+  {
+    "name": "mode-true",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a747275652c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: invalid mode\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "mode-0",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a302c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: invalid mode\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "mode-null",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a6e756c6c2c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: invalid mode\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "mode-[]",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a5b5d2c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: invalid mode\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "mode-{}",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a7b7d2c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: invalid mode\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "missing-mode",
+    "raw_hex": "7b2276657273696f6e223a312c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: invalid mode\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "missing-parts",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65227d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: invalid parts\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "file-bool",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a747275657d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: file must be absolute\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "missing-file",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a307d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: file must be absolute\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "missing-index",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: noncontiguous index\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "version-9007199254740993",
+    "raw_hex": "7b2276657273696f6e223a393030373139393235343734303939332c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: lmcode return: invalid JSON value at /version: unsafe_integer\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "version-9007199254740992.0",
+    "raw_hex": "7b2276657273696f6e223a393030373139393235343734303939322e302c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: lmcode return: invalid JSON value at /version: unsafe_integer\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "version-1e-9999",
+    "raw_hex": "7b2276657273696f6e223a31652d393939392c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: lmcode return: invalid JSON value at /version: underflow\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "index-9007199254740993",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a393030373139393235343734303939332c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: lmcode return: invalid JSON value at /parts/0/index: unsafe_integer\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "index-9007199254740992.0",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a393030373139393235343734303939322e302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: lmcode return: invalid JSON value at /parts/0/index: unsafe_integer\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "index-1e-9999",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a31652d393939392c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: lmcode return: invalid JSON value at /parts/0/index: underflow\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "bom",
+    "raw_hex": "efbbbf7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: JSON BOM is not allowed\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "invalid-utf8",
+    "raw_hex": "ff",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: json_parse: invalid UTF-8 at byte 0\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "invalid-utf8-tail",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7dff",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: json_parse: invalid UTF-8 at byte 80\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "duplicate-key",
+    "raw_hex": "7b2276657273696f6e223a312c2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: json_parse: duplicate object key at byte 13\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "overflow",
+    "raw_hex": "7b2276657273696f6e223a3165393939392c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: json_parse: nonfinite number at byte 11\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "integer-overflow",
+    "raw_hex": "7b2276657273696f6e223a393232333337323033363835343737353830382c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: json_parse: integer out of range at byte 11\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "trailing",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d78",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: trailing JSON input\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "truncated",
+    "raw_hex": "7b2276657273696f6e223a",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: json_parse: expected value at byte 11\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "control-key-diagnostic",
+    "raw_hex": "7b2276657273696f6e223a312c22647279223a66616c73652c226d6f6465223a2273696e676c65222c227061727473223a5b5d2c225c625c66223a307d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: unknown key \\b\\f\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "missing-dry",
+    "raw_hex": "7b2276657273696f6e223a312c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: dry must be boolean\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "nonboolean-dry",
+    "raw_hex": "7b2276657273696f6e223a312c226d6f6465223a2273696e676c65222c227061727473223a5b7b22696e646578223a302c2266696c65223a222f756e75736564227d5d2c22647279223a317d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: dry must be boolean\"}\nLMCODE_RETURN_END\n"
+  },
+  {
+    "name": "invalid-parts-dry",
+    "raw_hex": "7b2276657273696f6e223a312c226d6f6465223a2273696e676c65222c22647279223a747275652c227061727473223a5b5d7d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: invalid parts\",\"dry\":true}\nLMCODE_RETURN_END\n",
+    "dry": true
+  },
+  {
+    "name": "valid-dry-unknown-root",
+    "raw_hex": "7b2276657273696f6e223a20312c20226d6f6465223a202273696e676c65222c2022647279223a20747275652c20227061727473223a205b7b22696e646578223a20302c202266696c65223a20222f756e75736564227d5d2c20226578747261223a20307d",
+    "frame": "LMCODE_RETURN_BEGIN\n{\"ok\":false,\"phase\":\"cli\",\"code\":\"CLI_USAGE\",\"message\":\"lmcode invocation: unknown key extra\",\"dry\":true}\nLMCODE_RETURN_END\n",
+    "dry": true
+  }
+]

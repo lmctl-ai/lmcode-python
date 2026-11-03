@@ -1,0 +1,2 @@
+lmcode_return_put("partial", 1);
+entry_fail();

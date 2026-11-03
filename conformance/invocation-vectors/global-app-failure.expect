@@ -1,0 +1,3 @@
+LMCODE_RETURN_BEGIN
+{"ok":false,"phase":"app","code":"APP_FAIL","message":"native validation failed"}
+LMCODE_RETURN_END

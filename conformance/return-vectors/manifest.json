@@ -1,0 +1,100 @@
+{
+  "schema": "schema.json",
+  "version": 6,
+  "host": {
+    "entries": "call in declared order; repeated-calls calls twice; int HALT results must remain 7",
+    "frames": "one invocation envelope on success or controlled failure, after body/entries/application validation; no partial payload on error"
+  },
+  "vectors": [
+    {
+      "name": "float-roundtrip",
+      "source": "float-roundtrip.dsl",
+      "bytecode": "float-roundtrip.dslb",
+      "expect": {
+        "file": "float-roundtrip.expect",
+        "exit": 0
+      },
+      "repeat": 1
+    },
+    {
+      "name": "entry-sink",
+      "source": "entry-sink.dsl",
+      "bytecode": "entry-sink.dslb",
+      "expect": {
+        "file": "entry-sink.expect",
+        "exit": 0
+      },
+      "repeat": 1
+    },
+    {
+      "name": "entry-error",
+      "source": "entry-error.dsl",
+      "bytecode": "entry-error.dslb",
+      "expect": {
+        "file": "entry-error.expect",
+        "exit": 3
+      },
+      "repeat": 1
+    },
+    {
+      "name": "repeated-calls",
+      "source": "repeated-calls.dsl",
+      "bytecode": "repeated-calls.dslb",
+      "expect": {
+        "file": "repeated-calls.expect",
+        "exit": 0
+      },
+      "repeat": 2
+    },
+    {
+      "name": "unset-null",
+      "source": "unset-null.dsl",
+      "bytecode": "unset-null.dslb",
+      "expect": {
+        "file": "unset-null.expect",
+        "exit": 0
+      },
+      "repeat": 1
+    },
+    {
+      "name": "all-overloads",
+      "source": "all-overloads.dsl",
+      "bytecode": "all-overloads.dslb",
+      "expect": {
+        "file": "all-overloads.expect",
+        "exit": 0
+      },
+      "repeat": 1
+    },
+    {
+      "name": "unsafe-json-integer",
+      "source": "unsafe-json-integer.dsl",
+      "bytecode": "unsafe-json-integer.dslb",
+      "expect": {
+        "file": "unsafe-json-integer.expect",
+        "exit": 3
+      },
+      "repeat": 1
+    },
+    {
+      "name": "scalar-field",
+      "source": "scalar-field.dsl",
+      "bytecode": "scalar-field.dslb",
+      "expect": {
+        "file": "scalar-field.expect",
+        "exit": 3
+      },
+      "repeat": 1
+    },
+    {
+      "name": "invalid-utf8",
+      "source": "invalid-utf8.dsl",
+      "bytecode": "invalid-utf8.dslb",
+      "expect": {
+        "file": "invalid-utf8.expect",
+        "exit": 3
+      },
+      "repeat": 1
+    }
+  ]
+}

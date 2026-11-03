@@ -1,0 +1,13 @@
+{
+  "float-roundtrip": 0.30000000000000004,
+  "entry-sink": {
+    "body": "body",
+    "entry": "entry"
+  },
+  "repeated-calls": {
+    "program": "first",
+    "entry": "called"
+  },
+  "unset-null": null,
+  "all-overloads": null
+}

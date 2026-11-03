@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "schema": "schema.json",
+  "cases": [
+    {
+      "name": "canonical-numbers",
+      "programs": [
+        "numbers"
+      ],
+      "mode": "single",
+      "exit": 0
+    },
+    {
+      "name": "canonical-controls",
+      "programs": [
+        "controls"
+      ],
+      "mode": "single",
+      "exit": 0
+    },
+    {
+      "name": "two-reverse",
+      "programs": [
+        "a",
+        "b"
+      ],
+      "mode": "builder",
+      "exit": 0
+    },
+    {
+      "name": "same-program-twice",
+      "programs": [
+        "a",
+        "a"
+      ],
+      "mode": "builder",
+      "exit": 0
+    },
+    {
+      "name": "one-slot-builder",
+      "programs": [
+        "nested"
+      ],
+      "mode": "builder",
+      "exit": 0
+    },
+    {
+      "name": "single-nested",
+      "programs": [
+        "nested"
+      ],
+      "mode": "single",
+      "exit": 0
+    },
+    {
+      "name": "single-list",
+      "programs": [
+        "list"
+      ],
+      "mode": "single",
+      "exit": 0
+    },
+    {
+      "name": "one-slot-builder-list",
+      "programs": [
+        "list"
+      ],
+      "mode": "builder",
+      "exit": 0
+    },
+    {
+      "name": "single-null",
+      "programs": [
+        "null"
+      ],
+      "mode": "single",
+      "exit": 0
+    },
+    {
+      "name": "null-and-float",
+      "programs": [
+        "null",
+        "float"
+      ],
+      "mode": "builder",
+      "exit": 0
+    },
+    {
+      "name": "standalone-duplicates",
+      "programs": [
+        "a",
+        "a"
+      ],
+      "mode": null,
+      "exit": 0
+    },
+    {
+      "name": "one-slot-builder-failure",
+      "programs": [
+        "error"
+      ],
+      "mode": "builder",
+      "exit": 3
+    },
+    {
+      "name": "part-load-failure",
+      "programs": [
+        "a",
+        "bad"
+      ],
+      "mode": "builder",
+      "exit": 3
+    },
+    {
+      "name": "entry-failure",
+      "programs": [
+        "a",
+        "error"
+      ],
+      "mode": "builder",
+      "exit": 3
+    },
+    {
+      "name": "global-app-failure",
+      "programs": [
+        "a",
+        "b"
+      ],
+      "mode": "builder",
+      "exit": 4
+    },
+    {
+      "name": "single-failure",
+      "programs": [
+        "error"
+      ],
+      "mode": "single",
+      "exit": 3
+    },
+    {
+      "name": "single-dry",
+      "programs": [
+        "null"
+      ],
+      "mode": "single",
+      "dry": true,
+      "exit": 0
+    },
+    {
+      "name": "single-dry-failure",
+      "programs": [
+        "error"
+      ],
+      "mode": "single",
+      "dry": true,
+      "exit": 3
+    },
+    {
+      "name": "builder-dry-failure",
+      "programs": [
+        "a",
+        "error"
+      ],
+      "mode": "builder",
+      "dry": true,
+      "exit": 3
+    },
+    {
+      "name": "dry-null-object-return",
+      "programs": [
+        "dry-null-object-return"
+      ],
+      "schema": "dry-null-object-return.schema.json",
+      "mode": "single",
+      "dry": true,
+      "exit": 0
+    },
+    {
+      "name": "dry-null-skipped-consumer",
+      "programs": [
+        "dry-null-skipped-consumer"
+      ],
+      "schema": "dry-null-skipped-consumer.schema.json",
+      "mode": "single",
+      "dry": true,
+      "exit": 0
+    },
+    {
+      "name": "dry-null-null-receiver",
+      "programs": [
+        "dry-null-null-receiver"
+      ],
+      "schema": "dry-null-null-receiver.schema.json",
+      "mode": "single",
+      "dry": true,
+      "exit": 3
+    },
+    {
+      "name": "dry-null-field",
+      "programs": [
+        "dry-null-field"
+      ],
+      "schema": "dry-null-field.schema.json",
+      "mode": "single",
+      "dry": true,
+      "exit": 0
+    },
+    {
+      "name": "dry-null-nonnullable",
+      "programs": [
+        "dry-null-nonnullable"
+      ],
+      "schema": "dry-null-nonnullable.schema.json",
+      "mode": "single",
+      "dry": true,
+      "exit": 3
+    },
+    {
+      "name": "dry-null-invoked-function",
+      "programs": [
+        "dry-null-invoked-function"
+      ],
+      "schema": "dry-null-invoked-function.schema.json",
+      "mode": "single",
+      "dry": true,
+      "exit": 3
+    },
+    {
+      "name": "dry-null-skipped-method",
+      "programs": [
+        "dry-null-skipped-method"
+      ],
+      "schema": "dry-null-skipped-method.schema.json",
+      "mode": "single",
+      "dry": true,
+      "exit": 0
+    },
+    {
+      "name": "dry-null-invoked-method",
+      "programs": [
+        "dry-null-invoked-method"
+      ],
+      "schema": "dry-null-invoked-method.schema.json",
+      "mode": "single",
+      "dry": true,
+      "exit": 3
+    },
+    {
+      "name": "dry-null-skipped-concrete-method",
+      "programs": [
+        "dry-null-skipped-concrete-method"
+      ],
+      "schema": "dry-null-skipped-concrete-method.schema.json",
+      "mode": "single",
+      "dry": true,
+      "exit": 0
+    }
+  ]
+}

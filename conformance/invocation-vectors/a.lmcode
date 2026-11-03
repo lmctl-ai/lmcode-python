@@ -1,0 +1,6 @@
+lmcode_return_put("id", "A");
+lmcode_return_put("counter", next_counter());
+@step fn entry() -> int implements Step {
+  lmcode_return_put("entry", true);
+  return 7;
+}

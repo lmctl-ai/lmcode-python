@@ -1,0 +1,3 @@
+LMCODE_RETURN_BEGIN
+{"ok":false,"phase":"load","code":"LOAD_BAD_BYTECODE","message":"not a DSL bytecode file: bad magic (expected 'DSLB')","part":1}
+LMCODE_RETURN_END

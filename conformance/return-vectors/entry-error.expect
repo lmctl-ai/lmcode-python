@@ -1,0 +1,3 @@
+LMCODE_RETURN_BEGIN
+{"ok":false,"phase":"run","code":"RUN_HOST","message":"dsl line 5:3: entry failure","line":5,"column":3}
+LMCODE_RETURN_END

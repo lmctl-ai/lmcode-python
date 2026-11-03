@@ -1,0 +1,2 @@
+lmcode_return_put("id", "B");
+lmcode_return_put("counter", next_counter());
