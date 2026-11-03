@@ -33,6 +33,7 @@ class JsonNode:
 class Collection:
     type_name: str
     value: Any
+    next_sequence: int = 0
 
 
 def _obj(type_name, value): return ObjectRef(type_name, value, id(value))
@@ -488,13 +489,19 @@ def _method_impl(owner,name,params,returns):
             values=_list_value(self_ref)
             if name=="len":return len(values)
             if name=="empty":return not values
-            if name=="clear":values.clear();return self_ref
+            if name=="clear":
+                values.clear()
+                if pq:self_ref.value.next_sequence=0
+                return self_ref
             if name=="push":
                 value=args[0]
                 if pq:
                     priority=args[1]
                     if not math.isfinite(priority):raise HostError(owner+".push: priority must be finite")
-                    values.append((priority,len(values),value));values.sort(key=lambda x:(x[0],x[1]))
+                    sequence=self_ref.value.next_sequence
+                    if sequence >= (1<<63)-1:raise HostError(owner+".push: insertion sequence exhausted")
+                    values.append((priority,sequence,value));values.sort(key=lambda x:(x[0],x[1]))
+                    self_ref.value.next_sequence=sequence+1
                 else:values.append(value)
                 return self_ref
             if name=="peek" or name=="pop":
