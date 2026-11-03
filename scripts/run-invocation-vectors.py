@@ -2,6 +2,7 @@
 """Run canonical manifest, dry-mode, and result-frame vectors."""
 from __future__ import annotations
 import json, pathlib, sys
+import os, subprocess, tempfile
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from lmcode import Context, HostError, InvocationResults, LmcodeError, Registry, dry, load
@@ -68,8 +69,20 @@ def main():
       except LmcodeError as error:
         if message not in error.message:failures.append(("manifest-control",AssertionError(error.message)))
       else:failures.append(("manifest-control",AssertionError("invalid manifest accepted")))
+    metadata_cases=json.loads((DIR/"metadata-errors.json").read_text(encoding="utf8"))
+    with tempfile.TemporaryDirectory(prefix="lmcode-python-metadata-") as temporary:
+      metadata_path=pathlib.Path(temporary)/"invocation.json"
+      for case in metadata_cases:
+        metadata_path.write_bytes(bytes.fromhex(case["raw_hex"]))
+        env=dict(os.environ,LMCODE_INVOCATION_FILE=str(metadata_path))
+        result=subprocess.run([sys.executable,"-m","sample.main","--lmcode","/unused"],cwd=ROOT,env=env,capture_output=True)
+        expected=case["frame"].encode("utf8")
+        if (result.returncode,result.stdout,result.stderr)!=(2,expected,b""):
+          failures.append(("metadata:"+case["name"],AssertionError(repr((result.returncode,result.stdout,result.stderr)))))
+        else:
+          print("PASS metadata bytes "+case["name"])
     for name,error in failures:print("FAIL "+name+": "+str(error),file=sys.stderr)
-    print(("PASS " if not failures else "FAIL ")+str(registry_tests)+"/"+str(len(manifest["cases"]))+" invocation goldens; "+str(len(controls))+" metadata controls")
+    print(("PASS " if not failures else "FAIL ")+str(registry_tests)+"/"+str(len(manifest["cases"]))+" invocation goldens; "+str(len(controls))+" metadata controls; "+str(len(metadata_cases)-sum(1 for name,error in failures if name.startswith("metadata:")))+"/"+str(len(metadata_cases))+" canonical metadata errors")
     return 1 if failures or registry_tests!=len(manifest["cases"]) else 0
 
 if __name__=="__main__":raise SystemExit(main())

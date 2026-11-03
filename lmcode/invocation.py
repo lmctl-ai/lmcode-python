@@ -21,6 +21,24 @@ def _manifest_error(error):
     if message=="json_parse: BOM is not allowed at byte 0":message="JSON BOM is not allowed"
     if message.startswith("json_parse: trailing input at byte "):message="trailing JSON input"
     return _cli(message)
+
+def _pointer(parent,key):
+    return parent+"/"+str(key).replace("~","~0").replace("/","~1")
+
+def _validate_manifest_numbers(node,path=""):
+    if not isinstance(node,JsonNode):return
+    if node.kind=="int" and abs(node.value)>(1<<53)-1:
+        raise _cli("lmcode return: invalid JSON value at "+(path or "")+": unsafe_integer")
+    if node.kind=="float":
+        significand=node.raw.split("e")[0].split("E")[0]
+        if node.value==0.0 and any(char in "123456789" for char in significand):
+            raise _cli("lmcode return: invalid JSON value at "+(path or "")+": underflow")
+        if node.value.is_integer() and abs(node.value)>(1<<53)-1:
+            raise _cli("lmcode return: invalid JSON value at "+(path or "")+": unsafe_integer")
+    if node.kind=="array":
+        for index,item in enumerate(node.array):_validate_manifest_numbers(item,_pointer(path,index))
+    elif node.kind=="object":
+        for member in node.members:_validate_manifest_numbers(member.value,_pointer(path,member.key))
 def _is_absolute(path):return os.path.isabs(path) or (os.name=="nt" and ntpath.isabs(path))
 def _only_keys(value,allowed):
     if not isinstance(value,dict):raise _cli("object required")
@@ -66,9 +84,16 @@ class InvocationResults:
         self.failure=None;self.writing=False
     @classmethod
     def from_metadata(cls,raw,files):
-        try:metadata=_native(_parse_json(bytes(raw).decode("latin-1")))
+        try:parsed=_parse_json(bytes(raw).decode("latin-1"))
         except LmcodeError as error:raise _manifest_error(error)
-        builder,dry,registrations=_manifest_metadata(metadata,list(files))
+        dry=parsed.kind=="object" and any(member.key=="dry" and member.value.kind=="bool" and member.value.value for member in parsed.members)
+        try:
+            _validate_manifest_numbers(parsed)
+            metadata=_native(parsed)
+            builder,dry,registrations=_manifest_metadata(metadata,list(files))
+        except LmcodeError as error:
+            if dry:error.invocation_dry=True
+            raise
         return cls(builder,dry,registrations)
     @classmethod
     def from_command(cls,files,env=None):
@@ -107,13 +132,18 @@ class InvocationResults:
         slot=self._slot(index)
         if slot["sink"] is None:raise HostError("lmcode invocation: slot was not selected")
         try:slot["result"]=slot["sink"].complete()
+        except (MemoryError,RecursionError) as error:
+            message="memory allocation failed" if isinstance(error,MemoryError) else "maximum recursion depth exceeded"
+            wrapped=HostError(message);self.fail(index,"run",wrapped);raise wrapped from None
         except Exception as error:self.fail(index,"run",error);raise
     def fail(self,index,phase,error):
         if self.writing:raise HostError("lmcode invocation: finalized")
         if self.failure is not None:return
         if index is not None:self._slot(index)
         if phase not in ("cli","load","run","app"):raise HostError("lmcode invocation: invalid failure phase")
-        if not isinstance(error,LmcodeError):error=HostError(str(error))
+        if not isinstance(error,LmcodeError):
+            message="memory allocation failed" if isinstance(error,MemoryError) else "maximum recursion depth exceeded" if isinstance(error,RecursionError) else str(error)
+            error=HostError(message)
         part=index if self.builder and index is not None else None
         self.failure={"phase":phase,"error":error,"part":part}
     def write_frame(self):
