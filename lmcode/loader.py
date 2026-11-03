@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 import hashlib
 from typing import Dict, List, Optional, Tuple
 from .binary import Reader
-from .errors import LoadError
+from .errors import HostError, LoadError
 from .registry import Registry
 
 VERSION = 6
@@ -86,14 +86,16 @@ class Program:
 
     def call(self, entry, context, registry, args):
         from .vm import execute
-        selected = self.entries[entry] if type(entry) is int else next((e for e in self.entries if e.name == entry), None)
-        if selected is None:
-            from .errors import HostError
-            raise HostError("call entry '" + str(entry) + "' not found")
-        if len(args) != len(selected.params):
-            from .errors import HostError
-            raise HostError("call entry '" + selected.name + "' expects " + str(len(selected.params)) + " argument(s); found " + str(len(args)))
-        return execute(self, selected.region, context, registry, list(args), selected.returns != "void")
+        try:
+            selected = self.entries[entry] if type(entry) is int else next((e for e in self.entries if e.name == entry), None)
+            if selected is None:raise HostError("call entry '" + str(entry) + "' not found")
+            if len(args) != len(selected.params):
+                raise HostError("call entry '" + selected.name + "' expects " + str(len(selected.params)) + " argument(s); found " + str(len(args)))
+            return execute(self, selected.region, context, registry, list(args), selected.returns != "void")
+        except MemoryError:
+            raise HostError("memory allocation failed") from None
+        except RecursionError:
+            raise HostError("maximum recursion depth exceeded") from None
 
 
 def _fail(message: str, code: str = "LOAD_BAD_BYTECODE") -> None:

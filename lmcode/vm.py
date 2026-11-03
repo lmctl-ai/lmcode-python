@@ -153,6 +153,11 @@ def _host_result(value: Any, raw: bool, return_type: str, registry: Registry) ->
         return ObjectRef(return_type,value,id(value))
     return value
 
+def _host_failure(error: BaseException) -> HostError:
+    if isinstance(error,MemoryError):return HostError("memory allocation failed")
+    if isinstance(error,RecursionError):return HostError("maximum recursion depth exceeded")
+    return HostError(str(error))
+
 def _call_function(binding, ctx: Context, args: List[Any], registry: Registry) -> Any:
     if ctx.dry_mode and binding.dry_callback is None and not binding.dry_uses_real:
         return _dummy(binding.signature.returns)
@@ -164,8 +169,10 @@ def _call_function(binding, ctx: Context, args: List[Any], registry: Registry) -
         result = _host_result(result,binding.raw_strings,binding.signature.returns,registry)
     except LmcodeError:
         raise
+    except (MemoryError,RecursionError) as error:
+        raise _host_failure(error) from None
     except Exception as error:
-        raise HostError(str(error))
+        raise _host_failure(error) from None
     if ctx.dry_mode and not binding.dry_uses_real and kind(result) != _expected_kind(binding.signature.returns):
         raise HostError("dry callback for " + binding.signature.returns + " returned " + kind(result))
     return result
@@ -196,14 +203,16 @@ def _call_method(binding, ctx: Context, receiver: Any, args: List[Any], registry
         result = _host_result(result,binding.raw_strings,return_type,registry)
     except LmcodeError:
         raise
+    except (MemoryError,RecursionError) as error:
+        raise _host_failure(error) from None
     except Exception as error:
-        raise HostError(str(error))
+        raise _host_failure(error) from None
     if ctx.dry_mode and not binding.dry_uses_real and kind(result) != _expected_kind(binding.signature.returns):
         raise HostError("dry callback for " + binding.signature.returns + " returned " + kind(result))
     return result
 
 
-def execute(program: Program, region: Region, context: Context, registry: Registry, args: List[Any], capture: bool) -> Any:
+def _execute(program: Program, region: Region, context: Context, registry: Registry, args: List[Any], capture: bool) -> Any:
     generation=registry.begin_run()
     if registry.result_sink is not None: context.result_sink=registry.result_sink
     if registry.std_enabled:
@@ -335,5 +344,12 @@ def execute(program: Program, region: Region, context: Context, registry: Regist
     finally:
         if registry.std_enabled:
             from .stdlib import clear_run_objects
-            clear_run_objects(context)
-            registry.end_run(generation)
+            try:clear_run_objects(context)
+            finally:registry.end_run(generation)
+
+def execute(program: Program, region: Region, context: Context, registry: Registry, args: List[Any], capture: bool) -> Any:
+    try:
+        return _execute(program,region,context,registry,args,capture)
+    except (MemoryError,RecursionError) as error:
+        registry.end_run(registry._run_generation)
+        raise _host_failure(error) from None
