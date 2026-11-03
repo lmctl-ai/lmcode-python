@@ -1,0 +1,4 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let item = int_list().at(0);
+print("unreachable intlist oob");
+end _lmcode_

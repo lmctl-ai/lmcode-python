@@ -1,0 +1,4 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let n = 2;
+switch (n) { case 1: { print("one"); } case 2: { print("two"); } default: { print("other"); } }
+end _lmcode_

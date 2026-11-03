@@ -1,0 +1,7 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let zero = 0;
+let safe = false && ((1 / zero) > 0);
+let also_safe = true || ((1 % zero) == 0);
+if (false) { ledger.reject("unreachable"); }
+print(str(safe) + ":" + str(also_safe));
+end _lmcode_

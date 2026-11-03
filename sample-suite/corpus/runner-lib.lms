@@ -1,0 +1,100 @@
+fn suite_root() {
+  return env("LMCODE_SUITE") || path_join(Directory, "sample-suite");
+}
+fn binary(root, request) {
+  result = system(["node", path_join(root, "bytes.mjs")], {stdin: json_stringify(request), timeoutMs: 0});
+  assert(result.code == 0, "binary adapter: " + result.stderr);
+  return json_parse(result.stdout);
+}
+fn invoke(root, command, tail, fixtures, timeout) {
+  return binary(root, {op:"run", argv:concat(command, tail), fixtures:fixtures, timeout:timeout});
+}
+fn check_files(root, manifest) {
+  assert(len(manifest.cases) > 0, "empty manifest cannot pass");
+  names = [];
+  paths = [path_join(root, manifest.schema)];
+  expected = [manifest.schema_sha256];
+  for (case in manifest.cases) {
+    assert(!contains(names, case.name), "duplicate case: " + case.name);
+    push(names, case.name);
+    push(paths, path_join(root, case.bytecode));
+    push(expected, case.bytecode_sha256);
+    if (case.has("source")) {
+      push(paths, path_join(root, case.source));
+      push(expected, case.source_sha256);
+    }
+  }
+  hashes = binary(root, {op:"hashes", paths:paths});
+  for (i in range(len(paths))) { assert(hashes[i] == expected[i], "stale fixture: " + paths[i]); }
+}
+fn signatures(schema, contexts) {
+  result = [];
+  if (contexts) {
+    for (name in keys(schema.get("context", {}))) { push(result, "context " + name + ": " + schema.context[name]); }
+  }
+  for (name in keys(schema.get("functions", {}))) {
+    for (decl in schema.functions[name]) { push(result, "fn " + name + "(" + join(decl.params, ", ") + ") -> " + decl.returns); }
+  }
+  for (owner in keys(schema.get("types", {}))) {
+    for (name in keys(schema.types[owner].methods)) {
+      for (decl in schema.types[owner].methods[name]) {
+        returns = decl.returns;
+        if (returns == "self") { returns = owner; }
+        push(result, "method " + owner + "." + name + "(" + join(decl.params, ", ") + ") -> " + returns);
+      }
+    }
+  }
+  ordered = unique(result);
+  for (i in range(1, len(ordered))) {
+    j = i;
+    while (j > 0 && ordered[j] < ordered[j - 1]) {
+      previous = ordered[j - 1];
+      ordered[j - 1] = ordered[j];
+      ordered[j] = previous;
+      j = j - 1;
+    }
+  }
+  return ordered;
+}
+fn compiler_command() { return [env("LMSCRIPT_BIN") || "lmscript"]; }
+fn check_compiler(root) {
+  cases = read_json(path_join(root, "compile-errors/manifest.json")).cases;
+  failed = [];
+  for (case in cases) {
+    source = path_join(root, "compile-errors", case.source);
+    r = invoke(root, compiler_command(), ["--check", source], {}, 30000);
+    if (r.code != case.exit || !contains(r.stderr, case.diagnostic) || r.error != "") { push(failed, case.source + ": " + r.stderr + r.error); }
+  }
+  assert(len(failed) == 0, "compiler rejection mismatch: " + join(failed, "\n"));
+  println("PASS " + str(len(cases)) + " compiler rejection cases");
+}
+fn envelope(stdout) { lines = split(trim(stdout), "\n"); return json_parse(lines[len(lines)-2]); }
+fn protocol(root, command) {
+  r = invoke(root, command, ["--version"], {}, 30000);
+  assert(r.code == 0 && r.stderr_hex == "" && regex_test(r.stdout, "^lmcode-[a-z]+-sample [0-9]+\\.[0-9]+\\.[0-9]+\\n$"), "invalid --version protocol");
+  expected = binary(root, {op:"hex", path:path_join(root, "sample.dsl.json")});
+  for (args in [["--lmcode-schema"], ["--lmcode-schema", "--json"]]) {
+    r = invoke(root, command, args, {}, 30000);
+    assert(r.code == 0 && r.stderr_hex == "" && r.hex == expected, "schema discovery bytes differ");
+  }
+  r = invoke(root, command, ["--lmcode-signatures"], {}, 30000);
+  expected_signatures = join(signatures(read_json(path_join(root, "sample.dsl.json")), true), "\n") + "\n";
+  assert(r.code == 0 && r.stderr_hex == "" && r.stdout == expected_signatures, "schema/registry signature mismatch");
+  # Construct retired spellings so source scans flag only live protocol literals.
+  retired = "--" + "dsl";
+  for (suffix in ["", "-schema", "-signatures"]) {
+    args = [retired + suffix];
+    if (suffix == "") { args = [retired, path_join(root, "does-not-exist.dslb")]; }
+    r = invoke(root, command, args, {}, 30000);
+    value = envelope(r.stdout);
+    assert(r.code == 2 && r.stderr_hex == "" && value.code == "CLI_USAGE", "retired flag must be refused before file access");
+  }
+  for (args in [[], ["--unknown"], ["--lmcode"], ["--lmcode-schema", "--bad"]]) {
+    r = invoke(root, command, args, {}, 30000);
+    value = envelope(r.stdout);
+    assert(r.code == 2 && r.stderr_hex == "" && value.code == "CLI_USAGE" && value.phase == "cli" && value.ok == false, "invalid CLI_USAGE protocol");
+  }
+  r = invoke(root, command, ["--lmcode", path_join(root, "does-not-exist.dslb")], {}, 30000);
+  assert(r.code == 4 && r.stderr_hex == "" && envelope(r.stdout).code == "APP_FAIL", "invalid APP_FAIL protocol");
+  println("PASS host CLI protocol (0/2/3/4; schema/signatures/discovery)");
+}

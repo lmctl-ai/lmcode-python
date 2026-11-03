@@ -1,0 +1,12 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let m = str_map();
+let n = m.set("a", "1").set("b", "2");
+let has = n.has("a");
+let got = n.get("a");
+let fallback = n.get_or("z", "0");
+let key = n.key_at(0);
+let count = n.len();
+let removed = n.remove("b");
+let cleared = n.clear();
+print(str(has) + ":" + got + ":" + fallback + ":" + key + ":" + str(count));
+end _lmcode_

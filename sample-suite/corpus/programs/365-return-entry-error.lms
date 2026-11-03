@@ -1,0 +1,7 @@
+program = _lmcode_ schema="../sample.dsl.json";
+$return.body = "discard";
+@item fn partial(m: Money) -> void implements Adjuster {
+  $return.partial = m.amount();
+  ledger.reject("return entry refused");
+}
+end _lmcode_

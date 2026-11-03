@@ -1,0 +1,649 @@
+{
+  "dsl.schema": 2,
+  "name": "sample_shop_v1",
+  "enums": {
+    "Currency": [
+      "USD",
+      "EUR"
+    ]
+  },
+  "types": {
+    "Money": {
+      "operators": {
+        "+": "plus",
+        "-": "minus",
+        "*": "times",
+        "neg": "neg",
+        "r*": "times"
+      },
+      "methods": {
+        "amount": [
+          {
+            "params": [],
+            "returns": "int"
+          }
+        ],
+        "currency": [
+          {
+            "params": [],
+            "returns": "Currency"
+          }
+        ],
+        "plus": [
+          {
+            "params": [
+              "Money"
+            ],
+            "returns": "Money"
+          }
+        ],
+        "minus": [
+          {
+            "params": [
+              "Money"
+            ],
+            "returns": "Money"
+          }
+        ],
+        "times": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "Money"
+          }
+        ],
+        "neg": [
+          {
+            "params": [],
+            "returns": "Money"
+          }
+        ],
+        "set": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "self"
+          }
+        ]
+      }
+    },
+    "Items": {
+      "methods": {
+        "len": [
+          {
+            "params": [],
+            "returns": "int"
+          }
+        ],
+        "at": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "Money"
+          }
+        ]
+      }
+    },
+    "Shop": {
+      "methods": {
+        "items": [
+          {
+            "params": [],
+            "returns": "Items"
+          }
+        ],
+        "total": [
+          {
+            "params": [],
+            "returns": "Money"
+          }
+        ],
+        "price": [
+          {
+            "params": [
+              "int"
+            ],
+            "returns": "Money"
+          },
+          {
+            "params": [
+              "float"
+            ],
+            "returns": "Money"
+          }
+        ],
+        "currency": [
+          {
+            "params": [],
+            "returns": "Currency"
+          }
+        ],
+        "label": [
+          {
+            "params": [],
+            "returns": "string"
+          }
+        ]
+      }
+    },
+    "Ledger": {
+      "methods": {
+        "record": [
+          {
+            "params": [
+              "Money"
+            ],
+            "returns": "self"
+          }
+        ],
+        "balance": [
+          {
+            "params": [],
+            "returns": "Money"
+          }
+        ],
+        "note": [
+          {
+            "params": [
+              "string"
+            ],
+            "returns": "void"
+          },
+          {
+            "params": [],
+            "returns": "string"
+          }
+        ],
+        "count": [
+          {
+            "params": [],
+            "returns": "int"
+          }
+        ],
+        "reject": [
+          {
+            "params": [
+              "string"
+            ],
+            "returns": "void"
+          }
+        ]
+      }
+    }
+  },
+  "functions": {
+    "money": [
+      {
+        "params": [
+          "int"
+        ],
+        "returns": "Money"
+      },
+      {
+        "params": [
+          "float"
+        ],
+        "returns": "Money"
+      }
+    ],
+    "fee": [
+      {
+        "params": [
+          "int"
+        ],
+        "returns": "int"
+      }
+    ],
+    "sample_tmp": [
+      {
+        "params": [],
+        "returns": "string"
+      }
+    ],
+    "print": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "void"
+      }
+    ],
+    "assert_close": [
+      {
+        "params": [
+          "float",
+          "float",
+          "float"
+        ],
+        "returns": "void"
+      }
+    ],
+    "host_int": [
+      {
+        "params": [
+          "int"
+        ],
+        "returns": "int"
+      }
+    ],
+    "host_float": [
+      {
+        "params": [
+          "float"
+        ],
+        "returns": "float"
+      }
+    ],
+    "host_float_case": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "float"
+      }
+    ],
+    "host_bool": [
+      {
+        "params": [
+          "bool"
+        ],
+        "returns": "bool"
+      }
+    ],
+    "host_bytes": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "string"
+      }
+    ],
+    "host_hex": [
+      {
+        "params": [
+          "string"
+        ],
+        "returns": "string"
+      }
+    ],
+    "host_echo_money": [
+      {
+        "params": [
+          "Money"
+        ],
+        "returns": "Money"
+      }
+    ],
+    "host_is_null": [
+      {
+        "params": [
+          "Money"
+        ],
+        "returns": "bool"
+      }
+    ],
+    "host_str_list": [
+      {
+        "params": [
+          "StrList"
+        ],
+        "returns": "StrList"
+      }
+    ],
+    "host_int_list": [
+      {
+        "params": [
+          "IntList"
+        ],
+        "returns": "IntList"
+      }
+    ],
+    "host_float_list": [
+      {
+        "params": [
+          "FloatList"
+        ],
+        "returns": "FloatList"
+      }
+    ],
+    "host_str_map": [
+      {
+        "params": [
+          "StrMap"
+        ],
+        "returns": "StrMap"
+      }
+    ],
+    "host_same": [
+      {
+        "params": [
+          "Money",
+          "Money"
+        ],
+        "returns": "bool"
+      }
+    ],
+    "host_null": [
+      {
+        "params": [],
+        "returns": "Money"
+      }
+    ],
+    "host_void": [
+      {
+        "params": [],
+        "returns": "void"
+      }
+    ],
+    "host_wrong": [
+      {
+        "params": [],
+        "returns": "Money"
+      }
+    ],
+    "host_sum": [
+      {
+        "params": [
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int",
+          "int"
+        ],
+        "returns": "int"
+      }
+    ],
+    "host_long_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx": [
+      {
+        "params": [
+          "int"
+        ],
+        "returns": "int"
+      }
+    ]
+  },
+  "conversions": [
+    {
+      "from": "int",
+      "to": "Money",
+      "via": "money"
+    }
+  ],
+  "context": {
+    "shop": "Shop",
+    "ledger": "Ledger"
+  },
+  "interfaces": {
+    "Adjuster": {
+      "params": [
+        {
+          "name": "m",
+          "type": "Money"
+        }
+      ],
+      "returns": "void"
+    },
+    "Score": {
+      "params": [
+        {
+          "name": "m",
+          "type": "Money"
+        }
+      ],
+      "returns": "int"
+    }
+  }
+}

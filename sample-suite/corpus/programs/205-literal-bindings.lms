@@ -1,0 +1,10 @@
+program = _lmcode_ schema="../sample.dsl.json";
+fn qw(n: int) -> int { return n + 1; }
+fn add(qi: int, qf: int) -> int { return qi + qf; }
+fn json(n: int) -> int { return n * 2; }
+let queue = "ordinary local";
+print(str(qw(4)) + ":" + str(add(2,3)) + ":" + str(json(4)));
+print(queue);
+let values = qi(1 2 3);
+print("scoped=" + str(values.len()));
+end _lmcode_

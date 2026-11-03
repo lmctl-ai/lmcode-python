@@ -1,0 +1,20 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let raw = file_read(sample_tmp() + "/zero-bytes.bin") + "é";
+let original_s = str_list().add(raw);
+let s = host_str_list(original_s);
+print(str(original_s.len()) + ":" + str(s.len()));
+print(host_hex(s.at(0)) + ":" + s.at(1));
+let original_i = int_list().add(7).add(-3);
+let i = host_int_list(original_i);
+print(str(original_i.len()) + ":" + str(i.len()));
+print(str(i.at(0)) + ":" + str(i.at(1)) + ":" + str(i.at(2)));
+let original_f = float_list().add(-0.0).add(2.5);
+let f = host_float_list(original_f);
+print(str(original_f.len()) + ":" + str(f.len()));
+print(str(f.at(0)) + ":" + str(f.at(1)) + ":" + str(f.at(2)));
+let original_m = str_map().set("ledger-key", raw);
+let m = host_str_map(original_m);
+print(str(original_m.len()) + ":" + str(m.len()));
+print(host_hex(m.get("ledger-key")) + ":" + m.get("host"));
+print(m.key_at(0) + ":" + m.key_at(1));
+end _lmcode_

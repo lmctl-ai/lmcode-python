@@ -20,11 +20,12 @@ classifiers = [
 dependencies = []
 
 [project.scripts]
-lmcode-python = "lmcode.cli:main"
+lmcode-python-sample = "sample.main:run"
 
 [tool.setuptools]
-packages = ["lmcode"]
+packages = ["lmcode", "sample"]
 include-package-data = true
 
 [tool.setuptools.package-data]
-lmcode = ["py.typed"]
+lmcode = ["py.typed", "data/*.json"]
+sample = ["data/*.json"]

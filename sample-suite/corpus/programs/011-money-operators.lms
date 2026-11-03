@@ -1,0 +1,10 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let a = money(100);
+let b = money(25);
+let c = a + b;
+let d = c - b;
+let e = d * 2;
+let f = -e;
+let g = 3 * a;
+print(str(c.amount()) + ":" + str(d.amount()) + ":" + str(e.amount()) + ":" + str(f.amount()) + ":" + str(g.amount()));
+end _lmcode_

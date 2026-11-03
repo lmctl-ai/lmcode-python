@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+ledger.record(host_null());
+end _lmcode_

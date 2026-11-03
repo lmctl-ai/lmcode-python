@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+for (x in 1) { print(str(x)); }
+end _lmcode_

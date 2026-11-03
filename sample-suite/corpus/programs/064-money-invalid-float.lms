@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+money(host_float_case("inf"));
+end _lmcode_

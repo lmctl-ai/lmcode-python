@@ -1,0 +1,9 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let limits = qi(-9223372036854775808 0 9223372036854775807);
+for (number in limits) { print(str(number)); }
+let values = qf(2 1.5 1e-3 -0);
+print(str(values.at(0)) + ":" + str(values.at(1)));
+assert_close(values.at(2), 0.001, 0.000000000001);
+assert_close(values.at(3), 0.0, 0.0);
+print("empty=" + str(qi().len()) + ":" + str(qf().len()));
+end _lmcode_

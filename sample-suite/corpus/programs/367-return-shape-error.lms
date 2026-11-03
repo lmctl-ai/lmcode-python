@@ -1,0 +1,4 @@
+program = _lmcode_ schema="../sample.dsl.json";
+$return = 1;
+$return.field = 2;
+end _lmcode_

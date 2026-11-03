@@ -1,0 +1,28 @@
+# Verify source type-checking with the public compiler and keep bytecode fixture mutation controls.
+import "./runner-lib.lms";
+root = suite_root();
+manifest = read_json(path_join(root, "manifest.json"));
+check_files(root, manifest);
+scratch = binary(root, {op:"temp"});
+failed = [];
+source_count = 0;
+mutation_count = 0;
+for (case in manifest.cases) {
+  if (case.has("source")) {
+    source = path_join(root, case.source);
+    r = invoke(root, compiler_command(), ["--check", source], {}, 30000);
+    if (r.code != 0 || r.error != "") { push(failed, case.name + ": " + r.stderr + r.error); }
+    source_count = source_count + 1;
+  }
+  if (case.has("mutation")) {
+    output = path_join(scratch, case.name + ".dslb");
+    input = path_join(root, "bytecode", case.mutation.source + ".dslb");
+    binary(root, {op:"mutate", source:input, output:output, mutation:case.mutation});
+    hashes = binary(root, {op:"hashes", paths:[output]});
+    if (hashes[0] != case.bytecode_sha256) { push(failed, "fixture mutation drift: " + case.name); }
+    mutation_count = mutation_count + 1;
+  }
+}
+rmdir(scratch, true);
+assert(len(failed) == 0, join(failed, "\n"));
+println("PASS compiler type-checks " + str(source_count) + " sources; " + str(mutation_count) + " bytecode mutation controls");

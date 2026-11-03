@@ -1,0 +1,5 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let raw = file_read(sample_tmp() + "/invalid.bin");
+print(host_hex(host_bytes(raw)));
+print(str(str_len(host_bytes(raw))));
+end _lmcode_

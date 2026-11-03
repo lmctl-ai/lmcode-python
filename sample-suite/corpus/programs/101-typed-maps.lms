@@ -1,0 +1,9 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let ints = int_map().set("a",7).set("b",8).set("a",9);
+print("ints=" + str(ints.len()) + ":" + str(ints.has("a")) + ":" + str(ints.get("a")) + ":" + str(ints.get_or("z",3)));
+print(ints.key_at(0) + ":" + str(ints.remove("a"))); ints.set("a",10);
+print(ints.key_at(0) + ":" + ints.key_at(1)); ints.clear(); print(str(ints.len()));
+let floats = float_map().set("a",1.25).set("b",2.5);
+print("floats=" + str(floats.len()) + ":" + str(floats.has("b")) + ":" + str(floats.get("a")) + ":" + str(floats.get_or("z",3.75)));
+print(floats.key_at(0) + ":" + str(floats.remove("a"))); floats.clear(); print(str(floats.len()));
+end _lmcode_

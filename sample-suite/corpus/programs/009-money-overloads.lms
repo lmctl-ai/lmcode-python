@@ -1,0 +1,9 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let cents = money(125);
+let units = money(1.25);
+let fixed = shop.price(250);
+let rounded = shop.price(2.5);
+print(str(cents.amount()) + ":" + str(units.amount()) + ":" + str(fixed.amount()) + ":" + str(rounded.amount()));
+print(str(money(0.125).amount()) + ":" + str(money(-0.125).amount()));
+print(str(shop.price(0.125).amount()) + ":" + str(shop.price(-0.125).amount()));
+end _lmcode_

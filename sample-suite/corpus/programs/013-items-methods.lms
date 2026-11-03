@@ -1,0 +1,7 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let items = shop.items();
+let count = items.len();
+let first = items.at(0);
+let amount = first.amount();
+print(str(count) + ":" + str(amount));
+end _lmcode_

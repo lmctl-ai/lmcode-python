@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+shop.price(host_float_case("nan"));
+end _lmcode_

@@ -1,0 +1,5 @@
+program = _lmcode_ schema="../sample.dsl.json";
+fn twice(x:int) -> int { return x * 2; }
+let n = twice(21);
+print(str(n));
+end _lmcode_

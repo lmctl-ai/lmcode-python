@@ -1,0 +1,10 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let xs = int_list();
+let ys = xs.add(2).add(4);
+let n = ys.len();
+let found = ys.contains(2);
+let index = ys.index_of(4);
+let value = ys.at(0);
+let changed = ys.set(0, 3).clear();
+print(str(n) + ":" + str(found) + ":" + str(index) + ":" + str(value));
+end _lmcode_

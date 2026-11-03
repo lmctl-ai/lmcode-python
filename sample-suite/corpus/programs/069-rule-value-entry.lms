@@ -1,0 +1,11 @@
+program = _lmcode_ schema="../sample.dsl.json";
+@item
+fn score_item(m: Money) -> int implements Score {
+  return m.amount() / 100;
+}
+@total
+fn score_total(m: Money) -> int implements Score {
+  return m.amount() * 2;
+}
+print("scoring");
+end _lmcode_

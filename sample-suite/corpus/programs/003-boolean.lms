@@ -1,0 +1,5 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let yes = (3 < 4) && (4 != 5);
+let no = !yes || false;
+print(str(yes) + ":" + str(no));
+end _lmcode_

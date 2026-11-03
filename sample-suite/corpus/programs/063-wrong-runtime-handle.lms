@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+host_wrong().amount();
+end _lmcode_

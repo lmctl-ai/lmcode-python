@@ -1,0 +1,10 @@
+object
+9223372036854775807
+a
+${name}
+true
+{"limit":9223372036854775807,"escaped":"\u0061","template":"${name}","flags":[true,false,null]}
+{"host_summary":{"balance": 0, "entries": 0, "note": "", "entries_called": 0}}
+LMCODE_RETURN_BEGIN
+{"ok":true,"result":null}
+LMCODE_RETURN_END

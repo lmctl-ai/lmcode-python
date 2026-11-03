@@ -1,0 +1,5 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let total = 0;
+for (outer in range(0, 3)) { for (inner in range(0, 4)) { if (inner == 1) { continue; } if (inner == 3) { break; } total = total + outer + inner; } }
+print(str(total));
+end _lmcode_

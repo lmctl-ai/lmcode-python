@@ -1,0 +1,24 @@
+# Run from the repository root; LMCODE_SUITE overrides the canonical corpus path.
+import "./runner-lib.lms";
+root = suite_root();
+assert(len(ARGV) > 0, "usage: lmctl sample-suite/run-suite.lms EXECUTABLE [ARG ...]");
+manifest = read_json(path_join(root, "manifest.json"));
+check_files(root, manifest);
+check_compiler(root);
+protocol(root, ARGV);
+failed = 0;
+for (case in manifest.cases) {
+  expected = binary(root, {op:"hex", path:path_join(root, "expected", case.name + ".out")});
+  code = json_parse(trim(read_file(path_join(root, "expected", case.name + ".exit"))));
+  assert(code == case.expected_exit, "exit fixture contradicts manifest: " + case.name);
+  result = invoke(root, ARGV, ["--lmcode", path_join(root, case.bytecode)], manifest.get("fixtures", {}), case.get("timeout_seconds", 30) * 1000);
+  binary(root, {op:"validate-return", hex:result.hex, code:result.code, expected:case.get("expected_return", null)});
+  if (result.code == code && result.hex == expected && result.stderr_hex == "" && result.error == "") {
+    println("PASS " + case.name);
+  } else {
+    failed = failed + 1;
+    println("FAIL " + case.name + ": " + json_stringify(result));
+  }
+}
+assert(failed == 0, str(failed) + " sample cases failed");
+println("PASS " + str(len(manifest.cases)) + "/" + str(len(manifest.cases)) + " sample cases");

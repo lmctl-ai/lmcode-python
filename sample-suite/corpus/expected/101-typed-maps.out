@@ -1,0 +1,11 @@
+ints=2:true:9:3
+a:true
+b:a
+0
+floats=2:true:1.25:3.75
+a:true
+0
+{"host_summary":{"balance": 0, "entries": 0, "note": "", "entries_called": 0}}
+LMCODE_RETURN_BEGIN
+{"ok":true,"result":null}
+LMCODE_RETURN_END

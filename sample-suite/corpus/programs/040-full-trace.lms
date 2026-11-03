@@ -1,0 +1,6 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let m = money(100).plus(money(50)).minus(money(25));
+ledger.record(m).note("complete");
+assert_close(math_sqrt(9.0), 3.0, 0.001);
+print(str(m.amount()) + ":" + ledger.note());
+end _lmcode_

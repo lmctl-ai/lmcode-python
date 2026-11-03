@@ -1,0 +1,11 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let tree = json_parse("{\"nested\":{\"items\":[1,true,null,\"text\"]}}");
+$return = tree;
+$return = null;
+$return.tree = tree;
+$return.missing = null;
+$return.flag = true;
+$return.text = "LMCODE_RETURN_BEGIN\nquoted 水";
+$return.integer = 7;
+$return.fraction = 1.25;
+end _lmcode_

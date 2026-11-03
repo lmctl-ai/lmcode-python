@@ -1,0 +1,7 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let n = 7;
+let f = 2.5;
+let s = "sample";
+let b = true;
+print("literals " + s + ":" + str(n) + ":" + str(f) + ":" + str(b));
+end _lmcode_

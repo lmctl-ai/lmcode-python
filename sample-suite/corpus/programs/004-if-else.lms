@@ -1,0 +1,4 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let n = 4;
+if (n > 2) { print(str(n)); } else { print("else"); }
+end _lmcode_

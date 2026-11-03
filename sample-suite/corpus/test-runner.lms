@@ -1,0 +1,45 @@
+# Negative controls exercise the real lmscript driver, including paths with spaces.
+import "./runner-lib.lms";
+root = suite_root();
+original = root;
+for (mode in ["ok", "wrong-exit", "whitespace", "stderr", "bad-cli", "bytecode", "source", "empty", "audit"]) {
+  scratch = binary(original, {op:"temp"});
+  copied = path_join(scratch, "suite with spaces");
+  binary(original, {op:"copy", from:original, to:copied});
+  set_env("LMCODE_SUITE", copied);
+  set_env("FAKE_SUITE", copied);
+  set_env("FAKE_MODE", mode);
+  marker = path_join(scratch, "executed");
+  set_env("EXEC_MARKER", marker);
+  manifest = read_json(path_join(copied, "manifest.json"));
+  if (mode == "bytecode") {
+    path = path_join(copied, manifest.cases[0].bytecode);
+    binary(original, {op:"mutate", source:path, output:path, mutation:{byte_offset:0}});
+  }
+  if (mode == "source") {
+    path = path_join(copied, manifest.cases[0].source);
+    write_file(path, read_file(path) + "\n");
+  }
+  if (mode == "empty") {
+    manifest.cases = [];
+    write_json(path_join(copied, "manifest.json"), manifest);
+  }
+  command = concat(compiler_command(), [path_join(copied, "run-suite.lms"), "node", path_join(copied, "fake-host.mjs")]);
+  if (mode == "audit") {
+    path = path_join(scratch, "mutated.json");
+    write_json(path, {functions:{test_new_signature:[{params:[],returns:"void"}]},types:{}});
+    command = concat(compiler_command(), [path_join(copied, "audit.lms"), "--std", path]);
+  }
+  result = invoke(original, command, [], {}, 120000);
+  good = result.code != 0 && result.code != null && result.error == "";
+  if (mode == "ok") { good = result.code == 0 && contains(result.stdout, "PASS " + str(len(manifest.cases)) + "/" + str(len(manifest.cases))); }
+  if (mode == "bytecode" || mode == "source" || mode == "empty") { good = good && !file_exists(marker); }
+  if (mode == "audit") { good = good && contains(result.stderr + result.stdout, "UNEXERCISED"); }
+  rmdir(scratch, true);
+  assert(good, "runner control failed: " + mode + "\n" + result.stdout + result.stderr + result.error);
+  println("PASS runner control: " + mode);
+}
+set_env("LMCODE_SUITE", original);
+set_env("FAKE_SUITE", null);
+set_env("FAKE_MODE", null);
+set_env("EXEC_MARKER", null);

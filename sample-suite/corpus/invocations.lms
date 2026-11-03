@@ -1,0 +1,51 @@
+# Real public program/builder flow: argv carries the host, never private files.
+s = load_schema(cli="__HOST__");
+p = _lmcode_ s;
+ledger.record(money(10));
+$return.balance = ledger.balance().amount();
+$return.count = ledger.count();
+end _lmcode_
+q = _lmcode_ s;
+ledger.record(money(20));
+$return.balance = ledger.balance().amount();
+$return.count = ledger.count();
+end _lmcode_
+r = run_lmcode(p);
+assert(r.ok && r.result.balance == 10 && r.result.count == 1, "single result");
+b = lmcode_build(s);
+b.add(p, ["--last", "$DSLFILE"]);
+b.add(q, "--first $DSLFILE");
+for (i in range(2)) {
+ r = run_lmcode(b);
+ assert(r.ok && r.parts == 2 && r.result[0].balance == 30 && r.result[0].count == 2 && r.result[1].balance == 20 && r.result[1].count == 1, "ordered results/shared context/one process");
+}
+dup = lmcode_build(s); dup.add(p); dup.add(p);
+r = run_lmcode(dup);
+assert(r.ok && r.parts == 2 && r.result[0].count == 1 && r.result[1].count == 2, "duplicate program slots");
+list = _lmcode_ s;
+$return = int_list().add(1).add(2);
+end _lmcode_
+r = run_lmcode(list); assert(r.ok && json_stringify(r.result) == "[1,2]" && !r.has("parts"), "single list");
+one = lmcode_build(s);one.add(list);
+r = run_lmcode(one);assert(r.ok && r.parts == 1 && json_stringify(r.result) == "[[1,2]]", "one-slot builder");
+entries = _lmcode_ s;
+$return.body = true;
+@item fn entry(m: Money) -> void implements Adjuster { $return.entry = m.amount(); }
+end _lmcode_
+r = run_lmcode(entries);assert(r.ok && r.result.body && r.result.entry == 375, "entry sink retained");
+bad = _lmcode_ s;
+$return.partial = true;
+@item fn fail(m: Money) -> void implements Adjuster { ledger.reject("entry rejected"); }
+end _lmcode_
+broken = lmcode_build(s);broken.add(p);broken.add(bad);
+r = run_lmcode(broken);assert(!r.ok && r.phase == "run" && r.part == 1 && !r.has("result") && !r.has("parts"), "part failure envelope");
+r = run_lmcode(bad);assert(!r.ok && !r.has("part") && !r.has("result"), "single entry failure");
+negative = _lmcode_ s;
+ledger.record(money(-1));$return = 123;
+end _lmcode_
+r = run_lmcode(negative);assert(!r.ok && r.phase == "app" && !r.has("part") && !r.has("result"), "global validation failure");
+global_builder=lmcode_build(s);global_builder.add(negative);
+r=run_lmcode(global_builder);assert(!r.ok&&r.phase=="app"&&!r.has("part")&&!r.has("result")&&!r.has("parts"),"builder global failure");
+repaired=lmcode_build(s);repaired.add(negative);repaired.add(p);
+r=run_lmcode(repaired);assert(r.ok&&r.result[0]==123&&r.result[1].balance==9&&r.result[1].count==2,"global validation after all parts");
+println("PASS real single/builder/reuse/roles/shared-state/entries/failures");

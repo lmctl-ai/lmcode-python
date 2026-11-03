@@ -1,0 +1,19 @@
+program = _lmcode_ schema="../sample.dsl.json";
+@item
+fn item_tag(m: Money) -> void implements Adjuster {
+  print("item rule " + str(m.amount()));
+}
+@item
+fn item_audit(m: Money) -> void implements Adjuster {
+  print("audit " + str(m.amount()));
+}
+@total
+fn total_tag(m: Money) -> void implements Adjuster {
+  print("total rule " + str(m.amount()));
+}
+@never
+fn never_called(m: Money) -> void implements Adjuster {
+  print("MUST NOT PRINT");
+}
+print("body done");
+end _lmcode_

@@ -1,0 +1,6 @@
+program = _lmcode_ schema="../sample.dsl.json";
+$return = 7;
+$return = true;
+$return = "replaced";
+$return = 0.1 + 0.2;
+end _lmcode_

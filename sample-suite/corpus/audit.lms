@@ -1,0 +1,24 @@
+import "./runner-lib.lms";
+root = suite_root();
+standard = path_join(root, "../std/lmcode-std.schema.json");
+if (len(ARGV) == 2 && ARGV[0] == "--std") { standard = ARGV[1]; }
+required = signatures(read_json(standard), false);
+manifest = read_json(path_join(root, "manifest.json"));
+actual = [];
+for (case in manifest.cases) {
+  if (!case.has("mutation")) {
+    imported = binary(root, {op:"imports", path:path_join(root, case.bytecode)});
+    for (signature in imported) { push(actual, signature); }
+  }
+}
+for (signature in required) { assert(contains(actual, signature), "UNEXERCISED STANDARD SIGNATURE: " + signature); }
+host = signatures(read_json(path_join(root, "sample.dsl.json")), false);
+count = 0;
+for (signature in host) {
+  if (!contains(required, signature)) {
+    assert(contains(actual, signature), "UNEXERCISED HOST SIGNATURE: " + signature);
+    count = count + 1;
+  }
+}
+println("PASS: all " + str(len(required)) + " standard signatures are imported by the corpus");
+println("PASS: all " + str(count) + " host signatures are imported by the corpus");

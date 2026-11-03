@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+print(str(host_long_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx(123)));
+end _lmcode_

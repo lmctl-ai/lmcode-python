@@ -1,0 +1,4 @@
+program = _lmcode_ schema="../sample.dsl.json";
+switch (2) { case 1: { print("wrong1"); } case 2: { print("hit"); } case 3: { print("wrong3"); } default: { print("wrong-default"); } }
+print("after");
+end _lmcode_

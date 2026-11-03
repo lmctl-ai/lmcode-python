@@ -1,0 +1,4 @@
+let value = "π/雪";
+program = _lmcode_ schema="../sample.dsl.json";
+print(${value});
+end _lmcode_

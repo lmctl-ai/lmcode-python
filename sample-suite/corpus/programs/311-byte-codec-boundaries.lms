@@ -1,0 +1,10 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let raw = str_hex_decode("0041FfC32880");
+print(str_hex_encode(raw));
+let encoded = str_base64_encode(raw);
+print(encoded);
+print(str_hex_encode(str_base64_decode(encoded)));
+print("empty=" + str(str_len(str_base64_decode(""))));
+print(str_base64_encode("f") + ":" + str_base64_encode("fo") + ":" + str_base64_encode("foo"));
+print(str_hex_encode(str_hex_decode("aBcD")));
+end _lmcode_

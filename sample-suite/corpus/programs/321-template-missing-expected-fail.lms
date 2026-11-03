@@ -1,0 +1,5 @@
+context = {"user": {"name": "World", "profile": {"enabled": true}}, "items": [{"name": "A", "values": [10, 20]}, {"name": "B", "values": [30]}], "matrix": [[1, 2], [3, 4]], "enabled": true, "disabled": false, "empty": [], "literal": "<missing>", "count": 3, "nil": null};
+template = "<missing>";
+program = _lmcode_ schema="../sample.dsl.json";
+print(template_render(${template},json_parse(${json_stringify(context)})));
+end _lmcode_

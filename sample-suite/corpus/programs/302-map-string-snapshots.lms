@@ -1,0 +1,9 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let m = str_map().set("a","one").set("b","two").set("a","ONE");
+let keys = m.keys(); let values = m.values();
+m.remove("a"); m.set("a","three");
+print(keys.join(",") + ":" + values.join(","));
+keys.set(0,"changed"); values.set(1,"changed");
+print(m.keys().join(",") + ":" + m.values().join(","));
+m.clear(); print(str(keys.len()) + ":" + str(values.len()) + ":" + str(m.len()));
+end _lmcode_

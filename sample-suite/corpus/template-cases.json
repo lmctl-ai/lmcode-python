@@ -1,0 +1,1300 @@
+[
+  {
+    "name": "plain text",
+    "template": "Hello, <user.name>!",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "Hello, World!"
+  },
+  {
+    "name": "indexed lists",
+    "template": "<items[0].name> <matrix[1][0]>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "A 3"
+  },
+  {
+    "name": "whole nested map",
+    "template": "profile=<user.profile>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "profile={\"enabled\":true}"
+  },
+  {
+    "name": "scalars",
+    "template": "<enabled>,<count>,<nil>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "true,3,null"
+  },
+  {
+    "name": "opaque insertion",
+    "template": "<literal> <<user.name> ${untouched} {{untouched}}",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "<missing> <user.name> ${untouched} {{untouched}}"
+  },
+  {
+    "name": "quotes unicode and nul",
+    "template": "<text>",
+    "context": {
+      "text": "\"hi\"\n🦊\u0000\\end"
+    },
+    "result": "\"hi\"\n🦊\u0000\\end"
+  },
+  {
+    "name": "loop index",
+    "template": "<items:{item|<index>:<item.name>}; separator=\", \">",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "0:A, 1:B"
+  },
+  {
+    "name": "nested loops",
+    "template": "<items:{item|<item.name>[<item.values:{value|<index>=<value>}; separator=\",\">]}; separator=\";\">",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "A[0=10,1=20];B[0=30]"
+  },
+  {
+    "name": "outer scope and shadow",
+    "template": "<items:{item|<user.name>:<item.values:{item|<item>}; separator=\",\">:<item.name>:<index>}; separator=\";\">",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "World:10,20:A:0;World:30:B:1"
+  },
+  {
+    "name": "empty loop",
+    "template": "before<empty:{item|<missing>}>after",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "beforeafter"
+  },
+  {
+    "name": "condition true",
+    "template": "<if(enabled)>yes<else><missing><endif>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "yes"
+  },
+  {
+    "name": "condition false",
+    "template": "<if(disabled)><missing><else>no<endif>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "no"
+  },
+  {
+    "name": "condition no else",
+    "template": "a<if(disabled)>b<endif>c",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "ac"
+  },
+  {
+    "name": "condition in loop",
+    "template": "<items:{item|<if(user.profile.enabled)><item.name><else>no<endif>}; separator=\",\">",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "A,B"
+  },
+  {
+    "name": "loop in condition",
+    "template": "<if(enabled)><items:{item|<item.name>}><else>no<endif>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "AB"
+  },
+  {
+    "name": "nested conditions",
+    "template": "<if(enabled)><if(disabled)>bad<else>good<endif><else>bad<endif>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "good"
+  },
+  {
+    "name": "json output explicit escaping",
+    "template": "{\"name\":<quoted>}",
+    "context": {
+      "quoted": "\"A \\\" B\""
+    },
+    "result": "{\"name\":\"A \\\" B\"}"
+  },
+  {
+    "name": "literal markup",
+    "template": "<<root><user.name><</root>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "<root>World</root>"
+  },
+  {
+    "name": "separator escapes",
+    "template": "<items:{x|<x.name>}; separator=\"\\n\">",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "result": "A\nB"
+  },
+  {
+    "name": "missing",
+    "template": "<missing>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: missing variable missing"
+  },
+  {
+    "name": "bounds",
+    "template": "<items[2]>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: missing variable items[2]"
+  },
+  {
+    "name": "canonical index",
+    "template": "<items[00]>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: missing variable items[00]"
+  },
+  {
+    "name": "wrong parent",
+    "template": "<count.name>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: missing variable count.name"
+  },
+  {
+    "name": "list required",
+    "template": "<count:{x|<x>}>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: loop requires a list: count"
+  },
+  {
+    "name": "bool required",
+    "template": "<if(count)>yes<endif>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: condition requires a bool: count"
+  },
+  {
+    "name": "context object",
+    "template": "hi",
+    "context": [],
+    "error": "template_render: context must be an object"
+  },
+  {
+    "name": "unclosed loop",
+    "template": "<items:{x|<x>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: unterminated block"
+  },
+  {
+    "name": "unclosed condition",
+    "template": "<if(enabled)>yes",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: unterminated block"
+  },
+  {
+    "name": "unexpected else",
+    "template": "<else>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: unexpected conditional delimiter"
+  },
+  {
+    "name": "invalid separator",
+    "template": "<items:{x|<x>}; separator=3>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: invalid loop separator"
+  },
+  {
+    "name": "index reserved",
+    "template": "<items:{index|hi}>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: index is reserved"
+  },
+  {
+    "name": "validate empty body syntax",
+    "template": "<empty:{x|<if(enabled)>}>",
+    "context": {
+      "user": {
+        "name": "World",
+        "profile": {
+          "enabled": true
+        }
+      },
+      "items": [
+        {
+          "name": "A",
+          "values": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "B",
+          "values": [
+            30
+          ]
+        }
+      ],
+      "matrix": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "enabled": true,
+      "disabled": false,
+      "empty": [],
+      "literal": "<missing>",
+      "count": 3,
+      "nil": null
+    },
+    "error": "template_render: unterminated block"
+  }
+]

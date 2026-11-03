@@ -1,0 +1,11 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let xs = str_list();
+let ys = xs.add("a").add("b");
+let n = ys.len();
+let found = ys.contains("a");
+let index = ys.index_of("b");
+let value = ys.at(0);
+let joined = ys.join(",");
+let changed = ys.set(0, "z").clear();
+print(str(n) + ":" + str(found) + ":" + str(index) + ":" + joined);
+end _lmcode_

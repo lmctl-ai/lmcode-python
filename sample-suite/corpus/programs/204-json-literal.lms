@@ -1,0 +1,17 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let document = json <<~DOCUMENT;
+  {
+    // The integer and escape spellings are lossless.
+    "limit": 9223372036854775807,
+    "escaped": "\u0061",
+    "template": "${name}",
+    "flags": [true, false, null,],
+  }
+DOCUMENT
+print(document.kind());
+print(str(document.get("limit").as_int()));
+print(document.get("escaped").as_string());
+print(document.get("template").as_string());
+print(str(document.get("flags").at(0).as_bool()));
+print(document.to_json());
+end _lmcode_

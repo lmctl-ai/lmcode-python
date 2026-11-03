@@ -1,0 +1,27 @@
+{
+  "cases": [
+    {"source":"recursive-inline.lms","exit":2,"diagnostic":"recursive user functions are not allowed"},
+    {"source":"rule-method-mismatch.lms","exit":2,"diagnostic":"function 'wrong_return' does not implement interface Adjuster (Money) -> void; found (Money) -> Money"},
+    {"source":"rule-annotation-without-implements.lms","exit":2,"diagnostic":"annotated rule 'orphan' requires an implements interface"},
+    {"source":"missing-semicolon.lms","exit":2,"diagnostic":"expected ';' after the declaration","line":3,"column":1},
+    {"source":"else-without-if.lms","exit":2,"diagnostic":"'else' without a preceding if","line":2,"column":1},
+    {"source":"break-outside-loop.lms","exit":2,"diagnostic":"'break' is allowed only inside a loop","line":2,"column":1},
+    {"source":"continue-outside-loop.lms","exit":2,"diagnostic":"'continue' is allowed only inside a loop","line":2,"column":1},
+    {"source":"if-not-bool.lms","exit":2,"diagnostic":"if condition must be bool","line":2,"column":5},
+    {"source":"undefined-name.lms","exit":2,"diagnostic":"undefined name 'missing'","line":2,"column":11},
+    {"source":"duplicate-local.lms","exit":2,"diagnostic":"variable 'x' is already declared","line":3,"column":5},
+    {"source":"assignment-type.lms","exit":2,"diagnostic":"cannot assign string to 'x'","line":3,"column":5},
+    {"source":"void-return.lms","exit":2,"diagnostic":"void function 'nope' has no return value","line":2,"column":21},
+    {"source":"missing-return.lms","exit":2,"diagnostic":"function 'nope' must end with 'return expr;'","line":2,"column":1},
+    {"source":"duplicate-switch.lms","exit":2,"diagnostic":"duplicate switch case 1","line":2,"column":43},
+    {"source":"switch-no-arm.lms","exit":2,"diagnostic":"switch requires at least one case","line":2,"column":9},
+    {"source":"call-arity.lms","exit":2,"diagnostic":"function print expects 1 argument","line":2,"column":6},
+    {"source":"bad-method.lms","exit":2,"diagnostic":"type Shop has no method 'no_such'","line":2,"column":12},
+    {"source":"unknown-escape.lms","exit":2,"diagnostic":"unknown escape \\q","line":2,"column":11},
+    {"source":"unterminated-string.lms","exit":2,"diagnostic":"unterminated string literal","line":2,"column":7},
+    {"source":"malformed-number.lms","exit":2,"diagnostic":"malformed number \"1e\"","line":2,"column":11},
+    {"source":"str-wrong-type.lms","exit":2,"diagnostic":"built-in str expects int, float, bool or enum","line":2,"column":11},
+    {"source":"foreach-noncollection.lms","exit":2,"diagnostic":"foreach needs a host collection object","line":2,"column":11},
+    {"source":"while-not-bool.lms","exit":2,"diagnostic":"while condition must be bool","line":2,"column":8}
+  ]
+}

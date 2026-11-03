@@ -1,0 +1,8 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let labels = qw(alpha β comma, api/v1 $money);
+print(labels.join("|"));
+let lines = qw(first # comments end at the newline
+  second third);
+for (word in lines) { print(word); }
+print("empty=" + str(qw().len()));
+end _lmcode_

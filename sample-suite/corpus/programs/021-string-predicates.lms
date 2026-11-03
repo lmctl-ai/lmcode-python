@@ -1,0 +1,10 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let a = str_contains("abc", "b");
+let b = str_ends_with("abc", "c");
+let c = str_find("abc", "b");
+let d = str_is_float("2.5");
+let e = str_is_int("25");
+let f = str_match("abc", "a*");
+let g = str_starts_with("abc", "a");
+print(str(a) + ":" + str(b) + ":" + str(c) + ":" + str(d) + ":" + str(e) + ":" + str(f) + ":" + str(g));
+end _lmcode_

@@ -1,0 +1,14 @@
+program = _lmcode_ schema="../sample.dsl.json";
+$return.body = "retained";
+@item fn remember(m: Money) -> int implements Score {
+  let values = str_list().add("owned");
+  $return.captured = values;
+  values.add("mutated");
+  $return["item" + str(m.amount())] = m.amount();
+  return 7;
+}
+@total fn finish(m: Money) -> void implements Adjuster {
+  $return.total = m.amount();
+}
+print("return body");
+end _lmcode_

@@ -1,0 +1,6 @@
+program = _lmcode_ schema="../sample.dsl.json";
+@PRICE_RULE
+fn wrong_return(m: Money) -> Money implements Adjuster {
+  return m;
+}
+end _lmcode_

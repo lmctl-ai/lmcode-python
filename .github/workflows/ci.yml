@@ -1,0 +1,64 @@
+name: Python SDK CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install compiler in the checkout only
+        run: npm install --prefix .compiler --no-save --package-lock=false @lmctl-ai/lmctl@latest
+      - name: Add compiler to PATH (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: echo "$GITHUB_WORKSPACE/.compiler/node_modules/.bin" >> "$GITHUB_PATH"
+      - name: Add compiler to PATH (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: echo "$env:GITHUB_WORKSPACE\.compiler\node_modules\.bin" >> $env:GITHUB_PATH
+      - name: Verify pinned source fixtures
+        run: python scripts/verify_pins.py
+      - name: Unit tests and verifier mutations
+        run: |
+          python -m unittest discover -s tests
+          python scripts/check-verifier-mutations.py
+      - name: Core bytecode conformance
+        run: python -m lmcode.conformance conformance/vectors
+      - name: Standard-runtime conformance
+        run: python -c "from lmcode.conformance import run_suite; raise SystemExit(run_suite('conformance/stdlib-vectors', True))"
+      - name: Result-frame vectors
+        run: python scripts/run-return-vectors.py
+      - name: Invocation manifest and dry vectors
+        run: python scripts/run-invocation-vectors.py
+      - name: Shop and Ledger sample suite
+        env:
+          LMCODE_COMPILER: lmscript
+        run: python scripts/run-sample-suite.py
+      - name: Build pure wheel in a repository-local environment
+        shell: bash
+        run: |
+          python -m venv .build-venv
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=.build-venv/Scripts/python.exe; else PY=.build-venv/bin/python; fi
+          "$PY" -m pip install --upgrade setuptools wheel
+          "$PY" -m pip wheel --no-build-isolation --no-deps --wheel-dir .build/wheels .
+          "$PY" scripts/check-wheel.py .build/wheels
+          "$PY" -m pip install --no-deps --no-build-isolation .build/wheels/lmcode_python-0.1.0-py3-none-any.whl
+          mkdir -p .build-clean
+          (cd .build-clean && PYTHONPATH= "$(realpath ../$PY)" -c 'import lmcode, sample.main; from lmcode import Registry; assert len(Registry().std_signatures)==206; assert sample.main.VERSION=="0.1.0"')

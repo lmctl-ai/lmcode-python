@@ -1,0 +1,11 @@
+program = _lmcode_ schema="../sample.dsl.json";
+print(str(host_float(host_float_case("-0"))));
+print(str(host_float(host_float_case("nan"))));
+let zero = 0.0;
+print(str(host_float(zero / zero)));
+print(str(host_float(host_float_case("inf"))));
+print(str(host_float(host_float_case("-inf"))));
+print(str(host_float(host_float_case("large"))));
+print(str(host_float(0.1 + 0.2)));
+print(str(host_float(host_float_case("subnormal"))));
+end _lmcode_

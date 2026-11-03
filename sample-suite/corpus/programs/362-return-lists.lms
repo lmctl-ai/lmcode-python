@@ -1,0 +1,13 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let strings = str_list().add("owned");
+let ints = int_list().add(7);
+let floats = float_list().add(1.25);
+$return = strings;
+$return = ints;
+$return = floats;
+$return = null;
+$return.strings = strings;
+$return.ints = ints;
+$return.floats = floats;
+strings.add("mutated"); ints.clear(); floats.clear();
+end _lmcode_

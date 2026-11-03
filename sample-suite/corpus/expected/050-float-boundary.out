@@ -1,0 +1,12 @@
+-0
+nan
+nan
+inf
+-inf
+1e+21
+0.3
+4.94065645841247e-324
+{"host_summary":{"balance": 0, "entries": 0, "note": "", "entries_called": 0}}
+LMCODE_RETURN_BEGIN
+{"ok":true,"result":null}
+LMCODE_RETURN_END

@@ -1,0 +1,11 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let a = math_abs(-4.5);
+let b = math_ceil(3.2);
+let c = math_floor(3.8);
+let d = math_max(2.0, 4.0);
+let e = math_min(2.0, 4.0);
+let f = math_pow(2.0, 3.0);
+let g = math_round(3.5);
+let h = math_sqrt(9.0);
+print(str(a) + ":" + str(b) + ":" + str(c) + ":" + str(d) + ":" + str(e) + ":" + str(f) + ":" + str(g) + ":" + str(h));
+end _lmcode_

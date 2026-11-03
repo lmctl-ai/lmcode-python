@@ -1,0 +1,35 @@
+program = _lmcode_ schema="../sample.dsl.json";
+fn f00(x: int) -> int { return x + 1; }
+fn f01(x: int) -> int { return f00(x) + 1; }
+fn f02(x: int) -> int { return f01(x) + 1; }
+fn f03(x: int) -> int { return f02(x) + 1; }
+fn f04(x: int) -> int { return f03(x) + 1; }
+fn f05(x: int) -> int { return f04(x) + 1; }
+fn f06(x: int) -> int { return f05(x) + 1; }
+fn f07(x: int) -> int { return f06(x) + 1; }
+fn f08(x: int) -> int { return f07(x) + 1; }
+fn f09(x: int) -> int { return f08(x) + 1; }
+fn f10(x: int) -> int { return f09(x) + 1; }
+fn f11(x: int) -> int { return f10(x) + 1; }
+fn f12(x: int) -> int { return f11(x) + 1; }
+fn f13(x: int) -> int { return f12(x) + 1; }
+fn f14(x: int) -> int { return f13(x) + 1; }
+fn f15(x: int) -> int { return f14(x) + 1; }
+fn f16(x: int) -> int { return f15(x) + 1; }
+fn f17(x: int) -> int { return f16(x) + 1; }
+fn f18(x: int) -> int { return f17(x) + 1; }
+fn f19(x: int) -> int { return f18(x) + 1; }
+fn f20(x: int) -> int { return f19(x) + 1; }
+fn f21(x: int) -> int { return f20(x) + 1; }
+fn f22(x: int) -> int { return f21(x) + 1; }
+fn f23(x: int) -> int { return f22(x) + 1; }
+fn f24(x: int) -> int { return f23(x) + 1; }
+fn f25(x: int) -> int { return f24(x) + 1; }
+fn f26(x: int) -> int { return f25(x) + 1; }
+fn f27(x: int) -> int { return f26(x) + 1; }
+fn f28(x: int) -> int { return f27(x) + 1; }
+fn f29(x: int) -> int { return f28(x) + 1; }
+fn f30(x: int) -> int { return f29(x) + 1; }
+fn f31(x: int) -> int { return f30(x) + 1; }
+print(str(f31(0)));
+end _lmcode_

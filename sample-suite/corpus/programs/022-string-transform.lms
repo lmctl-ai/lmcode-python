@@ -1,0 +1,10 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let a = str_len("abc");
+let b = str_lower("ABC");
+let c = str_repeat("ab", 2);
+let d = str_replace("abc", "b", "x");
+let e = str_substr("abc", 0, 2);
+let f = str_trim(" a ");
+let g = str_upper("abc");
+print(str(a) + ":" + b + ":" + c + ":" + d + ":" + e + ":" + f + ":" + g);
+end _lmcode_

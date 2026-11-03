@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+print("bad\q");
+end _lmcode_

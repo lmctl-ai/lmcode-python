@@ -1,0 +1,19 @@
+program = _lmcode_ schema="../sample.dsl.json";
+assert_close(sin(0.0), 0.0, 0.000000001);
+assert_close(cos(0.0), 1.0, 0.000000001);
+assert_close(sqrt(4.0), 2.0, 0.000000001);
+assert_close(abs(-2.5), 2.5, 0.000000001);
+assert_close(floor(2.9), 2.0, 0.000000001);
+assert_close(pow(2.0, 3.0), 8.0, 0.000000001);
+assert_close(min(2.0, 3.0), 2.0, 0.000000001);
+assert_close(max(2.0, 3.0), 3.0, 0.000000001);
+assert_close(clamp(5.0, 0.0, 2.0), 2.0, 0.000000001);
+assert_close(lerp(2.0, 6.0, 0.25), 3.0, 0.000000001);
+assert_close(ease(0.5), 0.5, 0.000000001);
+assert_close(ease_in(0.5), 0.25, 0.000000001);
+assert_close(ease_out(0.5), 0.75, 0.000000001);
+print(str(int(-2.75)));
+print(str(abs(-7)) + ":" + str(min(3, 7)) + ":" + str(max(3, 7)) + ":" + str(clamp(9, 2, 5)));
+print(str(float(2) + 0.5));
+print("intrinsic math passed");
+end _lmcode_

@@ -1,0 +1,6 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let raw = str_hex_decode("6100FF");
+print(str_hex_encode(raw)); print(str_base64_encode(raw));
+print(str_hex_encode(str_base64_decode(str_base64_encode(raw))));
+print(str(str_len(str_hex_decode(""))) + ":" + str(str_len(str_base64_decode(""))));
+end _lmcode_

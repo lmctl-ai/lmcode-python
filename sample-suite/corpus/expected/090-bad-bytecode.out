@@ -1,0 +1,3 @@
+LMCODE_RETURN_BEGIN
+{"ok":false,"phase":"load","code":"LOAD_BAD_BYTECODE","message":"invalid sample bytecode"}
+LMCODE_RETURN_END

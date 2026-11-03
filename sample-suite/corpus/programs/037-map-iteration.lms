@@ -1,0 +1,5 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let m = str_map().set("a", "1").set("b", "2");
+for (i in range(0, m.len())) { print(m.key_at(i)); }
+print("map iteration");
+end _lmcode_

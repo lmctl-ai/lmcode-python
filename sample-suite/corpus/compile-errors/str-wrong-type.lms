@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+print(str(shop));
+end _lmcode_

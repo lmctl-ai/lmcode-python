@@ -1,0 +1,8 @@
+adjust 125 -> 200
+adjust 250 -> 300
+adjust 375 -> 400
+recorded 3 adjusted prices
+{"host_summary":{"balance": 900, "entries": 3, "note": "", "entries_called": 0}}
+LMCODE_RETURN_BEGIN
+{"ok":true,"result":null}
+LMCODE_RETURN_END

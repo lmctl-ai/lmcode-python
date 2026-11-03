@@ -1,0 +1,12 @@
+program = _lmcode_ schema="../sample.dsl.json";
+fn key(n: int) -> string { print("key=" + str(n)); return "k" + str(n); }
+fn value(n: int) -> int { print("value=" + str(n)); return n; }
+let ordered = %((key(1)) => value(2), (key(3)) => value(4));
+print(str(ordered.get("k1")) + ":" + str(ordered.get("k3")));
+let config = %(name => "demo", "mode" => "old", mode => "new",);
+print(config.key_at(0) + ":" + config.key_at(1) + ":" + config.get("mode"));
+let rates = %(low => 1.25, high => 2.5);
+print(str(rates.get("low")) + ":" + str(rates.get("high")));
+print("empty=" + str(%().len()));
+print("modulo=" + str(5%(2)));
+end _lmcode_

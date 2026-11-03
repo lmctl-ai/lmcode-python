@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+while (1) { break; }
+end _lmcode_

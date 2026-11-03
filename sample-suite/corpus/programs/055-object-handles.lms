@@ -1,0 +1,11 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let first = money(7);
+for (i in range(0, 256)) { money(i); }
+let again = host_echo_money(first);
+print(str(host_same(first, again)));
+print(str(host_same(first, money(7))));
+first.set(9);
+print(str(again.amount()));
+host_void();
+print(str(host_is_null(host_echo_money(host_null()))));
+end _lmcode_

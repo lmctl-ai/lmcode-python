@@ -1,0 +1,5 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let xs = float_list().add(1.0).set(0, 2.0);
+let ok = xs.contains(2.0) && xs.at(0) == 2.0;
+print(str(ok));
+end _lmcode_

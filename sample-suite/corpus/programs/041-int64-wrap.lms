@@ -1,0 +1,9 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let hi = 9007199254740991 * 1024 + 1023;
+let lo = hi + 1;
+print(str(hi + hi));
+print(str(lo));
+print(str(-lo));
+print(str(lo / -1));
+print(str(lo % -1));
+end _lmcode_

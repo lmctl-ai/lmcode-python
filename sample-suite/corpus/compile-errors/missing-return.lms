@@ -1,0 +1,4 @@
+program = _lmcode_ schema="../sample.dsl.json";
+fn nope() -> int { print("no"); }
+nope();
+end _lmcode_

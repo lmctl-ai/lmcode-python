@@ -1,0 +1,9 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let m = money(125);
+let recorded = ledger.record(m);
+let balance = ledger.balance();
+let count = ledger.count();
+ledger.note("paid");
+let note = ledger.note();
+print(str(balance.amount()) + ":" + str(count) + ":" + note);
+end _lmcode_

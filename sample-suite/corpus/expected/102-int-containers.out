@@ -1,0 +1,10 @@
+stack=2:1:2
+cleared=true:0
+queue=1:2:1
+cleared=true:0
+pq=2:2:3:1
+pq-cleared=true:0
+{"host_summary":{"balance": 0, "entries": 0, "note": "", "entries_called": 0}}
+LMCODE_RETURN_BEGIN
+{"ok":true,"result":null}
+LMCODE_RETURN_END

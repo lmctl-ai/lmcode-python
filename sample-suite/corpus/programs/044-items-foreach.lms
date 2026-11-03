@@ -1,0 +1,5 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let total = 0;
+for (item in shop.items()) { total = total + item.amount(); }
+print(str(total));
+end _lmcode_

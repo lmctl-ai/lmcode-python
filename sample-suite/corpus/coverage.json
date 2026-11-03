@@ -1,0 +1,901 @@
+{
+  "schema": "sample.dsl.json",
+  "programs": {
+    "001-literals.lms": [
+      "literals",
+      "print(string)"
+    ],
+    "002-arithmetic.lms": [
+      "arithmetic",
+      "int operators",
+      "fee(int)"
+    ],
+    "003-boolean.lms": [
+      "boolean",
+      "comparisons"
+    ],
+    "004-if-else.lms": [
+      "if",
+      "else"
+    ],
+    "005-while.lms": [
+      "while"
+    ],
+    "006-range-for.lms": [
+      "range",
+      "for"
+    ],
+    "007-switch.lms": [
+      "switch",
+      "break",
+      "default"
+    ],
+    "008-function.lms": [
+      "function",
+      "return"
+    ],
+    "009-money-overloads.lms": [
+      "money(int)",
+      "money(float)",
+      "Shop.price(int)",
+      "Shop.price(float)"
+    ],
+    "010-money-methods.lms": [
+      "Money.amount()",
+      "Money.currency()",
+      "Money.set(int)"
+    ],
+    "011-money-operators.lms": [
+      "Money.plus(Money)",
+      "Money.minus(Money)",
+      "Money.times(int)",
+      "Money.neg()",
+      "Money r*"
+    ],
+    "012-shop-methods.lms": [
+      "Shop.items()",
+      "Shop.total()",
+      "Shop.currency()",
+      "Shop.label()"
+    ],
+    "013-items-methods.lms": [
+      "Items.len()",
+      "Items.at(int)"
+    ],
+    "014-ledger-methods.lms": [
+      "Ledger.record(Money)",
+      "Ledger.balance()",
+      "Ledger.note(string)",
+      "Ledger.note()",
+      "Ledger.count()"
+    ],
+    "015-float-list.lms": [
+      "float_list()",
+      "FloatList.add(float)",
+      "FloatList.at(int)",
+      "FloatList.clear()",
+      "FloatList.contains(float)",
+      "FloatList.index_of(float)",
+      "FloatList.len()",
+      "FloatList.set(int,float)"
+    ],
+    "016-int-list.lms": [
+      "int_list()",
+      "IntList.add(int)",
+      "IntList.at(int)",
+      "IntList.clear()",
+      "IntList.contains(int)",
+      "IntList.index_of(int)",
+      "IntList.len()",
+      "IntList.set(int,int)"
+    ],
+    "017-str-list.lms": [
+      "str_list()",
+      "StrList.add(string)",
+      "StrList.at(int)",
+      "StrList.clear()",
+      "StrList.contains(string)",
+      "StrList.index_of(string)",
+      "StrList.join(string)",
+      "StrList.len()",
+      "StrList.set(int,string)"
+    ],
+    "018-str-map.lms": [
+      "str_map()",
+      "StrMap.clear()",
+      "StrMap.get(string)",
+      "StrMap.get_or(string,string)",
+      "StrMap.has(string)",
+      "StrMap.key_at(int)",
+      "StrMap.len()",
+      "StrMap.remove(string)",
+      "StrMap.set(string,string)"
+    ],
+    "019-math-int.lms": [
+      "math_abs(int)",
+      "math_ceil(int)",
+      "math_floor(int)",
+      "math_max(int,int)",
+      "math_min(int,int)",
+      "math_pow(int,int)",
+      "math_round(int)",
+      "math_sqrt(int)"
+    ],
+    "020-math-float.lms": [
+      "math_abs(float)",
+      "math_ceil(float)",
+      "math_floor(float)",
+      "math_max(float,float)",
+      "math_min(float,float)",
+      "math_pow(float,float)",
+      "math_round(float)",
+      "math_sqrt(float)"
+    ],
+    "021-string-predicates.lms": [
+      "str_contains(string,string)",
+      "str_ends_with(string,string)",
+      "str_find(string,string)",
+      "str_is_float(string)",
+      "str_is_int(string)",
+      "str_match(string,string)",
+      "str_starts_with(string,string)"
+    ],
+    "022-string-transform.lms": [
+      "str_len(string)",
+      "str_lower(string)",
+      "str_repeat(string,int)",
+      "str_replace(string,string,string)",
+      "str_substr(string,int,int)",
+      "str_trim(string)",
+      "str_upper(string)"
+    ],
+    "023-string-convert.lms": [
+      "str_to_float(string)",
+      "str_to_int(string)",
+      "str_split(string,string)"
+    ],
+    "024-file-functions.lms": [
+      "sample_tmp()",
+      "file_write(string,string)",
+      "file_append(string,string)",
+      "file_exists(string)",
+      "file_read(string)",
+      "file_lines(string)"
+    ],
+    "025-assert-close.lms": [
+      "assert_close(float,float,float)"
+    ],
+    "026-divzero-expected-fail.lms": [
+      "runtime divzero"
+    ],
+    "027-modzero-expected-fail.lms": [
+      "runtime modzero"
+    ],
+    "028-assert-fail-expected-fail.lms": [
+      "assert_close failure"
+    ],
+    "029-reject-expected-fail.lms": [
+      "Ledger.reject(string)"
+    ],
+    "030-negative-balance-expected-fail.lms": [
+      "application negative balance"
+    ],
+    "031-items-oob-expected-fail.lms": [
+      "Items.at out of bounds"
+    ],
+    "032-intlist-oob-expected-fail.lms": [
+      "IntList.at out of bounds"
+    ],
+    "033-map-missing-expected-fail.lms": [
+      "StrMap missing key"
+    ],
+    "034-money-conversion.lms": [
+      "int to Money conversion"
+    ],
+    "035-context-trace.lms": [
+      "context shop",
+      "context ledger"
+    ],
+    "036-nested-control.lms": [
+      "nested control flow"
+    ],
+    "037-map-iteration.lms": [
+      "collection iteration"
+    ],
+    "038-floatlist-chain.lms": [
+      "method chaining",
+      "bool expression"
+    ],
+    "039-enum-currency.lms": [
+      "Currency enum"
+    ],
+    "040-full-trace.lms": [
+      "full integration trace"
+    ],
+    "041-int64-wrap.lms": [
+      "int64 wraparound"
+    ],
+    "042-short-circuit.lms": [
+      "short circuit",
+      "runtime safety"
+    ],
+    "043-break-continue.lms": [
+      "break",
+      "continue"
+    ],
+    "044-items-foreach.lms": [
+      "Items foreach"
+    ],
+    "045-switch-string-enum.lms": [
+      "string switch",
+      "enum switch"
+    ],
+    "046-inner-heredoc.lms": [
+      "inner raw heredoc <<TAG",
+      "inner dedent heredoc <<~TAG",
+      "raw ${} opacity"
+    ],
+    "047-outer-splice.lms": [
+      "outer int/float/string/bool splices"
+    ],
+    "048-math-derived.lms": [
+      "all 18 MATH opcodes",
+      "int/float widening"
+    ],
+    "049-int-boundary.lms": [
+      "int64 native roundtrip"
+    ],
+    "050-float-boundary.lms": [
+      "binary64 special values and formatting"
+    ],
+    "051-bool-boundary.lms": [
+      "native bool roundtrip"
+    ],
+    "052-byte-boundary.lms": [
+      "empty NUL multibyte byte-string roundtrip"
+    ],
+    "053-file-invalid-utf8.lms": [
+      "invalid UTF8 file bytes cross callback"
+    ],
+    "054-megabyte-string.lms": [
+      "one MiB byte-string boundary"
+    ],
+    "055-object-handles.lms": [
+      "object lifetime identity null void"
+    ],
+    "056-collection-boundary.lms": [
+      "all standard collection types cross native boundary both ways"
+    ],
+    "057-nested-inline-error.lms": [
+      "located error inside nested inline functions"
+    ],
+    "058-million-loop.lms": [
+      "million iterations performance sanity"
+    ],
+    "059-deep-inline.lms": [
+      "deep acyclic inlining no runtime call stack"
+    ],
+    "060-many-arguments.lms": [
+      "255 native arguments",
+      "509 slot VM operand stack"
+    ],
+    "061-long-identifier.lms": [
+      "long native import identifier"
+    ],
+    "062-null-receiver.lms": [
+      "null handle method error is located"
+    ],
+    "063-wrong-runtime-handle.lms": [
+      "dynamic wrong handle type runtime failure"
+    ],
+    "102-int-containers.lms": [
+      "int stack/queue/PQ",
+      "stable priority ties",
+      "pop order",
+      "clear/empty/len"
+    ],
+    "103-float-containers.lms": [
+      "float stack/queue/PQ",
+      "stable priority ties",
+      "pop order",
+      "clear/empty/len"
+    ],
+    "104-str-containers.lms": [
+      "str stack/queue/PQ",
+      "stable priority ties",
+      "pop order",
+      "clear/empty/len"
+    ],
+    "101-typed-maps.lms": [
+      "typed maps",
+      "overwrite/reinsert order",
+      "all typed-map methods"
+    ],
+    "105-json-navigation.lms": [
+      "immutable Json",
+      "all Json accessors",
+      "lossless token spelling"
+    ],
+    "106-stack-empty-expected-fail.lms": [
+      "stack empty trap"
+    ],
+    "107-pq-priority-expected-fail.lms": [
+      "PQ nonfinite priority trap"
+    ],
+    "108-json-kind-expected-fail.lms": [
+      "Json kind trap"
+    ],
+    "064-money-invalid-float.lms": [
+      "nonfinite Money factory error"
+    ],
+    "065-price-invalid-float.lms": [
+      "nonfinite overloaded price error"
+    ],
+    "066-record-null-money.lms": [
+      "null argument callback error"
+    ],
+    "067-rule-methods.lms": [
+      "@NAME rule annotation",
+      "implements Adjuster SAM interface",
+      "rule called from chunk body"
+    ],
+    "201-word-literals.lms": [
+      "qw literal",
+      "Unicode words",
+      "comments and newlines",
+      "empty StrList"
+    ],
+    "202-number-literals.lms": [
+      "qi int64 bounds",
+      "qf exponents and float coercion",
+      "typed empty lists"
+    ],
+    "203-map-literals.lms": [
+      "typed map literals",
+      "left-to-right single evaluation",
+      "duplicate key insertion order",
+      "modulo compatibility"
+    ],
+    "204-json-literal.lms": [
+      "JSONC heredoc literal",
+      "lossless int64",
+      "preserved escapes",
+      "raw outer-splice text"
+    ],
+    "205-literal-bindings.lms": [
+      "contextual literal names",
+      "function and parameter compatibility"
+    ],
+    "301-byte-codecs.lms": [
+      "strict byte codecs",
+      "NUL and non-UTF-8 round trips"
+    ],
+    "302-map-string-snapshots.lms": [
+      "StrMap insertion-order snapshots",
+      "snapshot mutation independence"
+    ],
+    "303-map-number-snapshots.lms": [
+      "IntMap snapshots",
+      "FloatMap snapshots",
+      "signed-zero payload"
+    ],
+    "304-base64-invalid-expected-fail.lms": [
+      "strict Base64 padding-bit rejection"
+    ],
+    "305-hex-invalid-expected-fail.lms": [
+      "strict hex prefix rejection"
+    ],
+    "311-byte-codec-boundaries.lms": [
+      "v3 strict byte codecs",
+      "NUL invalid UTF8",
+      "RFC4648 padding"
+    ],
+    "312-map-snapshot-mutation.lms": [
+      "v3 six map snapshots",
+      "mutation isolation",
+      "insertion order"
+    ],
+    "313-codec-pad-bits-expected-fail.lms": [
+      "v3 exact decoder error",
+      "nonzero pad bits"
+    ],
+    "068-rule-entries.lms": [
+      "rule entry table",
+      "@item per-item dispatch",
+      "@total dispatch",
+      "@never never called",
+      "entries_called result field"
+    ],
+    "069-rule-value-entry.lms": [
+      "rule value entry",
+      "implements Score SAM interface",
+      "entry result printed by host"
+    ],
+    "320-text-template.lms": [
+      "template_render(string, Json)",
+      "text templates",
+      "nested maps",
+      "indexed lists",
+      "loops",
+      "boolean conditions",
+      "opaque insertion"
+    ],
+    "321-template-missing-expected-fail.lms": [
+      "template_render errors",
+      "missing"
+    ],
+    "322-template-bounds-expected-fail.lms": [
+      "template_render errors",
+      "bounds"
+    ],
+    "323-template-canonical-index-expected-fail.lms": [
+      "template_render errors",
+      "canonical index"
+    ],
+    "324-template-wrong-parent-expected-fail.lms": [
+      "template_render errors",
+      "wrong parent"
+    ],
+    "325-template-list-required-expected-fail.lms": [
+      "template_render errors",
+      "list required"
+    ],
+    "326-template-bool-required-expected-fail.lms": [
+      "template_render errors",
+      "bool required"
+    ],
+    "327-template-context-object-expected-fail.lms": [
+      "template_render errors",
+      "context object"
+    ],
+    "328-template-unclosed-loop-expected-fail.lms": [
+      "template_render errors",
+      "unclosed loop"
+    ],
+    "329-template-unclosed-condition-expected-fail.lms": [
+      "template_render errors",
+      "unclosed condition"
+    ],
+    "330-template-unexpected-else-expected-fail.lms": [
+      "template_render errors",
+      "unexpected else"
+    ],
+    "331-template-invalid-separator-expected-fail.lms": [
+      "template_render errors",
+      "invalid separator"
+    ],
+    "332-template-index-reserved-expected-fail.lms": [
+      "template_render errors",
+      "index reserved"
+    ],
+    "333-template-validate-empty-body-syntax-expected-fail.lms": [
+      "template_render errors",
+      "validate empty body syntax"
+    ],
+    "070-empty-reversed-range.lms": [
+      "empty and reversed ranges",
+      "range boundary no-op"
+    ],
+    "071-nested-loop-control.lms": [
+      "nested break and continue",
+      "innermost loop control"
+    ],
+    "072-switch-no-fallthrough.lms": [
+      "switch selected arm",
+      "no fall-through"
+    ],
+    "073-inline-local-isolation.lms": [
+      "reused inline function locals",
+      "call-local isolation"
+    ],
+    "074-unicode-splice.lms": [
+      "outer splice Unicode preservation",
+      "UTF-8 text"
+    ],
+    "075-empty-collections.lms": [
+      "empty typed literals",
+      "empty stack queue map"
+    ],
+    "360-return-scalar.lms": [
+      "lmcode-return-v1",
+      "return-scalar"
+    ],
+    "361-return-maps.lms": [
+      "lmcode-return-v1",
+      "return-maps"
+    ],
+    "362-return-lists.lms": [
+      "lmcode-return-v1",
+      "return-lists"
+    ],
+    "363-return-json-fields.lms": [
+      "lmcode-return-v1",
+      "return-json-fields"
+    ],
+    "364-return-entry-lifetime.lms": [
+      "lmcode-return-v1",
+      "return-entry-lifetime"
+    ],
+    "365-return-entry-error.lms": [
+      "lmcode-return-v1",
+      "return-entry-error"
+    ],
+    "366-return-app-error.lms": [
+      "lmcode-return-v1",
+      "return-app-error"
+    ],
+    "367-return-shape-error.lms": [
+      "lmcode-return-v1",
+      "return-shape-error"
+    ],
+    "368-return-unsafe-json.lms": [
+      "lmcode-return-v1",
+      "return-unsafe-json"
+    ]
+  },
+  "canonical_signatures": [
+    "fn assert_close(float, float, float) -> void",
+    "fn fee(int) -> int",
+    "fn file_append(string, string) -> void",
+    "fn file_exists(string) -> bool",
+    "fn file_lines(string) -> StrList",
+    "fn file_read(string) -> string",
+    "fn file_write(string, string) -> void",
+    "fn float_list() -> FloatList",
+    "fn float_map() -> FloatMap",
+    "fn float_pq() -> FloatPQ",
+    "fn float_queue() -> FloatQueue",
+    "fn float_stack() -> FloatStack",
+    "fn host_bool(bool) -> bool",
+    "fn host_bytes(string) -> string",
+    "fn host_echo_money(Money) -> Money",
+    "fn host_float(float) -> float",
+    "fn host_float_case(string) -> float",
+    "fn host_float_list(FloatList) -> FloatList",
+    "fn host_hex(string) -> string",
+    "fn host_int(int) -> int",
+    "fn host_int_list(IntList) -> IntList",
+    "fn host_is_null(Money) -> bool",
+    "fn host_long_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx(int) -> int",
+    "fn host_null() -> Money",
+    "fn host_same(Money, Money) -> bool",
+    "fn host_str_list(StrList) -> StrList",
+    "fn host_str_map(StrMap) -> StrMap",
+    "fn host_sum(int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int) -> int",
+    "fn host_void() -> void",
+    "fn host_wrong() -> Money",
+    "fn int_list() -> IntList",
+    "fn int_map() -> IntMap",
+    "fn int_pq() -> IntPQ",
+    "fn int_queue() -> IntQueue",
+    "fn int_stack() -> IntStack",
+    "fn json_parse(string) -> Json",
+    "fn math_abs(float) -> float",
+    "fn math_abs(int) -> int",
+    "fn math_ceil(float) -> float",
+    "fn math_ceil(int) -> int",
+    "fn math_floor(float) -> float",
+    "fn math_floor(int) -> int",
+    "fn math_max(float, float) -> float",
+    "fn math_max(int, int) -> int",
+    "fn math_min(float, float) -> float",
+    "fn math_min(int, int) -> int",
+    "fn math_pow(float, float) -> float",
+    "fn math_pow(int, int) -> int",
+    "fn math_round(float) -> float",
+    "fn math_round(int) -> int",
+    "fn math_sqrt(float) -> float",
+    "fn math_sqrt(int) -> int",
+    "fn money(float) -> Money",
+    "fn money(int) -> Money",
+    "fn print(string) -> void",
+    "fn sample_tmp() -> string",
+    "fn str_base64_decode(string) -> string",
+    "fn str_base64_encode(string) -> string",
+    "fn str_contains(string, string) -> bool",
+    "fn str_ends_with(string, string) -> bool",
+    "fn str_find(string, string) -> int",
+    "fn str_hex_decode(string) -> string",
+    "fn str_hex_encode(string) -> string",
+    "fn str_is_float(string) -> bool",
+    "fn str_is_int(string) -> bool",
+    "fn str_len(string) -> int",
+    "fn str_list() -> StrList",
+    "fn str_lower(string) -> string",
+    "fn str_map() -> StrMap",
+    "fn str_match(string, string) -> bool",
+    "fn str_pq() -> StrPQ",
+    "fn str_queue() -> StrQueue",
+    "fn str_repeat(string, int) -> string",
+    "fn str_replace(string, string, string) -> string",
+    "fn str_split(string, string) -> StrList",
+    "fn str_stack() -> StrStack",
+    "fn str_starts_with(string, string) -> bool",
+    "fn str_substr(string, int, int) -> string",
+    "fn str_to_float(string) -> float",
+    "fn str_to_int(string) -> int",
+    "fn str_trim(string) -> string",
+    "fn str_upper(string) -> string",
+    "method FloatList.add(float) -> FloatList",
+    "method FloatList.at(int) -> float",
+    "method FloatList.clear() -> FloatList",
+    "method FloatList.contains(float) -> bool",
+    "method FloatList.index_of(float) -> int",
+    "method FloatList.len() -> int",
+    "method FloatList.set(int, float) -> FloatList",
+    "method FloatMap.clear() -> FloatMap",
+    "method FloatMap.get(string) -> float",
+    "method FloatMap.get_or(string, float) -> float",
+    "method FloatMap.has(string) -> bool",
+    "method FloatMap.key_at(int) -> string",
+    "method FloatMap.keys() -> StrList",
+    "method FloatMap.len() -> int",
+    "method FloatMap.remove(string) -> bool",
+    "method FloatMap.set(string, float) -> FloatMap",
+    "method FloatMap.values() -> FloatList",
+    "method FloatPQ.clear() -> FloatPQ",
+    "method FloatPQ.empty() -> bool",
+    "method FloatPQ.len() -> int",
+    "method FloatPQ.peek() -> float",
+    "method FloatPQ.pop() -> float",
+    "method FloatPQ.push(float, float) -> FloatPQ",
+    "method FloatQueue.at(int) -> float",
+    "method FloatQueue.clear() -> FloatQueue",
+    "method FloatQueue.empty() -> bool",
+    "method FloatQueue.len() -> int",
+    "method FloatQueue.peek() -> float",
+    "method FloatQueue.pop() -> float",
+    "method FloatQueue.push(float) -> FloatQueue",
+    "method FloatStack.at(int) -> float",
+    "method FloatStack.clear() -> FloatStack",
+    "method FloatStack.empty() -> bool",
+    "method FloatStack.len() -> int",
+    "method FloatStack.peek() -> float",
+    "method FloatStack.pop() -> float",
+    "method FloatStack.push(float) -> FloatStack",
+    "method IntList.add(int) -> IntList",
+    "method IntList.at(int) -> int",
+    "method IntList.clear() -> IntList",
+    "method IntList.contains(int) -> bool",
+    "method IntList.index_of(int) -> int",
+    "method IntList.len() -> int",
+    "method IntList.set(int, int) -> IntList",
+    "method IntMap.clear() -> IntMap",
+    "method IntMap.get(string) -> int",
+    "method IntMap.get_or(string, int) -> int",
+    "method IntMap.has(string) -> bool",
+    "method IntMap.key_at(int) -> string",
+    "method IntMap.keys() -> StrList",
+    "method IntMap.len() -> int",
+    "method IntMap.remove(string) -> bool",
+    "method IntMap.set(string, int) -> IntMap",
+    "method IntMap.values() -> IntList",
+    "method IntPQ.clear() -> IntPQ",
+    "method IntPQ.empty() -> bool",
+    "method IntPQ.len() -> int",
+    "method IntPQ.peek() -> int",
+    "method IntPQ.pop() -> int",
+    "method IntPQ.push(int, float) -> IntPQ",
+    "method IntQueue.at(int) -> int",
+    "method IntQueue.clear() -> IntQueue",
+    "method IntQueue.empty() -> bool",
+    "method IntQueue.len() -> int",
+    "method IntQueue.peek() -> int",
+    "method IntQueue.pop() -> int",
+    "method IntQueue.push(int) -> IntQueue",
+    "method IntStack.at(int) -> int",
+    "method IntStack.clear() -> IntStack",
+    "method IntStack.empty() -> bool",
+    "method IntStack.len() -> int",
+    "method IntStack.peek() -> int",
+    "method IntStack.pop() -> int",
+    "method IntStack.push(int) -> IntStack",
+    "method Items.at(int) -> Money",
+    "method Items.len() -> int",
+    "method Json.as_bool() -> bool",
+    "method Json.as_float() -> float",
+    "method Json.as_int() -> int",
+    "method Json.as_string() -> string",
+    "method Json.at(int) -> Json",
+    "method Json.get(string) -> Json",
+    "method Json.has(string) -> bool",
+    "method Json.keys() -> StrList",
+    "method Json.kind() -> string",
+    "method Json.len() -> int",
+    "method Json.to_json() -> string",
+    "method Ledger.balance() -> Money",
+    "method Ledger.count() -> int",
+    "method Ledger.note() -> string",
+    "method Ledger.note(string) -> void",
+    "method Ledger.record(Money) -> self",
+    "method Ledger.reject(string) -> void",
+    "method Money.amount() -> int",
+    "method Money.currency() -> Currency",
+    "method Money.minus(Money) -> Money",
+    "method Money.neg() -> Money",
+    "method Money.plus(Money) -> Money",
+    "method Money.set(int) -> self",
+    "method Money.times(int) -> Money",
+    "method Shop.currency() -> Currency",
+    "method Shop.items() -> Items",
+    "method Shop.label() -> string",
+    "method Shop.price(float) -> Money",
+    "method Shop.price(int) -> Money",
+    "method Shop.total() -> Money",
+    "method StrList.add(string) -> StrList",
+    "method StrList.at(int) -> string",
+    "method StrList.clear() -> StrList",
+    "method StrList.contains(string) -> bool",
+    "method StrList.index_of(string) -> int",
+    "method StrList.join(string) -> string",
+    "method StrList.len() -> int",
+    "method StrList.set(int, string) -> StrList",
+    "method StrMap.clear() -> StrMap",
+    "method StrMap.get(string) -> string",
+    "method StrMap.get_or(string, string) -> string",
+    "method StrMap.has(string) -> bool",
+    "method StrMap.key_at(int) -> string",
+    "method StrMap.keys() -> StrList",
+    "method StrMap.len() -> int",
+    "method StrMap.remove(string) -> bool",
+    "method StrMap.set(string, string) -> StrMap",
+    "method StrMap.values() -> StrList",
+    "method StrPQ.clear() -> StrPQ",
+    "method StrPQ.empty() -> bool",
+    "method StrPQ.len() -> int",
+    "method StrPQ.peek() -> string",
+    "method StrPQ.pop() -> string",
+    "method StrPQ.push(string, float) -> StrPQ",
+    "method StrQueue.at(int) -> string",
+    "method StrQueue.clear() -> StrQueue",
+    "method StrQueue.empty() -> bool",
+    "method StrQueue.len() -> int",
+    "method StrQueue.peek() -> string",
+    "method StrQueue.pop() -> string",
+    "method StrQueue.push(string) -> StrQueue",
+    "method StrStack.at(int) -> string",
+    "method StrStack.clear() -> StrStack",
+    "method StrStack.empty() -> bool",
+    "method StrStack.len() -> int",
+    "method StrStack.peek() -> string",
+    "method StrStack.pop() -> string",
+    "method StrStack.push(string) -> StrStack"
+  ],
+  "expected_failures": [
+    "026-divzero-expected-fail.lms",
+    "027-modzero-expected-fail.lms",
+    "028-assert-fail-expected-fail.lms",
+    "029-reject-expected-fail.lms",
+    "030-negative-balance-expected-fail.lms",
+    "031-items-oob-expected-fail.lms",
+    "032-intlist-oob-expected-fail.lms",
+    "033-map-missing-expected-fail.lms",
+    "057-nested-inline-error.lms",
+    "062-null-receiver.lms",
+    "063-wrong-runtime-handle.lms",
+    "106-stack-empty-expected-fail.lms",
+    "107-pq-priority-expected-fail.lms",
+    "108-json-kind-expected-fail.lms",
+    "064-money-invalid-float.lms",
+    "065-price-invalid-float.lms",
+    "066-record-null-money.lms",
+    "304-base64-invalid-expected-fail.lms",
+    "305-hex-invalid-expected-fail.lms",
+    "313-codec-pad-bits-expected-fail.lms",
+    "321-template-missing-expected-fail.lms",
+    "322-template-bounds-expected-fail.lms",
+    "323-template-canonical-index-expected-fail.lms",
+    "324-template-wrong-parent-expected-fail.lms",
+    "325-template-list-required-expected-fail.lms",
+    "326-template-bool-required-expected-fail.lms",
+    "327-template-context-object-expected-fail.lms",
+    "328-template-unclosed-loop-expected-fail.lms",
+    "329-template-unclosed-condition-expected-fail.lms",
+    "330-template-unexpected-else-expected-fail.lms",
+    "331-template-invalid-separator-expected-fail.lms",
+    "332-template-index-reserved-expected-fail.lms",
+    "333-template-validate-empty-body-syntax-expected-fail.lms",
+    "365-return-entry-error.lms",
+    "366-return-app-error.lms",
+    "367-return-shape-error.lms",
+    "368-return-unsafe-json.lms"
+  ],
+  "exit_codes": {
+    "030-negative-balance-expected-fail.lms": 4,
+    "366-return-app-error.lms": 4
+  },
+  "timeouts": {
+    "058-million-loop.lms": 5
+  },
+  "compiler_features": {
+    "067-rule-methods.lms": [
+      "lmcode-rule-methods-v1"
+    ],
+    "201-word-literals.lms": [
+      "lmcode-literals-v1"
+    ],
+    "202-number-literals.lms": [
+      "lmcode-literals-v1"
+    ],
+    "203-map-literals.lms": [
+      "lmcode-literals-v1"
+    ],
+    "204-json-literal.lms": [
+      "lmcode-literals-v1"
+    ],
+    "205-literal-bindings.lms": [
+      "lmcode-literals-v1"
+    ],
+    "068-rule-entries.lms": [
+      "lmcode-rule-entries-v1"
+    ],
+    "069-rule-value-entry.lms": [
+      "lmcode-rule-entries-v1"
+    ]
+  },
+  "return_values": {
+    "360-return-scalar.lms": 0.30000000000000004,
+    "361-return-maps.lms": {
+      "strings": {
+        "key": "value"
+      },
+      "ints": {
+        "count": 7
+      },
+      "floats": {
+        "fraction": 1.25
+      }
+    },
+    "362-return-lists.lms": {
+      "strings": [
+        "owned"
+      ],
+      "ints": [
+        7
+      ],
+      "floats": [
+        1.25
+      ]
+    },
+    "363-return-json-fields.lms": {
+      "tree": {
+        "nested": {
+          "items": [
+            1,
+            true,
+            null,
+            "text"
+          ]
+        }
+      },
+      "missing": null,
+      "flag": true,
+      "text": "LMCODE_RETURN_BEGIN\nquoted \u6c34",
+      "integer": 7,
+      "fraction": 1.25
+    },
+    "364-return-entry-lifetime.lms": {
+      "body": "retained",
+      "captured": [
+        "owned"
+      ],
+      "item125": 125,
+      "item250": 250,
+      "item375": 375,
+      "total": 750
+    }
+  },
+  "invocation_flows": [
+    "single",
+    "builder",
+    "reused sealed builder",
+    "duplicate program",
+    "one-slot builder/list",
+    "role reverse dispatch",
+    "shared ledger",
+    "entry failure part 1",
+    "single entry failure",
+    "global app failure",
+    "summary preservation"
+  ]
+}

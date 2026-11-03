@@ -1,0 +1,11 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let stack = str_stack().push("alpha").push("beta");
+print("stack=" + stack.peek() + ":" + stack.at(1) + ":" + stack.pop());
+stack.clear(); print("cleared=" + str(stack.empty()) + ":" + str(stack.len()));
+let queue = str_queue().push("alpha").push("beta");
+print("queue=" + queue.peek() + ":" + queue.at(1) + ":" + queue.pop());
+queue.clear(); print("cleared=" + str(queue.empty()) + ":" + str(queue.len()));
+let pq = str_pq().push("alpha",2.0).push("beta",-0.0).push("gamma",0.0);
+print("pq=" + pq.peek() + ":" + pq.pop() + ":" + pq.pop() + ":" + pq.pop());
+pq.clear(); print("pq-cleared=" + str(pq.empty()) + ":" + str(pq.len()));
+end _lmcode_

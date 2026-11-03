@@ -1,0 +1,4 @@
+program = _lmcode_ schema="../sample.dsl.json";
+ledger.reject("rejected order");
+print("unreachable reject");
+end _lmcode_

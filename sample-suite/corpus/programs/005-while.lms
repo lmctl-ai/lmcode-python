@@ -1,0 +1,11 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let i = 0;
+let total = 0;
+while (i < 8) {
+  i = i + 1;
+  if (i == 2) { continue; }
+  if (i == 6) { break; }
+  total = total + i;
+}
+print(str(i) + ":" + str(total));
+end _lmcode_

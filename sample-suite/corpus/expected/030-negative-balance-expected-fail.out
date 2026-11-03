@@ -1,0 +1,4 @@
+-1
+LMCODE_RETURN_BEGIN
+{"ok":false,"phase":"app","code":"APP_FAIL","message":"ledger: negative balance"}
+LMCODE_RETURN_END

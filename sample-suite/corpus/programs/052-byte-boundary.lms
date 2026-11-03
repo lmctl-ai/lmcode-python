@@ -1,0 +1,6 @@
+program = _lmcode_ schema="../sample.dsl.json";
+print(str(str_len(host_bytes(""))));
+print(host_hex(host_bytes(file_read(sample_tmp() + "/zero-bytes.bin"))));
+print(host_hex(host_bytes("é😀")));
+print(str(str_len(host_bytes("é😀"))));
+end _lmcode_

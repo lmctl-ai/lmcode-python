@@ -1,0 +1,5 @@
+program = _lmcode_ schema="../sample.dsl.json";
+print(str(qw().len()) + ":" + str(qi().len()) + ":" + str(qf().len()));
+let s = str_stack(); let q = int_queue(); let m = float_map();
+print(str(s.empty()) + ":" + str(q.empty()) + ":" + str(m.len()));
+end _lmcode_

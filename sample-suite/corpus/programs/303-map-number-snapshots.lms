@@ -1,0 +1,9 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let ints = int_map().set("a",7).set("b",8);
+let ik = ints.keys(); let iv = ints.values(); ints.clear();
+print(ik.join(",") + ":" + str(iv.at(0)) + ":" + str(iv.at(1)));
+let floats = float_map().set("x",1.25).set("y",-0.0);
+let fk = floats.keys(); let fv = floats.values(); floats.set("x",9.0);
+print(fk.join(",") + ":" + str(fv.at(0)) + ":" + str(fv.at(1)));
+fv.set(0,3.5); print(str(floats.get("x")));
+end _lmcode_

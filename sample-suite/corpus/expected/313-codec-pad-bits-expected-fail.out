@@ -1,0 +1,4 @@
+reject noncanonical Base64
+LMCODE_RETURN_BEGIN
+{"ok":false,"phase":"run","code":"RUN_HOST","message":"dsl line 3:7: str_base64_decode: invalid encoding","line":3,"column":7}
+LMCODE_RETURN_END

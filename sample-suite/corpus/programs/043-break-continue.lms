@@ -1,0 +1,5 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let total = 0;
+for (i in range(0, 8)) { if (i == 2) { continue; } if (i == 6) { break; } total = total + i; }
+print(str(total));
+end _lmcode_

@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+if (1) { print("bad"); }
+end _lmcode_

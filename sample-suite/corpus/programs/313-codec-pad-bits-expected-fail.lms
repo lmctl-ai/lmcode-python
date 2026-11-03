@@ -1,0 +1,4 @@
+program = _lmcode_ schema="../sample.dsl.json";
+print("reject noncanonical Base64");
+print(str_base64_decode("Zh=="));
+end _lmcode_

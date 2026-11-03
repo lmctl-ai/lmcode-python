@@ -1,0 +1,4 @@
+program = _lmcode_ schema="../sample.dsl.json";
+fn twice(n: int) -> int { let local = n + 1; return local * 2; }
+print(str(twice(3)) + ":" + str(twice(7)));
+end _lmcode_

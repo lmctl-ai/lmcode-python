@@ -1,0 +1,18 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let strings = str_map().set("b", "two").set("a", "one");
+let keys = strings.keys(); let values = strings.values();
+strings.set("b", "changed").clear();
+keys.set(0, "copy"); values.add("three");
+print(keys.join(",") + ":" + values.join(",") + ":" + str(strings.len()));
+let ints = int_map().set("first", 7).set("next", -2);
+let ik = ints.keys(); let iv = ints.values();
+ints.set("first", 9); ints.remove("next"); ints.set("next", 4);
+iv.set(0, 11);
+print(ik.join(",") + ":" + str(iv.at(0)) + ":" + str(iv.at(1)) + ":" + str(ints.get("first")));
+let floats = float_map().set("x", -0.0).set("y", 1.25);
+let fk = floats.keys(); let fv = floats.values();
+floats.clear(); fv.set(1, 2.5);
+print(fk.join(",") + ":" + str(floats.len()));
+assert_close(fv.at(1), 2.5, 0.0);
+print("empty=" + str(str_map().keys().len()) + ":" + str(int_map().values().len()));
+end _lmcode_

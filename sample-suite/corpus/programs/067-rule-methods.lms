@@ -1,0 +1,16 @@
+program = _lmcode_ schema="../sample.dsl.json";
+@PRICE_RULE
+fn round_up(m: Money) -> void implements Adjuster {
+  let cents = m.amount();
+  let rem = cents % 100;
+  if (rem != 0) { m.set(cents + 100 - rem); }
+  print("adjust " + str(cents) + " -> " + str(m.amount()));
+}
+let items = shop.items();
+for (i in range(0, items.len())) {
+  let price = items.at(i);
+  round_up(price);
+  ledger.record(price);
+}
+print("recorded " + str(ledger.count()) + " adjusted prices");
+end _lmcode_

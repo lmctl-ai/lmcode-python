@@ -1,0 +1,7 @@
+program = _lmcode_ schema="../sample.dsl.json";
+let a = str_to_float("2.5");
+let b = str_to_int("25");
+let c = str_split("a,b", ",");
+let d = str_list();
+print(str(a) + ":" + str(b) + ":" + str(c.len()));
+end _lmcode_

@@ -1,0 +1,3 @@
+program = _lmcode_ schema="../sample.dsl.json";
+str_hex_decode("0x00");
+end _lmcode_

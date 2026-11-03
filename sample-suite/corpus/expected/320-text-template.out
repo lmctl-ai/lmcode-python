@@ -1,0 +1,43 @@
+plain text: true
+immutable: true
+indexed lists: true
+immutable: true
+whole nested map: true
+immutable: true
+scalars: true
+immutable: true
+opaque insertion: true
+immutable: true
+quotes unicode and nul: true
+immutable: true
+loop index: true
+immutable: true
+nested loops: true
+immutable: true
+outer scope and shadow: true
+immutable: true
+empty loop: true
+immutable: true
+condition true: true
+immutable: true
+condition false: true
+immutable: true
+condition no else: true
+immutable: true
+condition in loop: true
+immutable: true
+loop in condition: true
+immutable: true
+nested conditions: true
+immutable: true
+json output explicit escaping: true
+immutable: true
+literal markup: true
+immutable: true
+separator escapes: true
+immutable: true
+ff0037
+{"host_summary":{"balance": 0, "entries": 0, "note": "", "entries_called": 0}}
+LMCODE_RETURN_BEGIN
+{"ok":true,"result":null}
+LMCODE_RETURN_END
