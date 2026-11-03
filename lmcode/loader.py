@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 import hashlib
 from typing import Dict, List, Optional, Tuple
 from .binary import Reader
-from .errors import HostError, LoadError
+from .errors import HostError, LoadError, sdk_errors
 from .registry import Registry
 
 VERSION = 6
@@ -80,22 +80,22 @@ class Program:
     entries: List[Entry]
     schema_hash: bytes
 
+    @sdk_errors()
     def run(self, context, registry):
         from .vm import execute
         execute(self, self.body, context, registry, [], False)
 
+    @sdk_errors()
     def call(self, entry, context, registry, args):
         from .vm import execute
-        try:
-            selected = self.entries[entry] if type(entry) is int else next((e for e in self.entries if e.name == entry), None)
-            if selected is None:raise HostError("call entry '" + str(entry) + "' not found")
-            if len(args) != len(selected.params):
-                raise HostError("call entry '" + selected.name + "' expects " + str(len(selected.params)) + " argument(s); found " + str(len(args)))
-            return execute(self, selected.region, context, registry, list(args), selected.returns != "void")
-        except MemoryError:
-            raise HostError("memory allocation failed") from None
-        except RecursionError:
-            raise HostError("maximum recursion depth exceeded") from None
+        if type(entry) is int:
+            selected = self.entries[entry] if 0 <= entry < len(self.entries) else None
+        else:
+            selected = next((e for e in self.entries if e.name == entry), None)
+        if selected is None:raise HostError("call entry '" + str(entry) + "' not found")
+        if len(args) != len(selected.params):
+            raise HostError("call entry '" + selected.name + "' expects " + str(len(selected.params)) + " argument(s); found " + str(len(args)))
+        return execute(self, selected.region, context, registry, list(args), selected.returns != "void")
 
 
 def _fail(message: str, code: str = "LOAD_BAD_BYTECODE") -> None:
@@ -230,6 +230,7 @@ def _declared_hint(registry: Registry, canonical: str) -> str:
     return " (the host declares " + ", ".join(names) + ")" if names else ""
 
 
+@sdk_errors("LOAD_BAD_BYTECODE")
 def load(bytecode: bytes, schema_bytes: bytes, registry: Registry) -> Program:
     if len(bytecode) < 4 or bytecode[:4] != MAGIC:
         _fail("not a DSL bytecode file: bad magic (expected 'DSLB')")

@@ -1,7 +1,7 @@
 """Result contracts, owned JSON sinks, exact JSON and terminal frame encoding."""
 from __future__ import annotations
 import json, math, re
-from .errors import HostError, LmcodeError
+from .errors import HostError, LmcodeError, sdk_errors
 from .registry import ObjectRef
 from .vm import DryNull
 
@@ -137,12 +137,14 @@ class ResultContract:
         nullable=result.get("nullable",False)
         if type(nullable) is not bool:bad("nullable must be bool")
         return cls(type_name,nullable)
+    @sdk_errors()
     def validate_source(self,value):
         if not self.type or self.type=="Json" or value is None:return
         actual=value.type_name if isinstance(value,ObjectRef) else "null" if isinstance(value,DryNull) else "void" if value is None else "int" if type(value) is int else "float" if type(value) is float else "bool" if type(value) is bool else "string" if type(value) is str else "handle"
         if actual=="void":actual="null"
         if actual==self.type or actual=="int" and self.type=="float" or actual=="IntList" and self.type=="FloatList" or actual=="IntMap" and self.type=="FloatMap":return
         _mismatch("",self.type,actual)
+    @sdk_errors()
     def validate(self,value,path=""):
         if not self.type:return
         kind=_kind(value)
@@ -172,9 +174,11 @@ class ResultSink:
     def _writable(self):
         if self.sealed:raise HostError("lmcode return: result sink is sealed")
     def reset(self):self._writable();self.root=None
+    @sdk_errors()
     def set(self,value):
         self._writable();self.contract.validate_source(value);owned=to_json_value(value);self.contract.validate(owned);self.root=owned
     def set_null(self):self.set(None)
+    @sdk_errors()
     def put(self,key,value):
         self._writable()
         if self.root is not None and not isinstance(self.root,dict):raise HostError("lmcode return: field assignment requires object or null")
@@ -183,7 +187,9 @@ class ResultSink:
         owned=to_json_value(value,_pointer("",text))
         next_value=dict(self.root or {});next_value[text]=owned;self.contract.validate(next_value);self.root=next_value
     def put_null(self,key):self.put(key,None)
+    @sdk_errors()
     def json(self):return _serialize_json(self.root)
+    @sdk_errors()
     def complete(self):self._writable();self.contract.validate(self.root);self.sealed=True;return self.root
 
 
