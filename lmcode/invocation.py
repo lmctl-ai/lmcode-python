@@ -2,7 +2,7 @@
 from __future__ import annotations
 import json, os, ntpath
 from dataclasses import dataclass
-from .errors import HostError, LmcodeError
+from .errors import HostError, LmcodeError, sdk_errors
 from .registry import Registry
 from .results import ResultContract, ResultSink, failure_frame, _serialize_json, success_frame
 from .stdlib import JsonNode, _parse_json
@@ -44,7 +44,10 @@ def _only_keys(value,allowed):
     if not isinstance(value,dict):raise _cli("object required")
     for key in value:
         if key not in allowed:raise _cli("unknown key "+key)
-def _integer(value):return value if type(value) is int and -(1<<63)<=value<(1<<63) else None
+def _integer(value):
+    if type(value) is int and abs(value)<=(1<<53)-1:return value
+    if type(value) is float and abs(value)<=(1<<53)-1 and value.is_integer():return int(value)
+    return None
 
 def _manifest_metadata(metadata,files):
     _only_keys(metadata,{"version","mode","dry","parts"})
@@ -83,6 +86,7 @@ class InvocationResults:
         self.slots=[{"sink":None,"result":_UNSET} for _ in registrations]
         self.failure=None;self.writing=False
     @classmethod
+    @sdk_errors("CLI_USAGE")
     def from_metadata(cls,raw,files):
         try:parsed=_parse_json(bytes(raw).decode("latin-1"))
         except LmcodeError as error:raise _manifest_error(error)
@@ -96,6 +100,7 @@ class InvocationResults:
             raise
         return cls(builder,dry,registrations)
     @classmethod
+    @sdk_errors("CLI_USAGE")
     def from_command(cls,files,env=None):
         env=os.environ if env is None else env
         if "LMCODE_INVOCATION_FILE" in env:
@@ -118,6 +123,7 @@ class InvocationResults:
     def _slot(self,index):
         if type(index) is not int or index<0 or index>=len(self.slots):raise HostError("lmcode invocation: invalid slot index")
         return self.slots[index]
+    @sdk_errors()
     def select(self,index,registry,contract=None):
         if self.writing:raise HostError("lmcode invocation: finalized")
         slot=self._slot(index)
@@ -127,6 +133,7 @@ class InvocationResults:
         elif slot["sink"].contract.type!=contract.type or slot["sink"].contract.nullable!=contract.nullable:raise HostError("lmcode invocation: result contract changed")
         registry.set_result_sink(slot["sink"])
         return slot["sink"]
+    @sdk_errors()
     def complete(self,index):
         if self.writing:raise HostError("lmcode invocation: finalized")
         slot=self._slot(index)
@@ -136,6 +143,7 @@ class InvocationResults:
             message="memory allocation failed" if isinstance(error,MemoryError) else "maximum recursion depth exceeded"
             wrapped=HostError(message);self.fail(index,"run",wrapped);raise wrapped from None
         except Exception as error:self.fail(index,"run",error);raise
+    @sdk_errors()
     def fail(self,index,phase,error):
         if self.writing:raise HostError("lmcode invocation: finalized")
         if self.failure is not None:return
@@ -146,6 +154,7 @@ class InvocationResults:
             error=HostError(message)
         part=index if self.builder and index is not None else None
         self.failure={"phase":phase,"error":error,"part":part}
+    @sdk_errors()
     def write_frame(self):
         if self.writing:raise HostError("lmcode invocation: finalized")
         if self.failure is None:
