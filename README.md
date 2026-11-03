@@ -33,7 +33,7 @@ context.set("greeter", Greeter())
 program.run(context, registry)
 ```
 
-Register functions with `Registry.function(name, params, returns, callback)` and methods with `Registry.method(owner, name, params, returns, callback)`. Callbacks receive the run context, receiver (for methods), and arguments. String callbacks receive UTF-8 text after boundary validation; `raw_strings=True` opts a callback into byte strings. Python `int` preserves all values while VM integer operations wrap to signed 64-bit.
+Register functions with `Registry.function(name, params, returns, callback)` and methods with `Registry.method(owner, name, params, returns, callback)`. Callbacks receive the run context, receiver (for methods), and arguments. String callbacks receive UTF-8 text after boundary validation; `raw_strings=True` on either registration method opts a callback into byte strings (Python `str` with one code point per byte); byte-valued callback returns are also accepted. Python `int` preserves all values while VM integer operations wrap to signed 64-bit.
 
 ## Dry mode and result frames
 
@@ -67,6 +67,8 @@ LMCODE_COMPILER=/path/to/lmscript python scripts/run-sample-suite.py
 
 The sync scripts pin the mono-generated core corpus and standard schema/docs, the shared standard/result/invocation vectors, and the sample suite. Locks record source revisions and SHA-256 digests. The 271 standard vectors include successful executions beyond the former string-size, matcher-work, and collection-count boundaries. The VM adds no execution or memory budgets.
 
-The invocation runner checks all 29 canonical malformed-metadata envelopes byte-for-byte, including unsafe-number diagnostics and dry failure markers. Native allocation and recursion failures at host boundaries become structured `RUN_HOST` errors.
+The invocation runner checks all 29 canonical malformed-metadata envelopes byte-for-byte, including unsafe-number diagnostics and dry failure markers. Native allocation and recursion failures in public result sinks, entry dispatch, and host execution become structured `RUN_HOST` errors; loading failures become `LOAD_BAD_BYTECODE`. Existing SDK diagnostics pass through unchanged. Failed sink assignments preserve the previous result. Invalid integer entry indices, including negative indices, report a structured missing-entry error.
 
 GitHub Actions run the test, mutation, conformance, and sample suites on Ubuntu, macOS, and Windows. The workflow installs the latest `@lmctl-ai/lmctl` locally for compile checks. CI does not publish Python packages or create release tags.
+
+Priority queues use a monotonic insertion sequence, so equal priorities retain insertion order after removals. `clear()` resets the sequence; the canonical signed64 sequence representability guard rejects exhaustion before changing the queue.

@@ -8,6 +8,7 @@ SOURCE=ROOT/'lmcode'/'loader.py'
 TEST=ROOT/'tests'/'test_verifier_controls.py'
 ORIGINAL=SOURCE.read_text(encoding='utf-8')
 MUTATIONS={
+    'branch-balance': ('elif old != after:', 'elif False:'),
     'hidden-store': ('if op == "STORE_LOCAL" and region.locals[idx].hidden:\n                _fail("STORE_LOCAL at offset " + str(pc) + " writes compiler-owned loop local " + str(idx))', ''),
     'duplicate-entry': ('''        if any(entry.name == name for entry in entries): _fail("duplicate entry name '" + name + "'")''', '''        if False: pass'''),
     'backward-jump': ('if rel < 0: _fail("jump at offset " + str(ins.pc) + " goes backwards outside a range loop")', 'if False: pass'),

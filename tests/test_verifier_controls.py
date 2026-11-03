@@ -50,6 +50,16 @@ class VerifierMutationControls(unittest.TestCase):
         with self.assertRaisesRegex(LoadError, "goes backwards"):
             load(bytecode, self.schema, self.registry)
 
+    def test_branch_join_depth_mismatch_is_rejected(self):
+        # A typed void entry joins HALT with zero values on one path, one on the other.
+        code = bytes([0x03, 1, 0x0D]) + (9).to_bytes(4, "big", signed=True)
+        code += bytes([0x01]) + (1).to_bytes(8, "big", signed=True) + bytes([0x11])
+        program = Program([], [], [], None, [], b"")
+        region = Region([], 1, code, [])
+        _decode(region, [], 0, 0)
+        with self.assertRaisesRegex(LoadError, "inconsistent operand stack depth"):
+            _verify_stack(program, self.registry, region, "void")
+
     def test_stack_underflow_is_rejected(self):
         program = Program([], [], [], None, [], b"")
         region = Region([], 0, bytes([0x10, 0x11]), [])

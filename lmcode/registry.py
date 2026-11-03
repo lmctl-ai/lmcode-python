@@ -2,7 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Tuple
-from .errors import LmcodeError
+from .errors import LmcodeError, sdk_errors
 
 Callback = Callable[["Context", Any, List[Any]], Any]
 
@@ -109,6 +109,7 @@ class Registry:
         self.enum_types.add(name)
         return self
 
+    @sdk_errors("LOAD_UNBOUND")
     def context(self, name: str, type_name: str) -> "Registry":
         old = self.contexts.get(name)
         if old is not None and old != type_name:
@@ -116,8 +117,9 @@ class Registry:
         self.contexts[name] = type_name
         return self
 
+    @sdk_errors("LOAD_UNBOUND")
     def function(self, name: str, params: List[str], returns: str, callback: Callback,
-                 dry_callback: Any = None, _std: bool = False, _raw: bool = False, _allow_dry_null: bool = False) -> "Registry":
+                 dry_callback: Any = None, _std: bool = False, _raw: bool = False, _allow_dry_null: bool = False, *, raw_strings: bool = False) -> "Registry":
         signature = Signature(tuple(params), returns)
         key = signature.canonical(name)
         if key in self.functions:
@@ -125,13 +127,14 @@ class Registry:
         slot = dry_callback if isinstance(dry_callback, DrySlot) else None
         self.functions[key] = FunctionBinding(name, signature, callback,
             slot.callback if slot is not None and slot.callback is not real else None,
-            slot is not None and slot.callback is real, _std, _raw, _allow_dry_null)
+            slot is not None and slot.callback is real, _std, _raw or raw_strings, _allow_dry_null)
         if _std:
             self.std_signatures.add(key)
         return self
 
+    @sdk_errors("LOAD_UNBOUND")
     def method(self, owner: str, name: str, params: List[str], returns: str, callback: Callback,
-               dry_callback: Any = None, _std: bool = False, _raw: bool = False) -> "Registry":
+               dry_callback: Any = None, _std: bool = False, _raw: bool = False, *, raw_strings: bool = False) -> "Registry":
         signature = Signature(tuple(params), returns)
         key = signature.canonical(name, owner)
         if key in self.methods:
@@ -139,7 +142,7 @@ class Registry:
         slot = dry_callback if isinstance(dry_callback, DrySlot) else None
         self.methods[key] = MethodBinding(owner, name, signature, callback,
             slot.callback if slot is not None and slot.callback is not real else None,
-            slot is not None and slot.callback is real, _std, _raw)
+            slot is not None and slot.callback is real, _std, _raw or raw_strings)
         if _std:
             self.std_signatures.add(key)
         return self
