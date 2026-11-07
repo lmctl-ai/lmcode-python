@@ -1,0 +1,107 @@
+# The shared REST conformance program. Every runtime serves the same bytecode
+# (app.dslb, compiled from this file) and must answer scenarios.json identically.
+program = _lmcode_ schema="host.schema.json";
+
+@health
+fn health(x: RestExchange) -> void implements RestHandler {
+  x.json("{\"status\":\"ok\"}");
+}
+
+@hello
+fn hello(x: RestExchange) -> void implements RestHandler {
+  let greeting = "hello";
+  if (x.has_query("greeting")) { greeting = x.query("greeting"); }
+  x.send(greeting + ", " + x.param("name"));
+}
+
+@add
+fn add(x: RestExchange) -> void implements RestHandler {
+  let a = x.query("a");
+  let b = x.query("b");
+  if (!str_is_int(a) || !str_is_int(b)) {
+    x.status(400);
+    x.json("{\"error\":\"a and b must be integers\"}");
+  } else {
+    x.json("{\"sum\":" + str(str_to_int(a) + str_to_int(b)) + "}");
+  }
+}
+
+@sum
+fn sum(x: RestExchange) -> void implements RestHandler {
+  let doc = json_parse(x.body());
+  let values = doc.get("values");
+  let total = 0;
+  for (i in range(0, values.len())) { total = total + values.at(i).as_int(); }
+  x.status(201);
+  x.json("{\"sum\":" + str(total) + "}");
+}
+
+@remove
+fn remove(x: RestExchange) -> void implements RestHandler {
+  x.status(204);
+  x.set_header("X-Removed", x.param("id"));
+}
+
+@boom
+fn boom(x: RestExchange) -> void implements RestHandler {
+  let zero = 0;
+  x.send(str(1 / zero));
+}
+
+@headers
+fn headers(x: RestExchange) -> void implements RestHandler {
+  x.set_header("X-Echo", x.header("x-token"));
+  x.set_header("X-Has-Missing", str(x.has_header("x-missing")));
+  x.set_header("X-Method", x.method());
+  x.send(x.path());
+}
+
+@files
+fn files(x: RestExchange) -> void implements RestHandler {
+  x.send(x.param("rest"));
+}
+
+@readme
+fn readme(x: RestExchange) -> void implements RestHandler {
+  x.send("literal wins");
+}
+
+@count
+fn count(x: RestExchange) -> void implements RestHandler {
+  x.send(str(x.increment("requests")));
+}
+
+@save
+fn save(x: RestExchange) -> void implements RestHandler {
+  x.set("note", x.body());
+  x.status(202);
+}
+
+@load
+fn load(x: RestExchange) -> void implements RestHandler {
+  x.send(x.get("note"));
+}
+
+@shutdown
+fn shutdown(x: RestExchange) -> void implements RestHandler {
+  rest_stop();
+  x.status(202);
+  x.send("bye");
+}
+
+rest_route("GET", "/health", "health");
+rest_route("GET", "/hello/{name}", "hello");
+rest_route("GET", "/add", "add");
+rest_route("POST", "/sum", "sum");
+rest_route("DELETE", "/things/{id}", "remove");
+rest_route("GET", "/boom", "boom");
+rest_route("GET", "/headers", "headers");
+rest_route("PUT", "/headers", "headers");
+rest_route("GET", "/files/{rest...}", "files");
+rest_route("GET", "/files/readme", "readme");
+rest_route("GET", "/count", "count");
+rest_route("PUT", "/note", "save");
+rest_route("GET", "/note", "load");
+rest_route("POST", "/shutdown", "shutdown");
+rest_serve();
+end _lmcode_

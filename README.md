@@ -35,6 +35,10 @@ program.run(context, registry)
 
 Register functions with `Registry.function(name, params, returns, callback)` and methods with `Registry.method(owner, name, params, returns, callback)`. Callbacks receive the run context, receiver (for methods), and arguments. String callbacks receive UTF-8 text after boundary validation; `raw_strings=True` on either registration method opts a callback into byte strings (Python `str` with one code point per byte); byte-valued callback returns are also accepted. Python `int` preserves all values while VM integer operations wrap to signed 64-bit.
 
+## Optional REST server over stdio
+
+`lmcode.rest.register_rest(registry)` adds the opt-in `rest` std module (18 signatures; never part of `Registry()`): programs declare routes and the host serves HTTP/1.1 requests from stdin to stdout, with no network listener. See [docs/rest.md](docs/rest.md).
+
 ## Dry mode and result frames
 
 A host callback has no dry slot by default: dry execution skips it and returns a fresh dummy matching its declared return type. Use `dry(callback)` for a preview or `dry(real)` to explicitly reuse the real callback. `Context.dry()` reports the current mode. Dry mode does not simulate external effects.

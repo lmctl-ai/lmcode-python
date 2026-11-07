@@ -1,4 +1,4 @@
 include LICENSE README.md THIRD_PARTY_NOTICES.md
-include std.lock std-docs.lock vectors.lock stdlib-vectors.lock return-vectors.lock invocation-vectors.lock sample-suite.lock
+include std.lock std-docs.lock vectors.lock stdlib-vectors.lock return-vectors.lock invocation-vectors.lock sample-suite.lock rest-suite.lock
 recursive-include std *.json
 recursive-include lmcode/data *.json

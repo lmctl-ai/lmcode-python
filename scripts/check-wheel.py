@@ -17,6 +17,6 @@ with ZipFile(wheel) as archive:
     meta=archive.read(metadata).decode("utf8")
     if "Root-Is-Purelib: true" not in info or "Tag: py3-none-any" not in info:raise SystemExit("wheel metadata does not mark a pure Python wheel")
     if "Name: lmcode-python" not in meta or "Requires-Dist:" in meta:raise SystemExit("wheel metadata has unexpected package/dependency declarations")
-    for path in ("lmcode/loader.py","lmcode/data/lmcode-std.schema.json","sample/main.py","sample/data/sample.dsl.json"):
+    for path in ("lmcode/loader.py","lmcode/rest/controller.py","lmcode/data/lmcode-std.schema.json","sample/main.py","sample/data/sample.dsl.json"):
         if path not in names:raise SystemExit("wheel missing "+path)
 print("verified pure Python wheel: "+wheel.name)

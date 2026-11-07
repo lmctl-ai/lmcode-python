@@ -23,7 +23,7 @@ dependencies = []
 lmcode-python-sample = "sample.main:run"
 
 [tool.setuptools]
-packages = ["lmcode", "sample"]
+packages = ["lmcode", "lmcode.rest", "sample"]
 include-package-data = true
 
 [tool.setuptools.package-data]

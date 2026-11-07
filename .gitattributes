@@ -11,3 +11,6 @@
 *.dslb binary
 *.bin binary
 *.out binary
+
+# The shared REST suite is pinned byte for byte: no newline conversion on any platform.
+conformance/rest-suite/** -text

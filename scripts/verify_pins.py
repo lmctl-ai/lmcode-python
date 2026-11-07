@@ -22,6 +22,7 @@ def locked_tree(name,dot_prefix=False):
 
 def main():
     for suite in ("vectors","stdlib-vectors","return-vectors","invocation-vectors"):locked_tree(suite,True)
+    locked_tree("rest-suite")
     schema=ROOT/"std/lmcode-std.schema.json"
     data=json.loads(schema.read_text(encoding="utf8"))
     count=sum(map(len,data.get("functions",{}).values()))+sum(sum(map(len,t.get("methods",{}).values())) for t in data.get("types",{}).values())
