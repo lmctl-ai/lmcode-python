@@ -1,5 +1,7 @@
 # lmcode-python
 
+Documentation: [Quick reference](https://www.lmctl.com/tools/lmcode-python/) | [LLM skill](https://www.lmctl.com/tools/lmcode-python/skill.html) | [Guide](https://www.lmctl.com/tools/lmcode-python/guide.html) | [Reference](https://www.lmctl.com/tools/lmcode-python/reference.html)
+
 `lmcode-python` is a pure-Python runtime and host SDK for lmcode bytecode v6. It loads and verifies bytecode against the exact schema bytes used at compile time, then executes the verified program in a synchronous host VM. The wheel is pure Python (`py3-none-any`) with no runtime dependencies or native build step.
 
 ## Install and run
